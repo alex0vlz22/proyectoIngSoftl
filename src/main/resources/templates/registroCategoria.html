@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Proyecto / registroCategoria</title>
+<div th:replace="fragment/linksHeader :: links"></div>
+<link rel="stylesheet" th:href="@{/css/registroCategoria.css}" />
+</head>
+<body background="/images/fondos/crudCategoria.png">
+
+	<table>
+		<tr>
+
+			<td><div id="divisionDatos">
+					<form action="#" th:object="${categoria}"
+						th:action="@{/guardarCategoria}" method="post">
+						<table align="center">
+							<thead id="theadDatos">
+								<tr>
+									<th colspan="2" id="columnaTitulo"><span id="titulo">Gesti&oacute;n
+											de categor&iacute;a</span></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><div id="divisionInvisible1"></div></td>
+								</tr>
+								<tr id="filaDatos">
+									<td id="columnaDatosIzquierda"><span id="nombre">Nombre:</span></td>
+									<td id="columnaDatosDerecha"><input required="true"
+										type="text" placeholder="Nombre" th:field="*{nombre}"
+										id="campoNombre" /></td>
+								</tr>
+								<tr>
+									<td colspan="2">
+										<button id="Guardar" type="submit"
+											class="btn btn-info animate__animated animate__pulse animate__delay-5s">Guardar</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</form>
+				</div></td>
+
+			<td>
+				<div id="divisionIzquierda">
+					<div th:if="${listaCategorias.isEmpty()}"
+						id="divisionNoHayCategorias">
+						<br>
+						<span id="mensajeNoHayCategorias">No hay categor&iacute;as
+							registradas a&uacute;n. :(</span>
+					</div>
+					<div th:if="${!listaCategorias.isEmpty()}"
+						id="divisionSiHayCategorias">
+						<table align="center">
+							<thead>
+								<tr>
+									<th>Nombre</th>
+									<th>Editar</th>
+									<th>Eliminar</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="categoria : ${listaCategorias}" id="filaRegistro">
+									<td th:text="${categoria.nombre}" id="columnaNombre"></td>
+									<td id="columnaEditar"><a
+										th:href="@{/editarCategoria/{id}(id=${categoria.id})}"><button
+												id="botonEditar">
+												<i class="far fa-edit"></i>
+											</button></a></td>
+									<td id="columnaEliminar"><a
+										th:href="@{/eliminarCategoria/{id}(id=${categoria.id})}"><button
+												id="botonEliminar">
+												<i class="fas fa-trash-alt"></i>
+											</button></a></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</td>
+
+		</tr>
+		<tr>
+
+		</tr>
+	</table>
+
+	<div id="divisionFooter"></div>
+
+</body>
+</html>

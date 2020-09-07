@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<div th:replace="fragment/linksHeader :: links"></div>
+<link rel="stylesheet" th:href="@{/css/editarCategoria.css}" />
+</head>
+<body background="/images/fondos/crudCategoria.png">
+	<div id="divisionPrincipal" align="center">
+	<form action="#" th:action=@{/modificarCategoria/{id}(id=${categoria.id})} th:object="${categoria}" method="post">
+		<table align="center">
+			<thead>
+				<tr>
+					<th colspan="2">Edici&oacute;n de categor&iacute;a</th>
+				</tr>
+			</thead>
+			<tbody>
+			<tr><td><div id="divisionInvisible"></div></td></tr>
+				<tr>
+					<td><span id="nombre">Nuevo nombre:</span></td>
+					<td><input type="text" th:field="*{nombre}" required="true" placeholder="Nuevo nombre"/></td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<button id="boton" type="submit" class="animate__animated animate__pulse">Guardar</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		</form>
+	</div>
+</body>
+</html>

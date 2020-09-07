@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Proyecto / login</title>
+<div th:replace="fragment/linksHeader :: links"></div>
+<link rel="stylesheet" th:href="@{/css/login.css}" />
+
+</head>
+<body class="animate__animated animate__fadeInRight" style="overflow-x:hidden; overflow-y:hidden">
+	<!-- background="/images/fondos/login.jpg" -->
+	<div>
+		<img src="/images/fondos/login.jpg">
+		<div id="divisionPrincipal">
+			<table id="tablaSupremaXD">
+				<thead>
+					<tr>
+						<th>
+							<h1 id="login">LOGIN</h1>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<form th:action="@{/ingresar}" th:object="${usuario}">
+						<tr>
+							<td>
+								<div class="btn-group">
+									<select name="cars" id="cars" th:field="*{rol}" required="true">
+										<option value="Vendedor">Vendedor</option>
+										<option value="Cliente">Cliente</option>
+									</select>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td><input type="number" placeholder="Ingresar DNI" id="dni"
+								required="true" th:field="*{DNI}"></td>
+						</tr>
+						<tr>
+							<td>
+								<button type="submit" class="btn btn-warning" id="ingresar">Ingresar</button>
+							</td>
+						</tr>
+					</form>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</body>
+</html>

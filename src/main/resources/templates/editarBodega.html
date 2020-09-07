@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Proyecto / editarBodega</title>
+<div th:replace="fragment/linksHeader :: links"></div>
+</head>
+<body>
+
+	<div>
+		<form action="#" th:action="@{/modificarBodega/{id}(id=${bodega.id})}" th:object="${bodega}" method="post">
+		<table>
+			<tr>
+				<td colspan="2">
+				<span id="titulo">Gesti&oacute;n de bodega</span>
+				</td>
+			</tr>
+			<tr>
+				<td><span id="nombre">Nombre:</span></td>
+				<td><input placeholder="Nombre" th:field="*{nombre}" required="true" type="text"/></td>
+			</tr>
+			<tr>
+				<td><span id="direccion">Direcci&oacute;n:</span></td>
+				<td><input placeholder="Direcci&oacute;n" th:field="*{direccion}" required="true" type="text"/></td>
+			</tr>
+			<tr>
+				<td><span id="capacidad">Capacidad:</span></td>
+				<td><input placeholder="capacidad" th:field="*{capacidad}" required="true" type="number"/></td>
+			</tr>
+			<tr>
+				<td colspan="2"><button type="submit">Guardar</button></td>
+			</tr>
+		</table>
+		</form>
+	</div>
+
+</body>
+</html>

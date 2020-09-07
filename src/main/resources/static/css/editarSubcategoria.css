@@ -1,0 +1,76 @@
+@charset "ISO-8859-1";
+
+img{
+	position: fixed;
+}
+
+#divisionPrincipal{
+	position: fixed;
+	background: linear-gradient(to bottom, red, yellow);
+	border: 2px solid white;
+	height: 400px;
+	width: 480px;
+	border-radius: 20px;
+	opacity: 0.9;
+	text-align: center;
+	margin-top: 120px;
+	margin-left: 450px;
+}
+
+#colTitulo{
+	font-size: 30px;
+	color: yellow;
+}
+
+#divisionInvisible1{
+	height: 20px;
+}
+
+hr{
+	background-color: white;
+}
+
+select{
+	width: 182px;
+}
+
+button{
+	margin-top: 60px;
+	border: 1px solid white;
+	height: 33px;
+	width: 80px;
+	border-radius: 3px;
+}
+
+button:hover{
+	filter: brightness(0.9);
+}
+
+#nombre, #categoria{
+	margin-right: 10px;
+}
+
+#nombre{
+	margin-right: 1px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,68 @@
+@charset "ISO-8859-1";
+
+
+img{
+	position: fixed;
+}
+
+#divisionPrincipal{
+	height: 320px;
+	width: 400px;
+	background-color: white;
+	opacity: 0.9;
+	margin-left: 480px;
+	border-radius: 10px;
+}
+
+#titulo{
+	font-size: 28px;
+	font-family: inherit;
+}
+
+select{
+	width: 182px;
+}
+
+button{
+	margin-left: 100px;
+	border: 1px solid lightgray;
+	background-color: black;
+	color: white;
+	height: 30px;
+	width: 80px;
+	border-radius: 5px;
+}
+
+button:hover{
+	font-size: 17px;
+}
+
+.divEsp{
+	height: 2px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

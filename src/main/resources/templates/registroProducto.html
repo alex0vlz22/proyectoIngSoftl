@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Proyecto / registroProducto</title>
+<div th:replace="fragment/linksHeader :: links"></div>
+<link rel="stylesheet" th:href="@{/css/registroProducto.css}">
+</head>
+<body style="overflow-x: hiden; overflow-y: hidden">
+	<div>
+	<img src="images/fondos/registroProducto.png">
+		<table id="tablaPrincipal">
+			<tr>
+				<td>
+					<div id="divisionPrincipal">
+						<form action="#" th:object="${producto}"
+							th:action="@{/guardarProducto}" method="post">
+							<table id="tablaFormulario" align="center">
+								<thead>
+									<tr>
+										<th colspan="2" id="tituloCategoria">Gesti&oacute;n de productos<hr></th>
+									</tr>
+									<br>
+								</thead>
+								<tbody>
+									<tr>
+										<td><br><span class="etiqueta">Nombre:</span></td>
+										<td><br><input type="text" placeholder="Nombre"
+											required="true" th:field="*{nombre}" /></td>
+									</tr>
+									<tr>
+										<td><br><span class="etiqueta">Cantidad:</span></td>
+										<td><br><input type="number" placeholder="Cantidad"
+											required="true" th:field="*{cantidad}" /></td>
+									</tr>
+									<tr>
+										<td><br><span class="etiqueta">Categor&iacute;a:</span></td>
+										<td><br><select th:field="*{idSubcategoria}">
+												<option value="0">Seleccionar</option>
+												<option th:each="subcategoria : ${listaSubcategorias}"
+													th:value="${subcategoria.id}"
+													th:text="${subcategoria.nombre}"></option>
+										</select></td>
+									</tr>
+									<tr>
+										<td><br><span class="etiqueta">Proveedor:</span></td>
+										<td><br><select th:field="*{nombreProveedor}">
+												<option value="0">Seleccionar</option>
+												<option th:each="proveedor : ${listaProveedores}"
+													th:value="${proveedor.nombre}"
+													th:text="${proveedor.nombre}"></option>
+										</select></td><br>
+									</tr>
+									<tr>
+										<td colspan="2">
+											<hr>
+											<button type="submit" id="botonGuardar">Guardar</button>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</form>
+					</div></td>
+
+				<td>
+					<div id="divisionNoHayProductos"
+						th:if="${listaProductos.isEmpty()}">
+						<br><br><br><br><br><br><br><br>
+						<span id="mensajeNoHayProductos">A&uacute;n no hay
+							productos registrados. :(</span>
+					</div>
+
+				</td>
+				<td>
+
+					<div id="divisionSiHayProductos"
+						th:if="${!listaProductos.isEmpty()}">
+						<table align="center">
+							<thead>
+								<br>
+								<tr class="filaProductos">
+									<th class="columnaProductos">Nombre</th>
+									<th class="columnaProductos">Cantidad</th>
+									<th class="columnaProductos">Categor&iacute;a</th>
+									<th class="columnaProductos">Proveedor</th>
+									<th class="columnaProductos">Editar</th>
+									<th class="columnaProductos">Eliminar</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="producto : ${listaProductos}" class="filaProductos">
+									<td th:text="${producto.nombre}" class="columnaProductos"></td>
+									<td th:text="${producto.cantidad}" class="columnaProductos"></td>
+									<td th:text="${producto.subcategoria.nombre}" class="columnaProductos"></td>
+									<td th:text="${producto.proveedor.nombre}" class="columnaProductos"></td>
+									<td class="columnaProductos"><a
+										th:href="@{/editarProducto/{id}(id=${producto.id})}"><i class="fas fa-edit"></i></a></td>
+									<td class="columnaProductos"><a
+										th:href="@{/eliminarProducto/{id}(id=${producto.id})}"><i class="fas fa-trash-alt"></i></a></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</td>
+			</tr>
+		</table>
+		<div id="footer"></div>
+	</div>
+</body>
+</html>

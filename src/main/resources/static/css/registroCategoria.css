@@ -1,0 +1,106 @@
+@charset "ISO-8859-1";
+
+
+#divisionDatos {
+	margin-left: 200px;
+	margin-top: 200px;
+	height: 200px;
+	width: 400px;
+	background: linear-gradient(to right, white, gray);
+	opacity: 0.9;
+	border-radius: 15px;
+	text-align: center;
+	border: 1px solid gray;
+}
+
+
+
+#titulo, #columnaTitulo, #theadDatos{
+	font-family: serif;
+	font-size: 30px;
+}
+
+#nombre{
+	font-size: 20px;
+	margin-right: 10px;
+}
+
+#campoNombre{
+	border-radius: 5px;
+	border: 0px;
+	text-align: center;
+}
+
+#divisionInvisible1{
+	height: 20px;
+}
+
+#Guardar{
+	margin-top: 30px;
+	background-color: White;
+	color: black;
+	border: 1px solid black;
+	margin-left: 10px;
+}
+
+#Guardar:hover{
+	background-color: lightgray;
+	border: 1px solid white;
+	
+}
+
+#columnaNombre, #columnaEditar, #columnaEliminar{
+	width: 100px;
+}
+
+#filaRegistro{
+	border-top: 1px solid gray;
+}
+
+#botonEditar{
+	margin-top: 2px;
+	margin-bottom: 2px;
+	border-radius: 5px;
+	border: 0px;
+	background-color: darkgray;
+	color: white;
+	width: 50px;
+}
+
+#botonEditar:hover{
+	background-color: gray;
+}
+
+#botonEliminar{
+	border-radius: 5px;
+	border: 0px;
+	background-color: darkgray;
+	color: white;
+	width: 50px;
+}
+
+#botonEliminar:hover{
+	background-color: gray;
+}
+
+#divisionNoHayCategorias{
+	font-family: cursive;
+	font-size: 30px;
+	height: 200px;
+}
+
+#divisionSiHayCategorias{
+	height: 300px;
+}
+
+#divisionSiHayCategorias, #divisionNoHayCategorias{
+	position: fixed;
+	text-align: center;
+	margin-left: 160px;
+	border: 1px solid gray;
+	padding: 5px;
+	border-radius: 10px;
+	width: 400px;
+	background: linear-gradient(to bottom, lightgray, white);
+	opacity: 0.9;
+}

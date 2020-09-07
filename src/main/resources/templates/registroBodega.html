@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Proyecto / registroBodega</title>
+<div th:replace="fragment/linksHeader :: links"></div>
+</head>
+<body>
+	<div>
+		<form action="#" th:action="@{/guardarBodega}" th:object="${bodega}" method="post">
+		<table>
+			<tr>
+				<td colspan="2">
+				<span id="titulo">Gesti&oacute;n de bodega</span>
+				</td>
+			</tr>
+			<tr>
+				<td><span id="nombre">Nombre:</span></td>
+				<td><input placeholder="Nombre" th:field="*{nombre}" required="true" type="text"/></td>
+			</tr>
+			<tr>
+				<td><span id="direccion">Direcci&oacute;n:</span></td>
+				<td><input placeholder="Direcci&oacute;n" th:field="*{direccion}" required="true" type="text"/></td>
+			</tr>
+			<tr>
+				<td><span id="capacidad">Capacidad:</span></td>
+				<td><input placeholder="capacidad" th:field="*{capacidad}" required="true" type="number"/></td>
+			</tr>
+			<tr>
+				<td colspan="2"><button type="submit">Guardar</button></td>
+			</tr>
+		</table>
+		</form>
+		<div id="espacio"></div>
+		<div id="noHayBodegas" th:if="${listaBodegas.isEmpty()}">
+			<span>No hay bodegas registradas a&uacute;n.</span>
+		</div>
+		<div id="siHayBodegas" th:if="${!listaBodegas.isEmpty()}">
+			<table>
+				<tr>
+					<td>Nombre</td>
+					<td>Direcci&oacute;n</td>
+					<td>Capacidad</td>
+					<td>Editar</td>
+					<td>Eliminar</td>
+				</tr>
+				<tr th:each="bodega : ${listaBodegas}">
+					<td th:text="${bodega.nombre}"></td>
+					<td th:text="${bodega.direccion}"></td>
+					<td th:text="${bodega.capacidad}"></td>
+					<td><a th:href="@{/editarBodega/{id}(id=${bodega.id})}">Editar</a></td>
+					<td><a th:href="@{/eliminarBodega/{id}(id=${bodega.id})}">Eliminar</a></td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</body>
+</html>

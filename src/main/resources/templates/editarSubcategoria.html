@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Proyecto / editarSubcategoria</title>
+<div th:replace="fragment/linksHeader :: links"></div>
+<link rel="stylesheet" th:href="@{/css/editarSubcategoria.css}">
+</head>
+<body>
+
+	<div>
+		<img src="/images/fondos/registroSubcategoria.png">
+		<div id="divisionPrincipal">
+			<form action="#"
+				th:action=@{/modificarSubcategoria/{id}(id=${subcategoria.id})}
+				th:object="${subcategoria}" method="post">
+				<table align="center">
+					<thead>
+						<tr>
+							<th colspan="2" id="colTitulo"><br>Edici&oacute;n de subcategor&iacute;a<hr></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><div id="divisionInvisible1"></div></td>
+						</tr>
+						<tr>
+							<td><span id="nombre">Nuevo nombre:</span></td>
+							<td><input type="text" th:field="*{nombre}" required="true"
+								placeholder="Nuevo nombre" /></td>
+						</tr>
+						<tr>
+							<td><div id="divisionInvisible1"></div></td>
+						</tr>
+						<tr>
+							<td><span id="categoria">Nueva categor&iacute;a:</span></td>
+							<td><select id="comboCategorias" th:field="*{idCategoria}">
+									<option th:each="categoria : ${listaCategorias}"
+										th:value="${categoria.id}" th:text="${categoria.nombre}"></option>
+							</select>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<button id="boton" type="submit"
+									class="animate__animated animate__pulse">Guardar</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</form>
+		</div>
+	</div>
+
+</body>
+</html>
+
+

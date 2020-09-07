@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Proyecto / registroProveedor</title>
+<div th:replace="fragment/linksHeader :: links"></div>
+<link rel="stylesheet" th:href="@{/css/registroProveedor.css}">
+</head>
+<body style="overflow-x:hidden; overflow-y:hidden">
+	<div id="divisionPrincipal">
+		<img src="/images/fondos/registroProveedor.png">
+		<table id="tablaPrincipal">
+			<tr>
+				<td>
+					<div id="divisionFormulario">
+						<form action="#" th:object="${proveedor}"
+							th:action="@{/guardarProveedor}" method="post">
+							<table align="center">
+								<thead>
+									<tr>
+										<th colspan="2" id="columnaTitulo">Gesti&oacute;n de
+											proveedores
+											<hr> <br>
+										</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td><span class="label">Nombre:</span></td>
+										<td><input required="true" type="text"
+											th:field="*{nombre}" placeholder="Nombre" /></td>
+										<br>
+									</tr>
+									<tr>
+										<td><div id="divEsp1"></div></td>
+									</tr>
+									<tr>
+										<td><span class="label">Descripci&oacute;n:</span></td>
+										<td><input type="text" th:field="*{descripcion}"
+											required="true" placeholder="Descripci&oacute;n" /></td>
+									</tr>
+									<tr>
+										<td colspan="2"><button type="submit" id="botonGuardar">Guardar</button></td>
+									</tr>
+								</tbody>
+							</table>
+						</form>
+					</div>
+				</td>
+				<td>
+					<div id="divisionNoHayProveedores"
+						th:if="${listaProveedores.isEmpty()}">
+						<br> <br> <br> <br> <span>A&uacute;n no
+							hay proveedores registrados. :(</span>
+					</div>
+				</td>
+				<td>
+					<div id="divisionSiHayProveedores"
+						th:if="${!listaProveedores.isEmpty()}">
+						<table align="center">
+							<br>
+							<thead>
+								<tr>
+									<th class="colRegistros">Nombre</th>
+									<th class="colRegistros">Editar</th>
+									<th class="colRegistros">Eliminar</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="proveedor : ${listaProveedores}">
+									<td th:text="${proveedor.nombre}" class="colRegistros"></td>
+									<td class="colRegistros"><a
+										th:href="@{/editarProveedor/{id}(id=${proveedor.id})}"><i
+											class="fas fa-edit"></i></a></td>
+									<td class="colRegistros"><a
+										th:href="@{/eliminarProveedor/{id}(id=${proveedor.id})}"><i
+											class="fas fa-trash"></i></a></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<div id="footer"></div>
+</body>
+</html>
