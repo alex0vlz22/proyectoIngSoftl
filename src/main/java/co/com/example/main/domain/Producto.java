@@ -15,6 +15,8 @@ import lombok.Data;
 
 public class Producto {
 
+	private static final long serialVersionUID = 2679541203984681110L;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
@@ -23,6 +25,10 @@ public class Producto {
 	private String nombre;
 
 	private int cantidad;
+	
+	private double precio;
+	
+	private String urlFoto = "";
 
 	@ManyToOne
 	private Proveedor proveedor;
