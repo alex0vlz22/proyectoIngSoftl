@@ -21,14 +21,14 @@ public class Producto {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-	@Column(unique = true)
+	@Column(length = 50)
 	private String nombre;
 
 	private int cantidad;
 	
 	private double precio;
-	
-	private String urlFoto = "";
+	@Column(length = 255)
+	private String urlFoto;
 
 	@ManyToOne
 	private Proveedor proveedor;

@@ -51,6 +51,30 @@
 							</select></td>
 						</tr>
 						<tr>
+										<td><br> <span class="etiqueta">Precio:</span></td>
+										<td><br> <input type="number" placeholder="Precio" required="true"></td>
+										<br>
+									</tr>
+									<tr>
+										<td><br>
+										<label for="file-upload" class="subir btn btn-primary">Cargar
+												imagen <i class="fas fa-cloud-upload-alt"></i>
+										</label></td>
+										<td><br>
+											<div class="form-group ">
+												<input type="file" id="file-upload" accept="image/*"
+													class="form-control-file" style='display: none;'
+													name="file">
+												<!--  	<span th:if="${#fields.hasErrors('urlFoto')}"
+												th:errors="*{urlFoto}" class="text-danger"></span>  -->
+												<div>
+													<img id="imcargar" src="/images/sinfoto.jpg"
+														class="img-fluid rounded mt-2"
+														style='width: 14rem; heigth: auto;'>
+												</div>
+											</div></td>
+									</tr>
+						<tr>
 							<td colspan="2"><hr><button id="botonGuardar" type="submit">Guardar</button></td>
 						</tr>
 					</tbody>

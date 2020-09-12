@@ -14,9 +14,10 @@
 				<td>
 					<div id="divisionPrincipal">
 						<form action="#" th:object="${producto}"
-							th:action="@{/guardarProducto}" method="post">
+							th:action="@{/guardarProducto}" method="post" enctype="multipart/form-data>"> 
 							<input type="hidden" id="agregarUrl" th:field="*{urlFoto}">
-			<input type="hidden" id="cambioUrl" name="cambioUrl" value="false">
+							<input type="hidden" id="cambioUrl" name="cambioUrl"
+								value="false">
 							<table id="tablaFormulario" align="center">
 								<thead>
 									<tr>
@@ -30,7 +31,7 @@
 								<tbody>
 									<tr>
 										<td><br> <span class="etiqueta">Nombre:</span></td>
-										<td><br> <input type="text" placeholder="Nombre"
+										<td><br><input type="text" placeholder="Nombre"
 											required="true" th:field="*{nombre}" /></td>
 									</tr>
 									<tr>
@@ -59,13 +60,14 @@
 									</tr>
 									<tr>
 										<td><br> <span class="etiqueta">Precio:</span></td>
-										<td><br> <input type="number" placeholder="Precio"></td>
+										<td><br> <input type="number" placeholder="Precio" required="true"></td>
 										<br>
 									</tr>
 									<tr>
-										<td><br><label for="file-upload" class="subir btn btn-primary">Cargar imagen
-    									<i class="fas fa-cloud-upload-alt"></i> 
-									</label></td>
+										<td><br>
+										<label for="file-upload" class="subir btn btn-primary">Cargar
+												imagen <i class="fas fa-cloud-upload-alt"></i>
+										</label></td>
 										<td><br>
 											<div class="form-group ">
 												<input type="file" id="file-upload" accept="image/*"
@@ -78,8 +80,7 @@
 														class="img-fluid rounded mt-2"
 														style='width: 14rem; heigth: auto;'>
 												</div>
-											</div>
-											</td>
+											</div></td>
 									</tr>
 									<tr>
 										<td colspan="2">

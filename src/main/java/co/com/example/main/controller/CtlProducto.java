@@ -47,11 +47,18 @@ public class CtlProducto {
 	}
 
 	@PostMapping("/guardarProducto")
-	public String guardarProducto(Model model, Producto producto) {
+	public String guardarProducto(Model model, Producto producto, @RequestParam("file") MultipartFile file) {
 		Proveedor p = repoProveedor.findByNombre(producto.getNombreProveedor().toString());
 		Subcategoria c = repoSubcategoria.findById(producto.getIdSubcategoria());
 		producto.setProveedor(p);
 		producto.setSubcategoria(c);
+		try {
+			Map uploadResult = cloudc.upload(file.getBytes(), ObjectUtils.asMap("resourcetype", "auto"));
+			System.out.println(uploadResult.get("url").toString());
+			producto.setUrlFoto(uploadResult.get("url").toString());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		repoProducto.save(producto);
 		model.addAttribute("producto", new Producto());
 		model.addAttribute("listaProveedores", repoProveedor.findAll());
@@ -70,12 +77,22 @@ public class CtlProducto {
 	}
 
 	@PostMapping("/modificarProducto/{id}")
-	public String modificarProducto(Model model, Producto p, @PathVariable int id) {
+	public String modificarProducto(Model model, Producto p, @PathVariable int id,
+			@RequestParam("file") MultipartFile file, @RequestParam("cambioUrl") boolean cambioUrl) {
 		p.setId(id);
 		Proveedor producto = repoProveedor.findByNombre(p.getNombreProveedor().toString());
 		Subcategoria c = repoSubcategoria.findById(p.getIdSubcategoria());
 		p.setProveedor(producto);
 		p.setSubcategoria(c);
+		if (cambioUrl) {
+			try {
+				Map uploadResult = cloudc.upload(file.getBytes(), ObjectUtils.asMap("resourcetype", "auto"));
+				System.out.println(uploadResult.get("url").toString());
+				p.setUrlFoto(uploadResult.get("url").toString());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 		repoProducto.save(p);
 		model.addAttribute("producto", new Producto());
 		model.addAttribute("listaProveedores", repoProveedor.findAll());
