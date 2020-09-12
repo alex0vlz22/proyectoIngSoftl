@@ -1,6 +1,9 @@
 package co.com.example.main.controller;
 
+import javax.management.Query;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.object.SqlQuery;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,7 +41,7 @@ public class CtlUsuario {
 	@GetMapping("/login")
 	public String login(Model model) {
 		model.addAttribute("usuario", new Usuario());
-		return "login";
+			return "login";
 	}
 	
 	@GetMapping("/QuedateEnCasa")
