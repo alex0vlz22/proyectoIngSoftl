@@ -2,17 +2,47 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>Inicio</title>
+<div th:replace="fragment/linksHeader :: links"></div>
+<link rel="stylesheet" th:href="@{/css/ingresoUsuario.css}">
 </head>
-<body>
+<body style="overflow-x: hidden;">
 
 	<div id="divIngresoCliente">
-				
-	</div>
-	
-	<div id="divIngresoVendedor">
-					
+		<div class="form-group" th:replace="fragment/navBar :: nav"></div>
+
+		<div class="row" style="margin-top: 40px;">
+			<div class="col-sm" style="margin-left: 70px; width: 305px;">
+				<div th:replace="fragment/menu :: menu" ></div>
+			</div>
+			<div class="col-sm">
+				<div th:replace="fragment/header :: photosHeader"></div>
+			</div>
+			<div class="col-sm"></div>
+		</div>
+				<table
+					style="width: 820px; height: 371px; margin-left: 450px; margin-top: 30px; margin-bottom: 100px; padding:5px;">
+					<thead>
+						<tr>
+							<th colspan="3" style="text-align: center; border-top: 1px solid lightgray; border-bottom: 1px solid lightgray;">
+								<h1 style="color:#e7dec8; text-decoration:none;">Productos</h1>
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td style="border-right: 1px solid lightgray; border-bottom: 1px solid lightgray; text-align: center;"><h1>Prod1</h1></td>
+							<td style="border-right: 1px solid lightgray; border-bottom: 1px solid lightgray; text-align: center;"><h1>Prod2</h1></td>
+							<td style="border-bottom: 1px solid lightgray; text-align: center;"><h1>Prod3</h1></td>
+						</tr>
+					</tbody>
+				</table>
 	</div>
 
+	<div id="divIngresoVendedor"></div>
 </body>
+<footer
+	>
+	<div th:replace="fragment/footer :: footer"></div>
+</footer>
 </html>

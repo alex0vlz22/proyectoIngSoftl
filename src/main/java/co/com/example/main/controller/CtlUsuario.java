@@ -19,6 +19,11 @@ public class CtlUsuario {
 	public String index(Model model) {
 		return "index";
 	}
+	
+	@GetMapping("/ingreso")
+	public String ingresoUsuario(Model model) {
+		return "ingresoUsuario";
+	}
 
 	@GetMapping("/registroClienteVendedor")
 	public String registroClienteVendedor(Model model) {
