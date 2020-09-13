@@ -16,52 +16,57 @@ public class CtlProveedor {
 
 	@Autowired
 	private RepoProveedor repoProveedor;
-	
+
 	@Autowired
 	private RepoUsuario repoUsuario;
-	
+
 	@GetMapping("/registroProveedor/{idVendedor}")
 	public String registroProveedor(Model model, @PathVariable int idVendedor) {
 		model.addAttribute("proveedor", new Proveedor());
+		model.addAttribute("idVendedor", idVendedor);
 		model.addAttribute("usuario", repoUsuario.findById(idVendedor));
 		model.addAttribute("listaProveedores", repoProveedor.findAll());
 		return "registroProveedor";
 	}
-	
-	@PostMapping("/guardarProveedor")
-	public String guardarProveedor(Model model, Proveedor proveedor) {
+
+	@PostMapping("/guardarProveedor/{idVendedor}")
+	public String guardarProveedor(Model model, Proveedor proveedor, @PathVariable int idVendedor) {
+		proveedor.setUsuario(repoUsuario.findById(idVendedor));
 		repoProveedor.save(proveedor);
 		model.addAttribute("proveedor", new Proveedor());
 		model.addAttribute("listaProveedores", repoProveedor.findAll());
-		return "redirect:/registroProveedor";
+		model.addAttribute("idVendedor", idVendedor);
+		return "redirect:/registroProveedor/" + idVendedor;
 	}
-	
+
 	@GetMapping("/editarProveedor/{id}")
 	public String editarProveedor(@PathVariable int id, Model model) {
 		Proveedor p = repoProveedor.findById(id);
 		model.addAttribute("proveedor", p);
+		model.addAttribute("usuario", p.getUsuario());
 		return "editarProveedor";
 	}
-	
+
 	@PostMapping("/modificarProveedor/{id}")
 	public String modificarProveedor(Model model, Proveedor proveedor, @PathVariable int id) {
+		int idVendedor = repoProveedor.findById(id).getUsuario().getId();
 		proveedor.setId(id);
+		proveedor.setUsuario(repoUsuario.findById(idVendedor));
 		repoProveedor.save(proveedor);
 		model.addAttribute("proveedor", new Proveedor());
 		model.addAttribute("listaProveedores", repoProveedor.findAll());
-		return "redirect:/registroProveedor";
+		model.addAttribute("idVendedor", idVendedor);
+		return "redirect:/registroProveedor/" + idVendedor;
 	}
-	
+
 	@GetMapping("/eliminarProveedor/{id}")
 	public String eliminarProveedor(Model model, @PathVariable int id) {
+		int idVendedor = repoProveedor.findById(id).getUsuario().getId();
 		repoProveedor.deleteById(id);
 		model.addAttribute("proveedor", new Proveedor());
 		model.addAttribute("listaProveedores", repoProveedor.findAll());
-		return "redirect:/registroProveedor";
+		model.addAttribute("idVendedor", idVendedor);
+		return "redirect:/registroProveedor/" + idVendedor;
 	}
-	
+
 }
-
-
-
-

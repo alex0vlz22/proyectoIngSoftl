@@ -8,12 +8,14 @@
 </head>
 <body background="/images/fondos/crudCategoria.png">
 
+
+	<div class="form-group" th:replace="fragment/vendedor/navBar :: nav"></div>
 	<table>
 		<tr>
 
 			<td><div id="divisionDatos">
 					<form action="#" th:object="${categoria}"
-						th:action="@{/guardarCategoria}" method="post">
+						th:action="@{/guardarCategoria/{idVendedor}(idVendedor = ${idVendedor})}" method="post">
 						<table align="center">
 							<thead id="theadDatos">
 								<tr>

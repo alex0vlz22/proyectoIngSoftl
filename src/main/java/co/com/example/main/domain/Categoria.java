@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import lombok.Data;
@@ -26,5 +27,8 @@ public class Categoria {
 
 	@OneToMany(mappedBy = "categoria", cascade = CascadeType.REMOVE)
 	private List<Subcategoria> subcategoria;
+	
+	@ManyToOne
+	private Usuario usuario;
 	
 }

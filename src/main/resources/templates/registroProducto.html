@@ -7,6 +7,9 @@
 <link rel="stylesheet" th:href="@{/css/registroProducto.css}">
 </head>
 <body style="overflow-x: hiden">
+
+	<div class="form-group" th:replace="fragment/vendedor/navBar :: nav"></div>
+
 	<div>
 		<img id="imgFondo" src="images/fondos/registroProducto.png">
 		<table id="tablaPrincipal">
@@ -40,12 +43,21 @@
 											required="true" th:field="*{cantidad}" /></td>
 									</tr>
 									<tr>
-										<td><br> <span class="etiqueta">Categor&iacute;a:</span></td>
+										<td><br> <span class="etiqueta">Subcategor&iacute;a:</span></td>
 										<td><br> <select th:field="*{idSubcategoria}">
 												<option value="0">Seleccionar</option>
 												<option th:each="subcategoria : ${listaSubcategorias}"
 													th:value="${subcategoria.id}"
 													th:text="${subcategoria.nombre}"></option>
+										</select></td>
+									</tr>
+									<tr>
+										<td><br> <span class="etiqueta">Bodega:</span></td>
+										<td><br> <select th:field="*{idBodega}">
+												<option value="0">Seleccionar</option>
+												<option th:each="bodega : ${listaBodegas}"
+													th:value="${bodega.id}"
+													th:text="${bodega.nombre}"></option>
 										</select></td>
 									</tr>
 									<tr>

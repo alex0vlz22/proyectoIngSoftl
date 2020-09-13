@@ -6,41 +6,48 @@
 <div th:replace="fragment/linksHeader :: links"></div>
 <link rel="stylesheet" th:href="@{/css/editarProveedor.css}">
 </head>
-<body style="overflow-x:hidden; overflow-y:hidden">
+<body style="overflow-x: hidden; overflow-y: hidden">
+	<div class="form-group" th:replace="fragment/vendedor/navBar :: nav"></div>
 	<div>
-	<img src="/images/fondos/registroProveedor.png">
-	<div id="divisionFormulario" align="center">
-		<form action="#"
-			th:action="@{/modificarProveedor/{id}(id=${proveedor.id})}"
-			th:object="${proveedor}" method="post">
-			<table align="center">
-				<thead>
-				<br>
-					<tr>
-						<th colspan="2" id="columnaTitulo">Edici&oacute;n de proveedor<hr><br></th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td><span>Nombre:</span></td>
-						<td><input th:field="*{nombre}" required="true" type="text"
-							placeholder="Nombre" /></td>
-					</tr>
-					<tr><td><div id="divEsp1"></div></td></tr>
-					<tr>
-						<td><span>Descripci&oacute;n:</span></td>
-						<td><input th:field="*{descripcion}" required="true"
-							type="text" placeholder="Descripci&oacute;n" /></td>
-					</tr>
-					<tr>
-						<td colspan="2">
-							<button type="submit" id="botonGuardar">Guardar</button>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</form>
-	</div>
+		<img src="/images/fondos/registroProveedor.png">
+		<div id="divisionFormulario" align="center">
+			<form action="#"
+				th:action="@{/modificarProveedor/{id}(id=${proveedor.id})}"
+				th:object="${proveedor}" method="post">
+				<table align="center">
+					<thead>
+						<br>
+						<tr>
+							<th colspan="2" id="columnaTitulo">Edici&oacute;n de
+								proveedor
+								<hr>
+								<br>
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><span>Nombre:</span></td>
+							<td><input th:field="*{nombre}" required="true" type="text"
+								placeholder="Nombre" /></td>
+						</tr>
+						<tr>
+							<td><div id="divEsp1"></div></td>
+						</tr>
+						<tr>
+							<td><span>Descripci&oacute;n:</span></td>
+							<td><input th:field="*{descripcion}" required="true"
+								type="text" placeholder="Descripci&oacute;n" /></td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<button type="submit" id="botonGuardar">Guardar</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</form>
+		</div>
 	</div>
 </body>
 </html>

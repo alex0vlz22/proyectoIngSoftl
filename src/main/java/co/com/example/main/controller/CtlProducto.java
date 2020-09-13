@@ -18,6 +18,7 @@ import co.com.example.main.CloudinaryConfig;
 import co.com.example.main.domain.Producto;
 import co.com.example.main.domain.Proveedor;
 import co.com.example.main.domain.Subcategoria;
+import co.com.example.main.repository.RepoBodega;
 import co.com.example.main.repository.RepoProducto;
 import co.com.example.main.repository.RepoProveedor;
 import co.com.example.main.repository.RepoSubcategoria;
@@ -40,6 +41,9 @@ public class CtlProducto {
 	
 	@Autowired
 	private CloudinaryConfig cloudc;
+	
+	@Autowired
+	private RepoBodega repoBodega;
 
 	@GetMapping("/registroProducto/{idVendedor}")
 	public String registroProducto(Model model, @PathVariable int idVendedor) {
@@ -48,6 +52,8 @@ public class CtlProducto {
 		model.addAttribute("listaProveedores", repoProveedor.findAll());
 		model.addAttribute("listaSubcategorias", repoSubcategoria.findAll());
 		model.addAttribute("listaProductos", repoProducto.findAll());
+		model.addAttribute("listaBodegas", repoBodega.findAll());
+		model.addAttribute("usuario", repoUsuario.findById(idVendedor));
 		return "registroProducto";
 	}
 
@@ -69,6 +75,7 @@ public class CtlProducto {
 		model.addAttribute("listaProveedores", repoProveedor.findAll());
 		model.addAttribute("listaSubcategorias", repoSubcategoria.findAll());
 		model.addAttribute("listaProductos", repoProducto.findAll());
+		model.addAttribute("listaBodegas", repoBodega.findAll());
 		return "redirect:/registroProducto";
 	}
 
@@ -78,6 +85,8 @@ public class CtlProducto {
 		model.addAttribute("producto", p);
 		model.addAttribute("listaProveedores", repoProveedor.findAll());
 		model.addAttribute("listaSubcategorias", repoSubcategoria.findAll());
+		model.addAttribute("listaBodegas", repoBodega.findAll());
+		model.addAttribute("usuario", p.getVendedor());
 		return "editarProducto";
 	}
 
@@ -103,6 +112,7 @@ public class CtlProducto {
 		model.addAttribute("listaProveedores", repoProveedor.findAll());
 		model.addAttribute("listaSubcategorias", repoSubcategoria.findAll());
 		model.addAttribute("listaProductos", repoProducto.findAll());
+		model.addAttribute("listaBodegas", repoBodega.findAll());
 		return "redirect:/registroProducto";
 	}
 
@@ -113,6 +123,7 @@ public class CtlProducto {
 		model.addAttribute("listaProveedores", repoProveedor.findAll());
 		model.addAttribute("listaSubcategorias", repoSubcategoria.findAll());
 		model.addAttribute("listaProductos", repoProducto.findAll());
+		model.addAttribute("listaBodegas", repoBodega.findAll());
 		return "redirect:/registroProducto";
 	}
 

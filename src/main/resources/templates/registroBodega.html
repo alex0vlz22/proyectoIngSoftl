@@ -6,8 +6,11 @@
 <div th:replace="fragment/linksHeader :: links"></div>
 </head>
 <body>
+
+	<div class="form-group" th:replace="fragment/vendedor/navBar :: nav"></div>
+
 	<div>
-		<form action="#" th:action="@{/guardarBodega}" th:object="${bodega}" method="post">
+		<form action="#" th:action="@{/guardarBodega/{idVendedor}(idVendedor = ${idVendedor})}" th:object="${bodega}" method="post">
 		<table>
 			<tr>
 				<td colspan="2">

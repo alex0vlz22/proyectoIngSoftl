@@ -8,13 +8,15 @@
 </head>
 <body class="animate__animated animate__fadeIn">
 
+	<div class="form-group" th:replace="fragment/vendedor/navBar :: nav"></div>
+
 	<div>
 		<img src="/images/fondos/registroSubcategoria.png">
 		<table>
 		<tr>
 			<td><div id="divisionDatos">
 					<form action="#" th:object="${subcategoria}"
-						th:action="@{/guardarSubcategoria}" method="post">
+						th:action="@{/guardarSubcategoria/{idVendedor}(idVendedor = ${idVendedor})}" method="post">
 						<table align="center">
 							<thead id="theadDatos">
 								<tr>

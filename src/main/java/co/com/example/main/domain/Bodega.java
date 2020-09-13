@@ -1,10 +1,16 @@
 package co.com.example.main.domain;
 
+import java.util.List;
+import java.util.Optional;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import lombok.Data;
 
@@ -22,5 +28,11 @@ public class Bodega {
 	private String direccion;
 	
 	private int capacidad;
+	
+	@OneToMany(mappedBy = "bodega", cascade = CascadeType.REMOVE)
+	private List<Producto> producto;
+	
+	@ManyToOne
+	private Usuario usuario;
 	
 }

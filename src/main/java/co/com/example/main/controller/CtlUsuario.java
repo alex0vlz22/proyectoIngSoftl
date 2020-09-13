@@ -28,6 +28,7 @@ public class CtlUsuario {
 
 	@GetMapping("")
 	public String index(Model model) {
+		model.addAttribute("usuarioRegistrado", true);
 		return "index";
 	}
 
@@ -113,11 +114,13 @@ public class CtlUsuario {
 		if (usuario.getCodigoEmpresa() == null) {
 			usuario.setRol("Cliente");
 			repoUsuario.save(usuario);
+			model.addAttribute("usuarioRegistrado", true);
 			return "redirect:/";
 		} else {
 			if (usuario.getCodigoEmpresa().equalsIgnoreCase("A7B8C9")) {
 				usuario.setRol("Vendedor");
 				repoUsuario.save(usuario);
+				model.addAttribute("usuarioRegistrado", true);
 				return "redirect:/";
 			} else {
 				usuario.setRol("Vendedor");

@@ -36,10 +36,19 @@ public class Producto {
 	@ManyToOne
 	private Subcategoria subcategoria;
 	
+	@ManyToOne
+	private Bodega bodega;
+	
+	@ManyToOne
+	private Usuario vendedor;
+	
 	@Transient
 	private int idSubcategoria;
 	
 	@Transient
 	private String nombreProveedor;
+	
+	@Transient
+	private int idBodega;
 
 }

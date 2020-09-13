@@ -28,6 +28,9 @@ public class Subcategoria {
 	@ManyToOne
 	private Categoria categoria;
 	
+	@ManyToOne
+	private Usuario usuario;
+	
 	@OneToMany(mappedBy = "subcategoria", cascade = CascadeType.REMOVE)
 	private List<Producto> producto;
 	

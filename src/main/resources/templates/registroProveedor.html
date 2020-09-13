@@ -9,12 +9,13 @@
 <body style="overflow-x:hidden; overflow-y:hidden">
 	<div id="divisionPrincipal">
 		<img src="/images/fondos/registroProveedor.png">
+		<div class="form-group" th:replace="fragment/vendedor/navBar :: nav"></div>
 		<table id="tablaPrincipal">
 			<tr>
 				<td>
 					<div id="divisionFormulario">
 						<form action="#" th:object="${proveedor}"
-							th:action="@{/guardarProveedor}" method="post">
+							th:action="@{/guardarProveedor/{idVendedor}(idVendedor = ${idVendedor})}" method="post">
 							<table align="center">
 								<thead>
 									<tr>

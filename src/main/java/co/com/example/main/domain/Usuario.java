@@ -1,10 +1,14 @@
 package co.com.example.main.domain;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
 import lombok.Data;
@@ -38,5 +42,20 @@ public class Usuario {
 	// el usuario, validaríamos que el código ingresado sea correcto.
 	@Transient
 	private String codigoEmpresa;
+	
+	@OneToMany(mappedBy = "usuario", cascade = CascadeType.REMOVE)
+	private List<Bodega> bodega;
+	
+	@OneToMany(mappedBy = "vendedor", cascade = CascadeType.REMOVE)
+	private List<Producto> producto;
+	
+	@OneToMany(mappedBy = "usuario", cascade = CascadeType.REMOVE)
+	private List<Categoria> categoria;
+	
+	@OneToMany(mappedBy = "usuario", cascade = CascadeType.REMOVE)
+	private List<Proveedor> proveedor;
+	
+	@OneToMany(mappedBy = "usuario", cascade = CascadeType.REMOVE)
+	private List<Subcategoria> subcategoria;
 	
 }

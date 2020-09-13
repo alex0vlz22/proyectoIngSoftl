@@ -1,13 +1,19 @@
 @charset "ISO-8859-1";
 
+img {
+	position: fixed;
+}
+
+table{
+	position: fixed;
+	margin-top: 180px;
+	margin-left: 570px;
+}
+
 td, tr{
 	height: 156px;
 	width: 146px;
 	text-align: center;
-}
-
-table{
-	margin-top: 180px;
 }
 
 #division1{

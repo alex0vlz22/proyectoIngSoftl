@@ -7,6 +7,8 @@
 </head>
 <body>
 
+	<div class="form-group" th:replace="fragment/vendedor/navBar :: nav"></div>
+
 	<div>
 		<form action="#" th:action="@{/modificarBodega/{id}(id=${bodega.id})}" th:object="${bodega}" method="post">
 		<table>

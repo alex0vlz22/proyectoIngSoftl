@@ -8,4 +8,6 @@ public interface RepoUsuario extends CrudRepository<Usuario, Integer>{
 
 	Usuario findByDNI(String dni);
 	
+	Usuario findById(int id);
+	
 }
