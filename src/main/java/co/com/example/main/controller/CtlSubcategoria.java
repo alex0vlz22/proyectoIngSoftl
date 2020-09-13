@@ -11,6 +11,7 @@ import co.com.example.main.domain.Categoria;
 import co.com.example.main.domain.Subcategoria;
 import co.com.example.main.repository.RepoCategoria;
 import co.com.example.main.repository.RepoSubcategoria;
+import co.com.example.main.repository.RepoUsuario;
 
 @Controller
 public class CtlSubcategoria {
@@ -21,9 +22,13 @@ public class CtlSubcategoria {
 	@Autowired
 	private RepoCategoria repoCategoria;
 	
-	@GetMapping("/registroSubcategoria")
-	public String registroSubcategoria(Model model){
+	@Autowired
+	private RepoUsuario repoUsuario;
+	
+	@GetMapping("/registroSubcategoria/{idVendedor}")
+	public String registroSubcategoria(Model model, @PathVariable int idVendedor){
 		model.addAttribute("subcategoria", new Subcategoria());
+		model.addAttribute("usuario", repoUsuario.findById(idVendedor));
 		model.addAttribute("listaSubcategorias", repoSubcategoria.findAll());
 		model.addAttribute("listaCategorias", repoCategoria.findAll());
 		return "registroSubcategoria";

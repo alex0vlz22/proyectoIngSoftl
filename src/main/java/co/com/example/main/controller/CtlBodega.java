@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import co.com.example.main.domain.Bodega;
 import co.com.example.main.repository.RepoBodega;
+import co.com.example.main.repository.RepoUsuario;
 
 @Controller
 public class CtlBodega {
@@ -16,8 +17,12 @@ public class CtlBodega {
 	@Autowired
 	private RepoBodega repoBodega;
 	
-	@GetMapping("/registroBodega")
-	public String registroBodega(Model model) {
+	@Autowired
+	private RepoUsuario repoUsuario;
+	
+	@GetMapping("/registroBodega/{idVendedor}")
+	public String registroBodega(Model model, @PathVariable int idVendedor) {
+		model.addAttribute("usuario", repoUsuario.findById(idVendedor));
 		model.addAttribute("bodega", new Bodega());
 		model.addAttribute("listaBodegas", repoBodega.findAll());
 		return "registroBodega";

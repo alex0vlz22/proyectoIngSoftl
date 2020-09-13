@@ -21,6 +21,7 @@ import co.com.example.main.domain.Subcategoria;
 import co.com.example.main.repository.RepoProducto;
 import co.com.example.main.repository.RepoProveedor;
 import co.com.example.main.repository.RepoSubcategoria;
+import co.com.example.main.repository.RepoUsuario;
 
 @Controller
 public class CtlProducto {
@@ -35,11 +36,15 @@ public class CtlProducto {
 	private RepoSubcategoria repoSubcategoria;
 
 	@Autowired
+	private RepoUsuario repoUsuario;
+	
+	@Autowired
 	private CloudinaryConfig cloudc;
 
-	@GetMapping("/registroProducto")
-	public String registroProducto(Model model) {
+	@GetMapping("/registroProducto/{idVendedor}")
+	public String registroProducto(Model model, @PathVariable int idVendedor) {
 		model.addAttribute("producto", new Producto());
+		model.addAttribute("usuario", repoUsuario.findById(idVendedor));
 		model.addAttribute("listaProveedores", repoProveedor.findAll());
 		model.addAttribute("listaSubcategorias", repoSubcategoria.findAll());
 		model.addAttribute("listaProductos", repoProducto.findAll());

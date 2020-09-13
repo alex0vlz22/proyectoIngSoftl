@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import co.com.example.main.domain.Usuario;
+import co.com.example.main.repository.RepoProducto;
+import co.com.example.main.repository.RepoSubcategoria;
 import co.com.example.main.repository.RepoUsuario;
 
 @Controller
@@ -18,14 +20,54 @@ public class CtlUsuario {
 	@Autowired
 	private RepoUsuario repoUsuario;
 
+	@Autowired
+	private RepoSubcategoria repoSubcategoria;
+
+	@Autowired
+	private RepoProducto repoProducto;
+
 	@GetMapping("")
 	public String index(Model model) {
 		return "index";
 	}
-	
+
 	@GetMapping("/ingreso")
-	public String ingresoUsuario(Model model) {
-		return "ingresoUsuario";
+	public String ingresoUsuario(Model model, Usuario usuario) {
+		if (usuario.getRol().equals("Cliente")) {
+			try {
+				Usuario u = repoUsuario.findByDNI(usuario.getDNI());
+				if (u.getRol().equals("Cliente")) {
+					model.addAttribute("usuario", u);
+					model.addAttribute("listaSubcategorias", this.repoSubcategoria.findAll());
+					model.addAttribute("listaProductos", this.repoProducto.findAll());
+					return "ingresoUsuario";
+				} else {
+					// no se encontro un cliente por este dni
+					model.addAttribute("noEncontrado", true);
+					return "login";
+				}
+			} catch (NullPointerException e) {
+				model.addAttribute("noEncontrado", true);
+				return "login";
+			}
+		} else {
+			try {
+				Usuario u = repoUsuario.findByDNI(usuario.getDNI());
+				if (u.getRol().equals("Vendedor")) {
+					model.addAttribute("usuario", u);
+					model.addAttribute("listaSubcategorias", this.repoSubcategoria.findAll());
+					model.addAttribute("listaProductos", this.repoProducto.findAll());
+					return "ingresoUsuario";
+				} else {
+					// no se encontro un vendedor por este dni
+					model.addAttribute("noEncontrado", true);
+					return "login";
+				}
+			} catch (NullPointerException e) {
+				model.addAttribute("noEncontrado", true);
+				return "login";
+			}
+		}
 	}
 
 	@GetMapping("/registroClienteVendedor")
@@ -40,10 +82,11 @@ public class CtlUsuario {
 
 	@GetMapping("/login")
 	public String login(Model model) {
+		model.addAttribute("noEncontrado", false);
 		model.addAttribute("usuario", new Usuario());
-			return "login";
+		return "login";
 	}
-	
+
 	@GetMapping("/QuedateEnCasa")
 	public String video(Model model) {
 		return "video";

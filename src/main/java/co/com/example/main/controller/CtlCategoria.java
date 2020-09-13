@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import co.com.example.main.domain.Categoria;
 import co.com.example.main.repository.RepoCategoria;
+import co.com.example.main.repository.RepoUsuario;
 
 @Controller
 public class CtlCategoria {
@@ -16,9 +17,13 @@ public class CtlCategoria {
 	@Autowired
 	private RepoCategoria repoCategoria;
 	
-	@GetMapping("/registroCategoria")
-	public String registroCategoria(Model model) {
+	@Autowired
+	private RepoUsuario repoUsuario;
+	
+	@GetMapping("/registroCategoria/{idVendedor}")
+	public String registroCategoria(Model model, @PathVariable int idVendedor) {
 		model.addAttribute("categoria", new Categoria());
+		model.addAttribute("usuario", repoUsuario.findById(idVendedor));
 		model.addAttribute("listaCategorias", repoCategoria.findAll());
 		return "registroCategoria";
 	}

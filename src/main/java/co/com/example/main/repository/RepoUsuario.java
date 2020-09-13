@@ -6,4 +6,6 @@ import co.com.example.main.domain.Usuario;
 
 public interface RepoUsuario extends CrudRepository<Usuario, Integer>{
 
+	Usuario findByDNI(String dni);
+	
 }
