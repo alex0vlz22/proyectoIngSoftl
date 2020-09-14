@@ -16,7 +16,7 @@
 		<div id="divisionPrincipal">
 			<form action="#" th:object="${producto}"
 				th:action="@{/modificarProducto/{id}(id=${producto.id})}"
-				method="post">
+				method="post" enctype="multipart/form-data">
 				<table align="center">
 					<thead>
 						<tr>
