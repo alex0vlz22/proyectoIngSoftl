@@ -46,7 +46,7 @@ public class Producto {
 	private int idSubcategoria;
 	
 	@Transient
-	private String nombreProveedor;
+	private int idProveedor;
 	
 	@Transient
 	private int idBodega;

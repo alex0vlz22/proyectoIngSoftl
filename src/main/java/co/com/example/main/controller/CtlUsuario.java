@@ -7,10 +7,12 @@ import org.springframework.jdbc.object.SqlQuery;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import co.com.example.main.domain.Usuario;
 import co.com.example.main.repository.RepoProducto;
+import co.com.example.main.repository.RepoProveedor;
 import co.com.example.main.repository.RepoSubcategoria;
 import co.com.example.main.repository.RepoUsuario;
 
@@ -25,6 +27,9 @@ public class CtlUsuario {
 
 	@Autowired
 	private RepoProducto repoProducto;
+	
+	@Autowired
+	private RepoProveedor repoProveedor;
 
 	@GetMapping("")
 	public String index(Model model) {
@@ -32,6 +37,16 @@ public class CtlUsuario {
 		return "index";
 	}
 
+	@GetMapping("/inicio/{idUsuario}")
+	public String inicio(Model model, @PathVariable int idUsuario) {
+		Usuario u = repoUsuario.findById(idUsuario);
+		model.addAttribute("usuario", u);
+		model.addAttribute("listaSubcategorias", this.repoSubcategoria.findAll());
+		model.addAttribute("listaProveedores", this.repoProveedor.findAll());
+		model.addAttribute("listaProductos", this.repoProducto.findAll());
+		return "ingresoUsuario";
+	}
+	
 	@GetMapping("/ingreso")
 	public String ingresoUsuario(Model model, Usuario usuario) {
 		if (usuario.getRol().equals("Cliente")) {
@@ -40,6 +55,7 @@ public class CtlUsuario {
 				if (u.getRol().equals("Cliente")) {
 					model.addAttribute("usuario", u);
 					model.addAttribute("listaSubcategorias", this.repoSubcategoria.findAll());
+					model.addAttribute("listaProveedores", this.repoProveedor.findAll());
 					model.addAttribute("listaProductos", this.repoProducto.findAll());
 					return "ingresoUsuario";
 				} else {

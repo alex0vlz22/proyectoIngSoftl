@@ -4,8 +4,9 @@
 <meta charset="ISO-8859-1">
 <title>Proyecto / registroBodega</title>
 <div th:replace="fragment/linksHeader :: links"></div>
+<link rel="stylesheet" th:href="@{/css/registroBodega.css}">
 </head>
-<body>
+<body style="overflow-x: hidden;">
 
 	<div class="form-group" th:replace="fragment/vendedor/navBar :: nav"></div>
 
@@ -19,7 +20,7 @@
 			</tr>
 			<tr>
 				<td><span id="nombre">Nombre:</span></td>
-				<td><input placeholder="Nombre" th:field="*{nombre}" required="true" type="text"/></td>
+				<td><input autofocus placeholder="Nombre" th:field="*{nombre}" required="true" type="text"/></td>
 			</tr>
 			<tr>
 				<td><span id="direccion">Direcci&oacute;n:</span></td>
@@ -58,4 +59,7 @@
 		</div>
 	</div>
 </body>
+<footer style="margin-top:100px;">
+	<div th:replace="fragment/footer :: footer"></div>
+</footer>
 </html>

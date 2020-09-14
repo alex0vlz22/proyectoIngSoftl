@@ -11,13 +11,13 @@
 	<div class="form-group" th:replace="fragment/vendedor/navBar :: nav"></div>
 
 	<div>
-		<img id="imgFondo" src="images/fondos/registroProducto.png">
 		<table id="tablaPrincipal">
 			<tr>
 				<td>
 					<div id="divisionPrincipal">
 						<form action="#" th:object="${producto}"
-							th:action="@{/guardarProducto}" method="post" enctype="multipart/form-data"> 
+							th:action="@{/guardarProducto/{idVendedor}(idVendedor = ${idVendedor})}"
+							method="post" enctype="multipart/form-data">
 							<input type="hidden" id="agregarUrl" th:field="*{urlFoto}">
 							<input type="hidden" id="cambioUrl" name="cambioUrl"
 								value="false">
@@ -34,8 +34,8 @@
 								<tbody>
 									<tr>
 										<td><br> <span class="etiqueta">Nombre:</span></td>
-										<td><br><input type="text" placeholder="Nombre"
-											required="true" th:field="*{nombre}" /></td>
+										<td><br> <input autofocus type="text"
+											placeholder="Nombre" required="true" th:field="*{nombre}" /></td>
 									</tr>
 									<tr>
 										<td><br> <span class="etiqueta">Cantidad:</span></td>
@@ -56,37 +56,34 @@
 										<td><br> <select th:field="*{idBodega}">
 												<option value="0">Seleccionar</option>
 												<option th:each="bodega : ${listaBodegas}"
-													th:value="${bodega.id}"
-													th:text="${bodega.nombre}"></option>
+													th:value="${bodega.id}" th:text="${bodega.nombre}"></option>
 										</select></td>
 									</tr>
 									<tr>
 										<td><br> <span class="etiqueta">Proveedor:</span></td>
-										<td><br> <select th:field="*{nombreProveedor}">
+										<td><br> <select th:field="*{idProveedor}">
 												<option value="0">Seleccionar</option>
 												<option th:each="proveedor : ${listaProveedores}"
-													th:value="${proveedor.nombre}"
-													th:text="${proveedor.nombre}"></option>
+													th:value="${proveedor.id}" th:text="${proveedor.nombre}"></option>
 										</select></td>
 										<br>
 									</tr>
 									<tr>
 										<td><br> <span class="etiqueta">Precio:</span></td>
-										<td><br> <input type="number" placeholder="Precio" required="true"></td>
+										<td><br> <input type="number" placeholder="Precio"
+											required="true" th:field="*{precio}"></td>
 										<br>
 									</tr>
 									<tr>
-										<td><br>
-										<label for="file-upload" class="subir btn btn-primary">Cargar
-												imagen <i class="fas fa-cloud-upload-alt"></i>
+										<td><br> <label for="file-upload"
+											class="subir btn btn-primary">Cargar imagen <i
+												class="fas fa-cloud-upload-alt"></i>
 										</label></td>
 										<td><br>
 											<div class="form-group ">
 												<input type="file" id="file-upload" accept="image/*"
 													class="form-control-file" style='display: none;'
 													name="file">
-												<!--  	<span th:if="${#fields.hasErrors('urlFoto')}"
-												th:errors="*{urlFoto}" class="text-danger"></span>  -->
 												<div>
 													<img id="imcargar" src="/images/sinfoto.jpg"
 														class="img-fluid rounded mt-2"
@@ -156,4 +153,7 @@
 	</div>
 	<script src="js/subirImagen.js" th:src="@{/js/subirImagen.js}"></script>
 </body>
+<footer style="margin-top: 100px;">
+	<div th:replace="fragment/footer :: footer"></div>
+</footer>
 </html>

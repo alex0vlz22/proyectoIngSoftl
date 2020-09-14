@@ -6,12 +6,11 @@
 <div th:replace="fragment/linksHeader :: links"></div>
 <link rel="stylesheet" th:href="@{/css/registroSubcategoria.css}">
 </head>
-<body class="animate__animated animate__fadeIn">
+<body>
 
 	<div class="form-group" th:replace="fragment/vendedor/navBar :: nav"></div>
 
 	<div>
-		<img src="/images/fondos/registroSubcategoria.png">
 		<table>
 		<tr>
 			<td><div id="divisionDatos">
@@ -28,7 +27,7 @@
 								<tr><td><div id="divisionInvisible1"></div></td></tr>
 								<tr id="filaDatos">
 									<td id="columnaDatosIzquierda"><span id="nombre">Nombre:</span></td>
-									<td id="columnaDatosDerecha"><input required="true" type="text"
+									<td id="columnaDatosDerecha"><input autofocus required="true" type="text"
 										placeholder="Nombre" th:field="*{nombre}" id="campoNombre"/></td>
 								</tr>
 								<tr id="filaCategoria">
@@ -95,4 +94,7 @@
 	<div id="divisionFooter"></div>
 
 </body>
+<footer style="margin-top: 100px;">
+	<div th:replace="fragment/footer :: footer"></div>
+</footer>
 </html>

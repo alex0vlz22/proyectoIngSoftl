@@ -11,10 +11,9 @@
 	<div class="form-group" th:replace="fragment/vendedor/navBar :: nav"></div>
 
 	<div>
-		<img src="/images/fondos/registroSubcategoria.png">
 		<div id="divisionPrincipal">
 			<form action="#"
-				th:action=@{/modificarSubcategoria/{id}(id=${subcategoria.id})}
+				th:action=@{/modificarSubcategoria/{id}(id=${idSubcategoria})}
 				th:object="${subcategoria}" method="post">
 				<table align="center">
 					<thead>
@@ -30,7 +29,7 @@
 						</tr>
 						<tr>
 							<td><span id="nombre">Nuevo nombre :</span></td>
-							<td><input type="text" th:field="*{nombre}" required="true"
+							<td><input autofocus type="text" th:field="*{nombre}" required="true"
 								placeholder="Nuevo nombre" /></td>
 						</tr>
 						<tr>
@@ -56,6 +55,9 @@
 	</div>
 
 </body>
+<footer style="margin-top: 100px;">
+	<div th:replace="fragment/footer :: footer"></div>
+</footer>
 </html>
 
 

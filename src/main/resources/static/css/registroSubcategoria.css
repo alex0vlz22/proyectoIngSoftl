@@ -1,7 +1,8 @@
 @charset "ISO-8859-1";
 
-img{
-	position: fixed;
+body{
+	background: linear-gradient(to bottom, #fcdab7, #1e5f74 , #133b5c, #1d2d50, black);
+	overflow-x: hidden;
 }
 
 #divisionDatos{

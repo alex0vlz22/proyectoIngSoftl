@@ -5,7 +5,7 @@
 <div th:replace="fragment/linksHeader :: links"></div>
 <link rel="stylesheet" th:href="@{/css/editarCategoria.css}" />
 </head>
-<body background="/images/fondos/crudCategoria.png">
+<body>
 
 	<div class="form-group" th:replace="fragment/vendedor/navBar :: nav"></div>
 
@@ -25,7 +25,7 @@
 					</tr>
 					<tr>
 						<td><span id="nombre">Nuevo nombre:</span></td>
-						<td><input type="text" th:field="*{nombre}" required="true"
+						<td><input autofocus type="text" th:field="*{nombre}" required="true"
 							placeholder="Nuevo nombre" /></td>
 					</tr>
 					<tr>
@@ -39,4 +39,7 @@
 		</form>
 	</div>
 </body>
+<footer style="margin-top: 100px;">
+	<div th:replace="fragment/footer :: footer"></div>
+</footer>
 </html>

@@ -62,6 +62,7 @@ public class CtlSubcategoria {
 		model.addAttribute("subcategoria", s);
 		model.addAttribute("listaCategorias", repoCategoria.findAll());
 		model.addAttribute("usuario", s.getUsuario());
+		model.addAttribute("idSubcategoria", s.getId());
 		return "editarSubcategoria";
 	}
 
