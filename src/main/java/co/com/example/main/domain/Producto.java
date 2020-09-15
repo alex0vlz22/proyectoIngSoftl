@@ -24,6 +24,8 @@ public class Producto {
 	@Column(length = 50)
 	private String nombre;
 
+	private String descripcion;
+	
 	private int cantidad;
 	
 	private double precio;

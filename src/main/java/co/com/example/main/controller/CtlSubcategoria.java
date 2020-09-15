@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import co.com.example.main.domain.Categoria;
+import co.com.example.main.domain.Producto;
 import co.com.example.main.domain.Subcategoria;
 import co.com.example.main.repository.RepoCategoria;
 import co.com.example.main.repository.RepoSubcategoria;
@@ -32,6 +33,7 @@ public class CtlSubcategoria {
 		model.addAttribute("listaSubcategorias", repoSubcategoria.findAll());
 		model.addAttribute("listaCategorias", repoCategoria.findAll());
 		model.addAttribute("usuario", repoUsuario.findById(idVendedor));
+		model.addAttribute("producto", new Producto());
 		return "registroSubcategoria";
 	}
 
@@ -46,12 +48,14 @@ public class CtlSubcategoria {
 			model.addAttribute("listaSubcategorias", repoSubcategoria.findAll());
 			model.addAttribute("listaCategorias", repoCategoria.findAll());
 			model.addAttribute("idVendedor", idVendedor);
+			model.addAttribute("producto", new Producto());
 			return "redirect:/registroSubcategoria/" + idVendedor;
 		} else {
 			model.addAttribute("subcategoria", new Subcategoria());
 			model.addAttribute("listaSubcategorias", repoSubcategoria.findAll());
 			model.addAttribute("listaCategorias", repoCategoria.findAll());
 			model.addAttribute("idVendedor", idVendedor);
+			model.addAttribute("producto", new Producto());
 			return "redirect:/registroSubcategoria/" + idVendedor;
 		}
 	}
@@ -63,6 +67,7 @@ public class CtlSubcategoria {
 		model.addAttribute("listaCategorias", repoCategoria.findAll());
 		model.addAttribute("usuario", s.getUsuario());
 		model.addAttribute("idSubcategoria", s.getId());
+		model.addAttribute("producto", new Producto());
 		return "editarSubcategoria";
 	}
 
@@ -78,6 +83,7 @@ public class CtlSubcategoria {
 		model.addAttribute("listaSubcategorias", repoSubcategoria.findAll());
 		model.addAttribute("listaCategorias", repoCategoria.findAll());
 		model.addAttribute("idVendedor", idVendedor);
+		model.addAttribute("producto", new Producto());
 		return "redirect:/registroSubcategoria/" + idVendedor;
 	}
 
@@ -89,6 +95,7 @@ public class CtlSubcategoria {
 		model.addAttribute("listaSubcategorias", repoSubcategoria.findAll());
 		model.addAttribute("listaCategorias", repoCategoria.findAll());
 		model.addAttribute("idVendedor", idVendedor);
+		model.addAttribute("producto", new Producto());
 		return "redirect:/registroSubcategoria/" + idVendedor;
 	}
 }

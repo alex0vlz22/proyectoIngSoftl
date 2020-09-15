@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import co.com.example.main.domain.Producto;
 import co.com.example.main.domain.Proveedor;
 import co.com.example.main.repository.RepoProveedor;
 import co.com.example.main.repository.RepoUsuario;
@@ -26,6 +27,7 @@ public class CtlProveedor {
 		model.addAttribute("idVendedor", idVendedor);
 		model.addAttribute("usuario", repoUsuario.findById(idVendedor));
 		model.addAttribute("listaProveedores", repoProveedor.findAll());
+		model.addAttribute("producto", new Producto());
 		return "registroProveedor";
 	}
 
@@ -36,6 +38,7 @@ public class CtlProveedor {
 		model.addAttribute("proveedor", new Proveedor());
 		model.addAttribute("listaProveedores", repoProveedor.findAll());
 		model.addAttribute("idVendedor", idVendedor);
+		model.addAttribute("producto", new Producto());
 		return "redirect:/registroProveedor/" + idVendedor;
 	}
 
@@ -44,6 +47,7 @@ public class CtlProveedor {
 		Proveedor p = repoProveedor.findById(id);
 		model.addAttribute("proveedor", p);
 		model.addAttribute("usuario", p.getUsuario());
+		model.addAttribute("producto", new Producto());
 		return "editarProveedor";
 	}
 
@@ -56,6 +60,7 @@ public class CtlProveedor {
 		model.addAttribute("proveedor", new Proveedor());
 		model.addAttribute("listaProveedores", repoProveedor.findAll());
 		model.addAttribute("idVendedor", idVendedor);
+		model.addAttribute("producto", new Producto());
 		return "redirect:/registroProveedor/" + idVendedor;
 	}
 
@@ -66,6 +71,7 @@ public class CtlProveedor {
 		model.addAttribute("proveedor", new Proveedor());
 		model.addAttribute("listaProveedores", repoProveedor.findAll());
 		model.addAttribute("idVendedor", idVendedor);
+		model.addAttribute("producto", new Producto());
 		return "redirect:/registroProveedor/" + idVendedor;
 	}
 

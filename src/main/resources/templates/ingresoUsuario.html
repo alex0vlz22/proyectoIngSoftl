@@ -33,7 +33,7 @@
 			<div th:if="${listaProductos.isEmpty()}">
 				<tbody>
 					<tr>
-						<td style="text-align: center;"><span style="font-size: 30px;">A&uacute;n no hay productos publicados. :(</span></td>
+						<td style="text-align: center;"><span style="font-size: 30px;">No se han encontrado productos. :(</span></td>
 					</tr>
 				</tbody>
 			</div>
@@ -42,13 +42,15 @@
 					<tr th:each="producto : ${listaProductos}">
 						<td
 							style="border-right: 1px solid lightgray; border-bottom: 1px solid lightgray; text-align: center;">
-							<a href="#">
-							<div class="card">
+							<a th:href="@{'/detalleProducto/' + ${usuario.id} + '/' + ${producto.id}}">
+							<div class="card" style="float: left;">
 								<div class="card-img-top">
-									<img th:src="producto.urlFoto">
+									<img id="imcargar" th:src="${producto.urlFoto}"
+										class="img-fluid rounded mt-2"
+										style='width: 14rem; heigth: auto;'>
 								</div>
 								<div class="card-body">
-									<h4 th:text="producto.nombre"></h4>
+									<h4 th:text="${producto.nombre}"></h4>
 									<h5 th:text="'$'+${producto.precio}"></h5>
 								</div>
 							</div>
@@ -65,6 +67,8 @@
 
 
 	<div id="divIngresoVendedor" th:if="${usuario.rol.equals('Vendedor')}">
+	
+	
 		<div class="form-group" th:replace="fragment/vendedor/navBar :: nav"></div>
 
 		<div class="row" style="margin-top: 40px;">
@@ -89,7 +93,7 @@
 			<div th:if="${listaProductos.isEmpty()}">
 				<tbody>
 					<tr>
-						<td style="text-align: center;"><span style="font-size: 30px;">A&uacute;n no hay productos publicados. :(</span></td>
+						<td style="text-align: center;"><span style="font-size: 30px;">No se han encontrado productos. :(</span></td>
 					</tr>
 				</tbody>
 			</div>
@@ -98,15 +102,16 @@
 					<tr th:each="producto : ${listaProductos}">
 						<td
 							style="border-right: 1px solid lightgray; border-bottom: 1px solid lightgray; text-align: center;">
-							<a href="#">
+							<a th:href="@{'/detalleProducto/' + ${usuario.id} + '/' + ${producto.id}}">
 							<div class="card">
 								<div class="card-img-top">
+									
 									<img id="imcargar" th:src="${producto.urlFoto}"
 										class="img-fluid rounded mt-2"
 										style='width: 14rem; heigth: auto;'>
 								</div>
 								<div class="card-body">
-									<h4 th:text="producto.nombre"></h4>
+									<h4 th:text="${producto.nombre}"></h4>
 									<h5 th:text="'$'+${producto.precio}"></h5>
 								</div>
 							</div>

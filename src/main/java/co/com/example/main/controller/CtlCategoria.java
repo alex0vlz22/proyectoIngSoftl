@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import co.com.example.main.domain.Categoria;
+import co.com.example.main.domain.Producto;
 import co.com.example.main.repository.RepoCategoria;
 import co.com.example.main.repository.RepoUsuario;
 
@@ -26,6 +27,7 @@ public class CtlCategoria {
 		model.addAttribute("idVendedor", idVendedor);
 		model.addAttribute("listaCategorias", repoCategoria.findAll());
 		model.addAttribute("usuario", repoUsuario.findById(idVendedor));
+		model.addAttribute("producto", new Producto());
 		return "registroCategoria";
 	}
 	
@@ -36,6 +38,7 @@ public class CtlCategoria {
 		model.addAttribute("categoria", new Categoria());
 		model.addAttribute("listaCategorias", repoCategoria.findAll());
 		model.addAttribute("idVendedor", idVendedor);
+		model.addAttribute("producto", new Producto());
 		return "redirect:/registroCategoria/"+idVendedor;
 		
 	}
@@ -45,6 +48,7 @@ public class CtlCategoria {
 		Categoria c = repoCategoria.findById(id);
 		model.addAttribute("categoria", c);
 		model.addAttribute("usuario", c.getUsuario());
+		model.addAttribute("producto", new Producto());
 		return "editarCategoria";
 	}
 	
@@ -56,6 +60,7 @@ public class CtlCategoria {
 		model.addAttribute("categoria", new Categoria());
 		model.addAttribute("listaCategorias", repoCategoria.findAll());
 		model.addAttribute("idVendedor", categoria.getUsuario().getId());
+		model.addAttribute("producto", new Producto());
 		return "redirect:/registroCategoria/"+categoria.getUsuario().getId();
 	}
 	
@@ -66,6 +71,7 @@ public class CtlCategoria {
 		model.addAttribute("categoria", new Categoria());
 		model.addAttribute("listaCategorias", repoCategoria.findAll());
 		model.addAttribute("idVendedor", idVendedor);
+		model.addAttribute("producto", new Producto());
 		return "redirect:/registroCategoria/"+idVendedor;
 	}
 	

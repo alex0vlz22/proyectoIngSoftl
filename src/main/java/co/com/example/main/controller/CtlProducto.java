@@ -1,5 +1,6 @@
 package co.com.example.main.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
@@ -47,6 +51,19 @@ public class CtlProducto {
 	@Autowired
 	private RepoBodega repoBodega;
 
+	@GetMapping("/detalleProducto/{idUsuario}/{idProducto}")
+	public String detalleProducto(Model model, @PathVariable("idUsuario") int idUsuario,
+			@PathVariable("idProducto") int idProducto) {
+		Usuario usuario = repoUsuario.findById(idUsuario);
+		Producto producto = repoProducto.findById(idProducto);
+		model.addAttribute("usuario", usuario);
+		model.addAttribute("productoVisualizado", producto);
+		model.addAttribute("proveedor", producto.getProveedor());
+		model.addAttribute("subcategoria", producto.getSubcategoria());
+		model.addAttribute("producto", new Producto());
+		return "detalleProducto";
+	}
+
 	@GetMapping("/registroProducto/{idVendedor}")
 	public String registroProducto(Model model, @PathVariable int idVendedor) {
 		model.addAttribute("producto", new Producto());
@@ -56,6 +73,7 @@ public class CtlProducto {
 		model.addAttribute("listaProductos", repoProducto.findByVendedor(repoUsuario.findById(idVendedor)));
 		model.addAttribute("listaBodegas", repoBodega.findAll());
 		model.addAttribute("idVendedor", idVendedor);
+		model.addAttribute("producto", new Producto());
 		return "registroProducto";
 	}
 
@@ -83,6 +101,7 @@ public class CtlProducto {
 		model.addAttribute("listaSubcategorias", repoSubcategoria.findAll());
 		model.addAttribute("listaProductos", repoProducto.findAll());
 		model.addAttribute("listaBodegas", repoBodega.findAll());
+		model.addAttribute("producto", new Producto());
 		return "redirect:/registroProducto/" + idVendedor;
 	}
 
@@ -91,12 +110,13 @@ public class CtlProducto {
 		int idVendedor = repoProducto.findById(id).getVendedor().getId();
 		try {
 			Producto p = repoProducto.findById(id);
-			model.addAttribute("producto", p);
+			model.addAttribute("productoParaEditar", p);
 			model.addAttribute("listaProveedores", repoProveedor.findAll());
 			model.addAttribute("listaSubcategorias", repoSubcategoria.findAll());
 			model.addAttribute("listaBodegas", repoBodega.findAll());
 			model.addAttribute("usuario", p.getVendedor());
 			model.addAttribute("idVendedor", p.getVendedor().getId());
+			model.addAttribute("producto", new Producto());
 			return "editarProducto";
 		} catch (MaxUploadSizeExceededException e) {
 			// el archivo es demasiado grande equisde
@@ -131,6 +151,7 @@ public class CtlProducto {
 		model.addAttribute("listaSubcategorias", repoSubcategoria.findAll());
 		model.addAttribute("listaProductos", repoProducto.findAll());
 		model.addAttribute("listaBodegas", repoBodega.findAll());
+		model.addAttribute("producto", new Producto());
 		return "redirect:/registroProducto/" + idVendedor;
 	}
 
@@ -143,6 +164,7 @@ public class CtlProducto {
 		model.addAttribute("listaSubcategorias", repoSubcategoria.findAll());
 		model.addAttribute("listaProductos", repoProducto.findAll());
 		model.addAttribute("listaBodegas", repoBodega.findAll());
+		model.addAttribute("producto", new Producto());
 		return "redirect:/registroProducto/" + idVendedor;
 	}
 
@@ -157,6 +179,23 @@ public class CtlProducto {
 			e.printStackTrace();
 			return "";
 		}
+	}
+
+	// Consultas
+
+	@GetMapping("/busquedaPorPalabras/{idUsuario}")
+	public String buscarPorPalabras(Model model, @PathVariable int idUsuario, Producto producto) {
+		String palabras = producto.getDescripcion();
+		List<Producto> listaProductos = (List<Producto>) repoProducto.findAllByNombreContainingIgnoreCase(palabras);
+		if (listaProductos.size() == 0) {
+			listaProductos = (List<Producto>) repoProducto.findAllByDescripcionContainingIgnoreCase(palabras);
+		}
+		model.addAttribute("usuario", repoUsuario.findById(idUsuario));
+		model.addAttribute("producto", new Producto());
+		model.addAttribute("listaSubcategorias", this.repoSubcategoria.findAll());
+		model.addAttribute("listaProveedores", this.repoProveedor.findAll());
+		model.addAttribute("listaProductos", listaProductos);
+		return "ingresoUsuario";
 	}
 
 }

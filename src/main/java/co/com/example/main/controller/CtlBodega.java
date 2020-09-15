@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import co.com.example.main.domain.Bodega;
+import co.com.example.main.domain.Producto;
 import co.com.example.main.domain.Usuario;
 import co.com.example.main.repository.RepoBodega;
 import co.com.example.main.repository.RepoUsuario;
@@ -29,6 +30,7 @@ public class CtlBodega {
 		model.addAttribute("bodega", new Bodega());
 		model.addAttribute("listaBodegas", repoBodega.findAll());
 		model.addAttribute("usuario", repoUsuario.findById(idVendedor));
+		model.addAttribute("producto", new Producto());
 		return "registroBodega";
 	}
 	
@@ -39,6 +41,7 @@ public class CtlBodega {
 		model.addAttribute("bodega", new Bodega());
 		model.addAttribute("idVendedor", idVendedor);
 		model.addAttribute("listaBodegas", repoBodega.findAll());
+		model.addAttribute("producto", new Producto());
 		return "redirect:/registroBodega/"+idVendedor;
 	}
 	
@@ -47,6 +50,7 @@ public class CtlBodega {
 		Bodega b = repoBodega.findById(id);
 		model.addAttribute("bodega", b);
 		model.addAttribute("usuario", b.getUsuario());
+		model.addAttribute("producto", new Producto());
 		return "editarBodega";
 	}
 	
@@ -60,6 +64,7 @@ public class CtlBodega {
 		model.addAttribute("bodega", new Bodega());
 		model.addAttribute("listaBodegas", repoBodega.findAll());
 		model.addAttribute("idVendedor", idVendedor);
+		model.addAttribute("producto", new Producto());
 		return "redirect:/registroBodega/"+idVendedor;
 	}
 	
@@ -70,6 +75,7 @@ public class CtlBodega {
 		repoBodega.deleteById(id);
 		model.addAttribute("bodega", new Bodega());
 		model.addAttribute("listaBodegas", repoBodega.findAll());
+		model.addAttribute("producto", new Producto());
 		return "redirect:/registroBodega/"+ idVendedor;
 	}
 }

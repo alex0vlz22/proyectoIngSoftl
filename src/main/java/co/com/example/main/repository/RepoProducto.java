@@ -13,8 +13,12 @@ public interface RepoProducto extends CrudRepository<Producto, Integer>{
 
 	Producto findById(int id);
 	
-	@Query("Select p from Producto p where p.nombre like '%  ?1  %'")
+	@Query("Select p from Producto p where p.nombre like '% ?1 %'")
 	public Iterable<Producto> buscarProductoConPalabra(String titulo);
+	
+	public Iterable<Producto> findAllByNombreContainingIgnoreCase(String nombre);
+	
+	public Iterable<Producto> findAllByDescripcionContainingIgnoreCase(String descripcion);
 	
 	@Query("Select p from Producto p order by p.precio ASC")
 	public Iterable<Producto> ordenarPorPrecioAsc();

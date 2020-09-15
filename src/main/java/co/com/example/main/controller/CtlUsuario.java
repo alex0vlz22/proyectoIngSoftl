@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import co.com.example.main.domain.Producto;
 import co.com.example.main.domain.Usuario;
 import co.com.example.main.repository.RepoProducto;
 import co.com.example.main.repository.RepoProveedor;
@@ -44,6 +45,7 @@ public class CtlUsuario {
 		model.addAttribute("listaSubcategorias", this.repoSubcategoria.findAll());
 		model.addAttribute("listaProveedores", this.repoProveedor.findAll());
 		model.addAttribute("listaProductos", this.repoProducto.findAll());
+		model.addAttribute("producto", new Producto());
 		return "ingresoUsuario";
 	}
 	
@@ -57,6 +59,7 @@ public class CtlUsuario {
 					model.addAttribute("listaSubcategorias", this.repoSubcategoria.findAll());
 					model.addAttribute("listaProveedores", this.repoProveedor.findAll());
 					model.addAttribute("listaProductos", this.repoProducto.findAll());
+					model.addAttribute("producto", new Producto());
 					return "ingresoUsuario";
 				} else {
 					// no se encontro un cliente por este dni
@@ -72,8 +75,10 @@ public class CtlUsuario {
 				Usuario u = repoUsuario.findByDNI(usuario.getDNI());
 				if (u.getRol().equals("Vendedor")) {
 					model.addAttribute("usuario", u);
+					model.addAttribute("listaProveedores", this.repoProveedor.findAll());
 					model.addAttribute("listaSubcategorias", this.repoSubcategoria.findAll());
 					model.addAttribute("listaProductos", this.repoProducto.findAll());
+					model.addAttribute("producto", new Producto());
 					return "ingresoUsuario";
 				} else {
 					// no se encontro un vendedor por este dni
