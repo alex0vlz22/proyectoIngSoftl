@@ -19,22 +19,33 @@
 							embargo, tambi&eacute;n puedes buscar productos por palabras
 							clave en la barra superior derecha 'buscar'.</p>
 					</div>
-					<form>
-						<select style="width: 238px;" class="form-control">
-							<option>Proveedor</option>
-						</select> <br> <select style="width: 238px;" class="form-control">
-							<option>Subcategor&iacute;a</option>
-						</select> <input type="number" placeholder="Precio m&iacute;nimo"
-							style="width: 238px; margin-top: 22px;" class="form-control">
-						<input type="number" placeholder="Precio m&aacute;ximo"
-							style="width: 238px; margin-top: 22px;" class="form-control">
+					<form th:object="${producto}"
+						th:action="@{/busquedaPorFiltros/{idUsuario}(idUsuario = ${usuario.id})}">
+						<select style="width: 238px;" class="form-control"
+							th:field="*{idProveedor}">
+							<option th:value="0">Seleccionar</option>
+							<option th:each="proveedor : ${listaProveedores}"
+								th:value="${proveedor.id}" th:text="${proveedor.nombre}"></option>
+						</select> <br> <select style="width: 238px;" class="form-control"
+							th:field="*{idSubcategoria}">
+							<option th:value="0">Seleccionar</option>
+							<option th:each="subcategoria : ${listaSubcategorias}"
+								th:value="${subcategoria.id}" th:text="${subcategoria.nombre}"></option>
+						</select> <label style="position: absolute;">Precio m&iacute;nimo:</label>
+						<input type="number" placeholder="Precio m&iacute;nimo"
+							style="width: 238px; margin-top: 22px;" class="form-control"
+							th:field="*{precioMinimo}"> <label
+							style="position: absolute;">Precio m&aacute;ximo:</label> <input
+							type="number" placeholder="Precio m&aacute;ximo"
+							style="width: 238px; margin-top: 22px;" class="form-control"
+							th:field="*{precioMaximo}">
 						<button class="btn btn-secondary"
 							style="width: 100px; margin-top: 22px;">Buscar</button>
 					</form>
-					<button class="btn btn-success"
-						style="width: 160px; margin-top: 22px;">
-						Reiniciar filtros <i class="fas fa-redo-alt"></i>
-					</button>
+					<a th:href="@{/inicio/{idUsuario}(idUsuario = ${usuario.id})}"
+						class="btn btn-success" style="width: 160px; margin-top: 22px;">Reiniciar
+						filtros <i class="fas fa-redo-alt"></i>
+					</a>
 				</div>
 			</div>
 		</div>

@@ -52,5 +52,11 @@ public class Producto {
 	
 	@Transient
 	private int idBodega;
+	
+	@Transient
+	private double precioMinimo;
+	
+	@Transient
+	private double precioMaximo;
 
 }

@@ -1,5 +1,6 @@
 package co.com.example.main.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -196,6 +197,115 @@ public class CtlProducto {
 		model.addAttribute("listaProveedores", this.repoProveedor.findAll());
 		model.addAttribute("listaProductos", listaProductos);
 		return "ingresoUsuario";
+	}
+
+	@GetMapping("/busquedaPorFiltros/{idUsuario}")
+	public String buscarPorFiltros(Model model, @PathVariable int idUsuario, Producto producto) {
+		// ¡¡¡¡¡¡¡¡ IMPORTANTE !!!!!!!!!
+		// Se debe hacer que en los campos de precios por defecto haya un valor, así se
+		// borre todo el texto
+		// de lo contrario se enviaría un null en un datos double, generaría una
+		// excepción importante.
+		List<Producto> listaProductos = new ArrayList<Producto>();
+		if (producto.getIdProveedor() != 0) {
+			if (producto.getIdSubcategoria() != 0) {
+				// En caso de que se seleccione una subcategoría y un proveedor.
+				Subcategoria s = this.repoSubcategoria.findById(producto.getIdSubcategoria());
+				Proveedor p = this.repoProveedor.findById(producto.getIdProveedor());
+				listaProductos = (List<Producto>) this.repoProducto.findAllBySubcategoriaOrProveedor(s, p);
+				if (verificarSiIngresaronPrecios(producto)) {
+					listaProductos = filtrarPorPrecios(producto, listaProductos);
+					model = llenarModelFiltros(model, idUsuario, producto, listaProductos);
+					return "ingresoUsuario";
+				} else {
+					// no se ingresaron precios
+					model = llenarModelFiltros(model, idUsuario, producto, listaProductos);
+					return "ingresoUsuario";
+				}
+			} else {
+				// En caso de que NO se seleccione subcategoría pero SÍ un proveedor.
+				Proveedor p = this.repoProveedor.findById(producto.getIdProveedor());
+				listaProductos = (List<Producto>) this.repoProducto.findAllByProveedor(p);
+				if (verificarSiIngresaronPrecios(producto)) {
+					listaProductos = filtrarPorPrecios(producto, listaProductos);
+					model = llenarModelFiltros(model, idUsuario, producto, listaProductos);
+					return "ingresoUsuario";
+				} else {
+					// NO se ingresaron precios
+					model = llenarModelFiltros(model, idUsuario, producto, listaProductos);
+					return "ingresoUsuario";
+				}
+			}
+		} else {
+			if (producto.getIdSubcategoria() != 0) {
+				// En caso de que NO se seleccione un proveedor pero SÍ una subcategoría.
+				Subcategoria s = this.repoSubcategoria.findById(producto.getIdSubcategoria());
+				listaProductos = (List<Producto>) this.repoProducto.findAllBySubcategoria(s);
+				if (verificarSiIngresaronPrecios(producto)) {
+					listaProductos = filtrarPorPrecios(producto, listaProductos);
+					model = llenarModelFiltros(model, idUsuario, producto, listaProductos);
+					return "ingresoUsuario";
+				} else {
+					// NO se ingresaron precios
+					model = llenarModelFiltros(model, idUsuario, producto, listaProductos);
+					return "ingresoUsuario";
+				}
+			} else {
+				// En caso de que NO se seleccione un proveedor ni una subcategoría.
+				if (verificarSiIngresaronPrecios(producto)) {
+					listaProductos = (List<Producto>) this.repoProducto.findAll();
+					listaProductos = filtrarPorPrecios(producto, listaProductos);
+					model = llenarModelFiltros(model, idUsuario, producto, listaProductos);
+					return "ingresoUsuario";
+				} else {
+					// NO se ingreso nada
+					// aqui se debe notificar que no se ingresó ni un filtro.
+					model = llenarModelFiltros(model, idUsuario, producto, listaProductos);
+					return "ingresoUsuario";
+				}
+			}
+		}
+	}
+
+	private List<Producto> filtrarPorPrecios(Producto producto, List<Producto> listaProductos) {
+		if (producto.getPrecioMinimo() != 0 && producto.getPrecioMaximo() != 0) {
+			for (int i = 0; i < listaProductos.size(); i++) {
+				if (listaProductos.get(i).getPrecio() < producto.getPrecioMinimo()) {
+					listaProductos.remove(i);
+				} else if (listaProductos.get(i).getPrecio() > producto.getPrecioMaximo()) {
+					listaProductos.remove(i);
+				}
+			}
+		} else if (producto.getPrecioMinimo() != 0) {
+			for (int i = 0; i < listaProductos.size(); i++) {
+				if (listaProductos.get(i).getPrecio() < producto.getPrecioMinimo()) {
+					listaProductos.remove(i);
+				}
+			}
+		} else if (producto.getPrecioMaximo() != 0) {
+			for (int i = 0; i < listaProductos.size(); i++) {
+				if (listaProductos.get(i).getPrecio() > producto.getPrecioMaximo()) {
+					listaProductos.remove(i);
+				}
+			}
+		}
+		return listaProductos;
+	}
+
+	private Model llenarModelFiltros(Model model, int idUsuario, Producto p, List<Producto> listaProductos) {
+		model.addAttribute("usuario", repoUsuario.findById(idUsuario));
+		model.addAttribute("producto", p);
+		model.addAttribute("listaSubcategorias", this.repoSubcategoria.findAll());
+		model.addAttribute("listaProveedores", this.repoProveedor.findAll());
+		model.addAttribute("listaProductos", listaProductos);
+		return model;
+	}
+
+	private boolean verificarSiIngresaronPrecios(Producto p) {
+		if (p.getPrecioMinimo() != 0 || p.getPrecioMaximo() != 0) {
+			return true;
+		}
+		return false;
 	}
 
 }
