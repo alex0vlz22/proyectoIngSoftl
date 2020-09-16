@@ -1,9 +1,6 @@
 package co.com.example.main.controller;
 
-import javax.management.Query;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.object.SqlQuery;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -170,9 +167,9 @@ public class CtlUsuario {
 		model.addAttribute("producto", new Producto());
 		return "redirect:/inicio/" + idUsuario;
 	}
-	
+
 	@GetMapping("/eliminarCuenta/{idUsuario}")
-	public String eliminarCuenta(Model model, @PathVariable("idUsuario") int id){
+	public String eliminarCuenta(Model model, @PathVariable("idUsuario") int id) {
 		this.repoUsuario.delete(this.repoUsuario.findById(id));
 		return "redirect:/";
 	}
