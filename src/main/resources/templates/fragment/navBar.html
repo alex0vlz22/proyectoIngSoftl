@@ -3,6 +3,7 @@
 <head>
 <meta charset="ISO-8859-1">
 <div th:replace="fragment/linksHeader :: links"></div>
+<script th:src="@{/js/eliminarCuenta.js}"></script>
 </head>
 <body>
 	<div th:fragment="nav">
@@ -28,11 +29,14 @@
 						class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
 						role="button" aria-haspopup="true" aria-expanded="false">Cuenta</a>
 						<div class="dropdown-menu">
-							<a class="dropdown-item" href="#">Editar perfil</a> <a
-								class="dropdown-item" href="#"></a> <a class="dropdown-item"
-								href="#">Cerrar sesi&oacute;n</a>
+							<a class="dropdown-item"
+								th:href="@{/editarPerfil/{idUsuario}(idUsuario = ${usuario.id})}">Editar
+								perfil</a> <a class="dropdown-item" href="#"></a> <a
+								class="dropdown-item" href="#">Cerrar sesi&oacute;n</a>
 							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="#" style="color:red;">Eliminar cuenta</a>
+							<a class="dropdown-item"
+								th:href="@{/eliminarCuenta/{idUsuario}(idUsuario = ${usuario.id})}"
+								style="color: red;" onClick="return confirmarEliminarCuenta()">Eliminar cuenta</a>
 						</div></li>
 					<li class="nav-item"><a class="nav-link" href="#">Soporte</a></li>
 				</ul>
@@ -43,7 +47,6 @@
 				</form>
 			</div>
 		</nav>
-
 	</div>
 </body>
 </html>

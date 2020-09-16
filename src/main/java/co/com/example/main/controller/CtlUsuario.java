@@ -28,7 +28,7 @@ public class CtlUsuario {
 
 	@Autowired
 	private RepoProducto repoProducto;
-	
+
 	@Autowired
 	private RepoProveedor repoProveedor;
 
@@ -48,7 +48,7 @@ public class CtlUsuario {
 		model.addAttribute("producto", new Producto());
 		return "ingresoUsuario";
 	}
-	
+
 	@GetMapping("/ingreso")
 	public String ingresoUsuario(Model model, Usuario usuario) {
 		if (usuario.getRol().equals("Cliente")) {
@@ -150,6 +150,31 @@ public class CtlUsuario {
 				return "registroUsuario";
 			}
 		}
+	}
+
+	@GetMapping("/editarPerfil/{idUsuario}")
+	public String editarUsuario(Model model, @PathVariable int idUsuario) {
+		model.addAttribute("usuario", this.repoUsuario.findById(idUsuario));
+		model.addAttribute("producto", new Producto());
+		return "editarUsuario";
+	}
+
+	@PostMapping("/modificarUsuario/{idUsuario}")
+	public String modificarUsuario(Model model, Usuario usuario, @PathVariable("idUsuario") int idUsuario) {
+		usuario.setId(idUsuario);
+		this.repoUsuario.save(usuario);
+		model.addAttribute("usuario", usuario);
+		model.addAttribute("listaProveedores", this.repoProveedor.findAll());
+		model.addAttribute("listaSubcategorias", this.repoSubcategoria.findAll());
+		model.addAttribute("listaProductos", this.repoProducto.findAll());
+		model.addAttribute("producto", new Producto());
+		return "redirect:/inicio/" + idUsuario;
+	}
+	
+	@GetMapping("/eliminarCuenta/{idUsuario}")
+	public String eliminarCuenta(Model model, @PathVariable("idUsuario") int id){
+		this.repoUsuario.delete(this.repoUsuario.findById(id));
+		return "redirect:/";
 	}
 
 }

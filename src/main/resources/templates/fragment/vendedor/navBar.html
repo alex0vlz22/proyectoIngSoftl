@@ -39,13 +39,13 @@
 						class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
 						role="button" aria-haspopup="true" aria-expanded="false">Cuenta</a>
 						<div class="dropdown-menu">
-							<a class="dropdown-item" href="#">Editar perfil</a>
+							<a class="dropdown-item" th:href="@{/editarPerfil/{idUsuario}(idUsuario = ${usuario.id})}">Editar perfil</a>
 							<div class="dropdown-divider"></div>
 							<a class="dropdown-item" href="#">Cerrar sesi&oacute;n</a>
 						</div></li>
 				</ul>
 				<form class="form-inline my-2 my-lg-0" th:action="@{/busquedaPorPalabras/{idUsuario}(idUsuario = ${usuario.id})}" th:object="${producto}">
-					<input class="form-control mr-sm-2" type="text"
+					<input class="form-control mr-sm-2" type="text" 
 						placeholder="B&uacute;squeda" th:field="*{descripcion}">
 					<button class="btn btn-secondary my-2 my-sm-0" type="submit" style="margin-right: 10px;">Buscar</button>
 				</form>
