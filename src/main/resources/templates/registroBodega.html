@@ -9,57 +9,97 @@
 <body style="overflow-x: hidden;">
 
 	<div class="form-group" th:replace="fragment/vendedor/navBar :: nav"></div>
-
-	<div>
-		<form action="#" th:action="@{/guardarBodega/{idVendedor}(idVendedor = ${idVendedor})}" th:object="${bodega}" method="post">
-		<table>
+	<div class="wrap wrap-content">
+		<table id="tablaMain">
 			<tr>
-				<td colspan="2">
-				<span id="titulo">Gesti&oacute;n de bodega</span>
+				<td id="col1Main">
+					<div class="card" id="cardFormulario" style="width: 330px;">
+						<div class="card-body">
+							<form action="#"
+								th:action="@{/guardarBodega/{idVendedor}(idVendedor = ${idVendedor})}"
+								th:object="${bodega}" method="post" id="formulario">
+								<table>
+									<tr>
+										<td colspan="2"><span id="titulo"
+											style="font-size: 30px; font-weight: bold;">Gesti&oacute;n
+												de bodega</span><hr style="background-color: white;"></td>
+									</tr>
+									<tr>
+										<td colspan="2"><span id="nombre">Nombre</span> <input
+											autofocus placeholder="Nombre" th:field="*{nombre}"
+											required="true" type="text" class="form-control" /></td>
+									</tr>
+									<tr>
+										<td colspan="2"><span id="direccion">Direcci&oacute;n</span>
+											<input placeholder="Direcci&oacute;n" th:field="*{direccion}"
+											required="true" type="text" class="form-control" /></td>
+									</tr>
+									<tr>
+										<td colspan="2"><span id="capacidad">Capacidad</span> <input
+											placeholder="capacidad" th:field="*{capacidad}"
+											required="true" type="number" class="form-control" /></td>
+									</tr>
+									<tr>
+										<td colspan="2" style="text-align: center;"><button
+												type="submit" class="btn btn-success"
+												style="margin-top: 20px;">Guardar</button></td>
+									</tr>
+								</table>
+							</form>
+						</div>
+					</div>
+				</td>
+				<td id="col2Main">
+				<div class="card" id="cardRegistros">
+					<div class="container" th:if="${listaBodegas.isEmpty()}"
+						style="width: 400px;" id="divNoHayBodegas">
+						<div id="noHayBodegas" class="card">
+							<div class="card-body" style="text-align: center;">
+								<span>No hay bodegas registradas a&uacute;n.</span>
+							</div>
+						</div>
+					</div>
+					<div th:if="${!listaBodegas.isEmpty()}"
+						style="width: 520px;" id="divSiHayBodegas">
+						<div class="card-top">
+							<h1 id="tituloRegistros">Registros</h1>
+						</div>
+						<div class="card-body" id="cardTabla" style="padding: 5px;">
+							<div class="card-content">
+								<table class="table table-primary" id="tablaRegistros">
+									<tr>
+										<td>Nombre</td>
+										<td>Direcci&oacute;n</td>
+										<td>Capacidad</td>
+										<td>Editar</td>
+										<td>Eliminar</td>
+									</tr>
+									<tr th:each="bodega : ${listaBodegas}">
+										<td th:text="${bodega.nombre}"></td>
+										<td th:text="${bodega.direccion}"></td>
+										<td th:text="${bodega.capacidad}" style="text-align: center;"></td>
+										<td><a class="btn btn-info"
+											th:href="@{/editarBodega/{id}(id=${bodega.id})}"
+											style="font-size: 25px; padding: 3px 10px; border-radius: 50%;"><i
+												class="fas fa-pencil-ruler"></i></a></td>
+										<td style="text-align: center;"><a class="btn btn-danger"
+											th:href="@{/eliminarBodega/{id}(id=${bodega.id})}"
+											style="font-size: 25px; padding: 3px 10px; border-radius: 50%;"><i
+												class="fas fa-trash"></i></a></td>
+									</tr>
+								</table>
+								
+							</div>
+						</div>
+					</div>
+					</div>
 				</td>
 			</tr>
-			<tr>
-				<td><span id="nombre">Nombre:</span></td>
-				<td><input autofocus placeholder="Nombre" th:field="*{nombre}" required="true" type="text"/></td>
-			</tr>
-			<tr>
-				<td><span id="direccion">Direcci&oacute;n:</span></td>
-				<td><input placeholder="Direcci&oacute;n" th:field="*{direccion}" required="true" type="text"/></td>
-			</tr>
-			<tr>
-				<td><span id="capacidad">Capacidad:</span></td>
-				<td><input placeholder="capacidad" th:field="*{capacidad}" required="true" type="number"/></td>
-			</tr>
-			<tr>
-				<td colspan="2"><button type="submit">Guardar</button></td>
-			</tr>
 		</table>
-		</form>
-		<div id="espacio"></div>
-		<div id="noHayBodegas" th:if="${listaBodegas.isEmpty()}">
-			<span>No hay bodegas registradas a&uacute;n.</span>
-		</div>
-		<div id="siHayBodegas" th:if="${!listaBodegas.isEmpty()}">
-			<table>
-				<tr>
-					<td>Nombre</td>
-					<td>Direcci&oacute;n</td>
-					<td>Capacidad</td>
-					<td>Editar</td>
-					<td>Eliminar</td>
-				</tr>
-				<tr th:each="bodega : ${listaBodegas}">
-					<td th:text="${bodega.nombre}"></td>
-					<td th:text="${bodega.direccion}"></td>
-					<td th:text="${bodega.capacidad}"></td>
-					<td><a th:href="@{/editarBodega/{id}(id=${bodega.id})}">Editar</a></td>
-					<td><a th:href="@{/eliminarBodega/{id}(id=${bodega.id})}">Eliminar</a></td>
-				</tr>
-			</table>
-		</div>
 	</div>
+	<footer style="margin-top: 100px;">
+		<div th:replace="fragment/footer :: footer"></div>
+	</footer>
 </body>
-<footer style="margin-top:100px;">
-	<div th:replace="fragment/footer :: footer"></div>
-</footer>
+
 </html>

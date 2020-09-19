@@ -21,21 +21,23 @@
 					</div>
 					<form th:object="${producto}"
 						th:action="@{/busquedaPorFiltros/{idUsuario}(idUsuario = ${usuario.id})}">
-						<select style="width: 238px;" class="form-control"
+						<label>Proveedor</label> <select
+							style="width: 238px; margin-bottom:-20px; margin-top: -7px;" class="form-control"
 							th:field="*{idProveedor}">
 							<option th:value="0">Seleccionar</option>
 							<option th:each="proveedor : ${listaProveedores}"
 								th:value="${proveedor.id}" th:text="${proveedor.nombre}"></option>
-						</select> <br> <select style="width: 238px;" class="form-control"
+						</select> <br> <label>Subcategor&iacute;a</label>
+						<select style="width: 238px; margin-top:-7px;" class="form-control"
 							th:field="*{idSubcategoria}">
 							<option th:value="0">Seleccionar</option>
 							<option th:each="subcategoria : ${listaSubcategorias}"
 								th:value="${subcategoria.id}" th:text="${subcategoria.nombre}"></option>
-						</select> <label style="position: absolute;">Precio m&iacute;nimo:</label>
-						<input type="number" placeholder="Precio m&iacute;nimo"
+						</select> <label style="position: absolute;">Precio m&iacute;nimo</label> <input
+							type="number" placeholder="Precio m&iacute;nimo"
 							style="width: 238px; margin-top: 22px;" class="form-control"
 							th:field="*{precioMinimo}"> <label
-							style="position: absolute;">Precio m&aacute;ximo:</label> <input
+							style="position: absolute;">Precio m&aacute;ximo</label> <input
 							type="number" placeholder="Precio m&aacute;ximo"
 							style="width: 238px; margin-top: 22px;" class="form-control"
 							th:field="*{precioMaximo}">

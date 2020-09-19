@@ -5,41 +5,42 @@
 <div th:replace="fragment/linksHeader :: links"></div>
 <link rel="stylesheet" th:href="@{/css/editarCategoria.css}" />
 </head>
-<body>
+<body style="overflow-x: hidden;">
 
 	<div class="form-group" th:replace="fragment/vendedor/navBar :: nav"></div>
 
 	<div id="divisionPrincipal" align="center">
-		<form action="#"
-			th:action=@{/modificarCategoria/{id}(id=${categoria.id})}
-			th:object="${categoria}" method="post">
-			<table align="center">
-				<thead>
-					<tr>
-						<th colspan="2">Edici&oacute;n de categor&iacute;a</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td><div id="divisionInvisible"></div></td>
-					</tr>
-					<tr>
-						<td><span id="nombre">Nuevo nombre:</span></td>
-						<td><input autofocus type="text" th:field="*{nombre}" required="true"
-							placeholder="Nuevo nombre" /></td>
-					</tr>
-					<tr>
-						<td colspan="2">
-							<button id="boton" type="submit"
-								class="animate__animated animate__pulse">Guardar</button>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</form>
+		<div class="card" style="width: 400px; margin-top: 120px;">
+			<form action="#"
+				th:action=@{/modificarCategoria/{id}(id=${categoria.id})}
+				th:object="${categoria}" method="post">
+				<table align="center">
+					<thead>
+						<tr>
+							<th colspan="2" style="font-size: 25px; font-weight: bold;">Edici&oacute;n de categor&iacute;a<hr style="background-color: white;"></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><div id="divisionInvisible"></div></td>
+						</tr>
+						<tr>
+							<td><span id="nombre">Nombre</span><input autofocus type="text" th:field="*{nombre}"
+								required="true" placeholder="Nuevo nombre" class="form-control"/></td>
+						</tr>
+						<tr>
+							<td colspan="2" style="text-align: center;">
+								<button id="boton" type="submit"
+									class="btn btn-success" style="margin-top: 20px; margin-bottom: 30px;">Guardar cambios</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</form>
+		</div>
 	</div>
 </body>
-<footer style="margin-top: 100px;">
+<footer style="margin-top: 240px;">
 	<div th:replace="fragment/footer :: footer"></div>
 </footer>
 </html>
