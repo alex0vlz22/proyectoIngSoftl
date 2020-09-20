@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import co.com.example.main.domain.Factura;
 import co.com.example.main.domain.Producto;
@@ -19,15 +20,18 @@ public class CtlFactura {
 
 	@Autowired
 	private RepoUsuario repoUsuario;
-	
+	String nombreVendedor;
 	@Autowired
 	private RepoFactura repoFactura;
+	
+	
 	@GetMapping("/misFacturas/{idUsuario}")
-	public String listarFacturas(Model model, @PathVariable("idUsuario") int idUsuario) {
+	public String listarFacturas(Model model, @PathVariable("idUsuario") int idUsuario,Factura factura) {
 		Usuario usuario = repoUsuario.findById(idUsuario);
 		List<Factura> listaFacturas= repoFactura.findByCliente(usuario);
 		model.addAttribute("listaFacturas", listaFacturas);
 		model.addAttribute("usuario",usuario);
 		return "misFacturas";
 	}
+	
 }
