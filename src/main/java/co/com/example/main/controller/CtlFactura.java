@@ -27,6 +27,7 @@ public class CtlFactura {
 		Usuario usuario = repoUsuario.findById(idUsuario);
 		List<Factura> listaFacturas= repoFactura.findByCliente(usuario);
 		model.addAttribute("listaFacturas", listaFacturas);
+		model.addAttribute("usuario",usuario);
 		return "misFacturas";
 	}
 }

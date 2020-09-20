@@ -142,12 +142,12 @@
 										class="columnaProductos"></td>
 									<td th:text="${producto.proveedor.nombre}"
 										class="columnaProductos"></td>
-									<td class="columnaProductos"><a
+									<td class="columnaProductos" ><a
 										th:href="@{/editarProducto/{id}(id=${producto.id})}"><i
-											class="fas fa-edit"></i></a></td>
-									<td class="columnaProductos"><a
+											class="fas fa-edit" id="botonEG"></i></a></td>
+									<td class="columnaProductos" ><a
 										th:href="@{/eliminarProducto/{id}(id=${producto.id})}"><i
-											class="fas fa-trash-alt"></i></a></td>
+											class="fas fa-trash-alt" id="botonEG"></i></a></td>
 								</tr>
 							</tbody>
 						</table>
