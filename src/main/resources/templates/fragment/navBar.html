@@ -25,6 +25,10 @@
 					</a></li>
 					<li class="nav-item"><a class="nav-link" href="#">Mis
 							pedidos</a></li>
+					<li class="nav-item">		
+								<a class="nav-link"
+								th:href="@{/misFacturas/{idUsuario}(idUsuario = ${usuario.id})}">Mis Facturas</a>
+							</li>
 					<li class="nav-item dropdown"><a
 						class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
 						role="button" aria-haspopup="true" aria-expanded="false">Cuenta</a>
