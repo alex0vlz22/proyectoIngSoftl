@@ -1,0 +1,29 @@
+body{
+	/*background: linear-gradient(to bottom, #fcdab7, #1e5f74 , #133b5c, #1d2d50, black);*/
+	background: url('../images/fondos/fondoDark.jpg');
+}
+
+#cardFormulario{
+	margin-left: 210px;
+	margin-top: 100px;
+}
+
+#cardRegistros{
+	margin-top: 98px;
+	padding: 1px;
+	margin-left: 100px;
+}
+
+#tituloRegistros{
+	margin-left: 180px;
+}
+
+#formulario{
+	margin-left: 5px;
+}
+
+#tablaRegistrosm .card-content, #cardTabla{
+	
+}
+
+

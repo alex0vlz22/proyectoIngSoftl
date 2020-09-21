@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Proyecto / editarProducto</title>
+<div th:replace="fragment/linksHeader :: links"></div>
+<link rel="stylesheet" th:href="@{/css/editarProducto.css}">
+</head>
+<body style="overflow-x: hidden;">
+
+	<div class="form-group" th:replace="fragment/vendedor/navBar :: nav"></div>
+
+	<div>
+		<br> <br> <br> <br> <br>
+		<div id="divisionPrincipal">
+			<form action="#" th:object="${productoParaEditar}"
+				th:action="@{/modificarProducto/{id}(id=${productoParaEditar.id})}"
+				method="post" enctype="multipart/form-data">
+				<input type="hidden" id="agregarUrl" th:field="*{urlFoto}">
+				<input type="hidden" id="cambioUrl" name="cambioUrl" value="false">
+				<table align="center">
+					<thead>
+						<tr>
+							<th colspan="2" id="titulo">Edici&oacute;n de producto
+								<hr>
+							</th>
+						</tr>
+						<br>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Nombre:</td>
+							<td><input autofocus type="text" placeholder="Nombre"
+								th:field="${productoParaEditar.nombre}" required="true" /></td>
+						</tr>
+						<tr>
+							<td><br> <span class="etiqueta">Descripci&oacute;n:</span></td>
+							<td><br> <input autofocus type="text"
+								placeholder="Descripci&oacute;n" required="true"
+								th:field="*{descripcion}" /></td>
+						</tr>
+						<tr>
+							<td><div class="divEsp"></div></td>
+						</tr>
+						<tr>
+							<td>Cantidad:</td>
+							<td><input type="number" placeholder="Cantidad"
+								th:field="${productoParaEditar.cantidad}" required="true" /></td>
+						</tr>
+						<tr>
+							<td><div class="divEsp"></div></td>
+						</tr>
+						<tr>
+							<td>Subcategor&iacute;a:</td>
+							<td><select th:field="*{idSubcategoria}">
+									<option value="0">Seleccionar</option>
+									<option th:each="subcategoria : ${listaSubcategorias}"
+										th:value="${subcategoria.id}" th:text="${subcategoria.nombre}"
+										th:selected="${subcategoria.id == productoParaEditar.subcategoria.id}"></option>
+							</select></td>
+						</tr>
+						<tr>
+							<td><br> <span class="etiqueta">Bodega:</span></td>
+							<td><br> <select th:field="*{idBodega}">
+									<option value="0">Seleccionar</option>
+									<option th:each="bodega : ${listaBodegas}"
+										th:value="${bodega.id}" th:text="${bodega.nombre}"></option>
+							</select></td>
+						</tr>
+						<tr>
+							<td><div class="divEsp"></div></td>
+						</tr>
+						<tr>
+							<td>Proveedor:</td>
+							<td><select th:field="*{idProveedor}">
+									<option value="0">Seleccionar</option>
+									<option th:each="proveedor : ${listaProveedores}"
+										th:text="${proveedor.nombre}" th:value="${proveedor.id}"
+										th:selected="${proveedor.id == productoParaEditar.proveedor.id}"></option>
+							</select></td>
+						</tr>
+						<tr>
+							<td><br> <span class="etiqueta">Precio:</span></td>
+							<td><br> <input type="number" placeholder="Precio"
+								required="true" th:field="*{precio}"></td>
+							<br>
+						</tr>
+						<tr>
+							<td><br> <label for="file-upload"
+								class="subir btn btn-primary">Cargar imagen <i
+									class="fas fa-cloud-upload-alt"></i>
+							</label></td>
+							<td><br>
+								<div class="form-group ">
+									<input type="file" id="file-upload" accept="image/*"
+										class="form-control-file" style='display: none;' name="file">
+									<div>
+										<img id="imcargar" th:src="${productoParaEditar.urlFoto}"
+											class="img-fluid rounded mt-2"
+											style='width: 14rem; heigth: auto;'>
+									</div>
+								</div></td>
+						</tr>
+						<tr>
+							<td colspan="2"><hr>
+								<button id="botonGuardar" type="submit">Guardar</button></td>
+						</tr>
+					</tbody>
+				</table>
+			</form>
+		</div>
+	</div>
+	<script src="js/subirImagen.js" th:src="@{/js/subirImagen.js}"></script>
+</body>
+<footer style="margin-top: 300px;">
+	<div th:replace="fragment/footer :: footer"></div>
+</footer>
+</html>

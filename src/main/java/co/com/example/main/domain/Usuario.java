@@ -36,6 +36,8 @@ public class Usuario {
 	
 	private String rol;
 	
+	private String urlFoto;
+	
 	// codigoEmpresa es un campo disponible en el registro usuario
 	// solo si quien se quiere registrar es un vendedor, el codigoEmpresa
 	// sería un código cualquiera inventado por nosotros, a la hora de crear

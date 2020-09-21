@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Edici&oacute;n de datos</title>
+<div th:replace="fragment/linksHeader :: links"></div>
+</head>
+<body style="overflow-x: hidden;">
+
+	<div th:if="${usuario.rol.equals('Vendedor')}">
+		<div th:replace="fragment/vendedor/navBar :: nav"></div>
+	</div>
+
+	<div th:if="${usuario.rol.equals('Cliente')}">
+		<div th:replace="fragment/navBar :: nav"></div>
+	</div>
+
+
+	<div class="container">
+		<div class="card">
+			<div class="card-top">
+				<h2>Tus datos</h2>
+			</div>
+			<div class="card-body">
+				<form action="#" method="post" th:object="${usuario}"
+					th:action="@{'/modificarUsuario/' + ${usuario.id}}">
+					<div class="form-group">
+						<label>DNI:</label> <input class="form-control" th:field="*{DNI}" style="pointer-events: none;">
+					</div>
+					<div class="form-group">
+						<label>Nombre:</label> <input type="text" class="form-control"
+							required="true" th:field="*{nombre}" autofocus>
+					</div>
+					<div class="form-group">
+						<label>Apellido:</label> <input type="text" class="form-control"
+							required="true" th:field="*{apellido}">
+					</div>
+					<div class="form-group">
+						<label>Tel&eacute;fono:</label> <input type="number"
+							class="form-control" required="true" th:field="*{telefono}">
+					</div>
+					<div class="form-group">
+						<label>Direcci&oacute;n:</label> <input type="text"
+							class="form-control" required="true" th:field="*{direccion}">
+					</div>
+					<div class="form-group">
+						<label>Correo:</label> <input type="email" class="form-control"
+							required="true" th:field="*{correo}">
+					</div>
+					<div class="form-group">
+						<label>Rol:</label><input class="form-control" th:field="*{rol}" style="pointer-events: none;">
+					</div>
+					<div class="form-group">
+						<button type="submit" class="btn btn-success">Guardar
+							cambios</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<div style="margin-top: 100px;">
+		<footer th:replace="fragment/footer :: footer"></footer>
+	</div>
+
+</body>
+</html>

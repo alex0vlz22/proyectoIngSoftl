@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Proyecto / registroUsuario</title>
+<div th:replace="fragment/linksHeader :: links"></div>
+<link rel="stylesheet" th:href="@{/css/registroUsuario.css}" />
+</head>
+<body class="animate__animated animate__fadeIn" style="overflow-x:hidden; overflow-y:hidden">
+	<div>
+		<img src="/images/fondos/registroCliente.png">
+		<div id="divisionPrincipal">
+			<form action="#" th:object="${usuario}"
+				th:action="@{/guardarUsuario}" method="post">
+				<table>
+					<tr th:if="${usuario.rol.equals('Cliente')}">
+						<td colspan="2" class="colCentrado"><span class="titulo">Registro
+								de cliente</span></td>
+					</tr>
+					<tr th:if="${usuario.rol.equals('Vendedor')}">
+						<td colspan="2" class="colCentrado"><span class="titulo">Registro
+								de vendedor</span></td>
+					</tr>
+					<tr>
+						<td colspan="2"><div id="divEsp1"></div></td>
+					</tr>
+					<tr>
+						<td><span>DNI:</span></td>
+						<td><input type="number" placeholder="DNI" required="true "
+							th:field="*{DNI}" /></td>
+					</tr>
+					<tr>
+						<td colspan="2"><div class="division"></div></td>
+					</tr>
+					<tr>
+						<td><span>Nombre:</span></td>
+						<td><input type="text" placeholder="Nombre" required="true"
+							th:field="*{nombre}" /></td>
+					</tr>
+					<tr>
+						<td colspan="2"><div class="division"></div></td>
+					</tr>
+					<tr>
+						<td><span>Apellido:</span></td>
+						<td><input type="text" placeholder="Apellido" required="true"
+							th:field="*{apellido}" /></td>
+					</tr>
+					<tr>
+						<td colspan="2"><div class="division"></div></td>
+					</tr>
+					<tr>
+						<td><span>Tel&eacute;fono:</span></td>
+						<td><input type="number" placeholder="Tel&eacute;fono"
+							required="true" th:field="*{telefono}" /></td>
+					</tr>
+					<tr>
+						<td colspan="2"><div class="division"></div></td>
+					</tr>
+					<tr>
+						<td><span>Direcci&oacute;n:</span></td>
+						<td><input type="text" placeholder="Direcci&oacute;n"
+							required="true" th:field="*{direccion}" /></td>
+					</tr>
+					<tr>
+						<td colspan="2"><div class="division"></div></td>
+					</tr>
+					<tr>
+						<td><span>Correo:</span></td>
+						<td><input type="email" placeholder="Correo" required="true"
+							th:field="*{correo}" /></td>
+					</tr>
+					<tr>
+						<td colspan="2"><div class="division"></div></td>
+					</tr>
+					<tr th:if="${usuario.rol.equals('Vendedor')}">
+						<td><span>C&oacute;digo:</span></td>
+						<td><input type="text" placeholder="C&oacute;digo"
+							required="true" th:field="*{codigoEmpresa}" /></td>
+					</tr>
+					<tr>
+						<td colspan="2" id="columnaErrorCodigo"><div
+								th:if="${errorCodigo == true}" id="errorCodigo"
+								class="animate__animated animate__bounceInLeft">
+								<span>Hubo un error con el c&oacute;digo</span>
+							</div></td>
+					</tr>
+					<tr>
+						<td colspan="2"><div id="divEsp2"></div></td>
+					</tr>
+					<tr>
+						<td colspan="2" class="colCentrado"><button id="validar"
+								type="submit">Validar</button></td>
+					</tr>
+				</table>
+			</form>
+		</div>
+	</div>
+</body>
+</html>

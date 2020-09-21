@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<div th:replace="fragment/linksHeader :: links"></div>
+<script th:src="@{/js/eliminarCuenta.js}"></script>
+</head>
+<body>
+	<div th:fragment="nav">
+		<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+
+		<nav style="width: 1360px"
+			class="navbar navbar-expand-lg navbar-dark bg-primary">
+			<a class="navbar-brand" href="#">Cliente</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse"
+				data-target="#navbarColor01" aria-controls="navbarColor01"
+				aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<div class="collapse navbar-collapse" id="navbarColor01">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item active"><a class="nav-link" href="#">Inicio
+							<span class="sr-only">(current)</span>
+					</a></li>
+					<li class="nav-item"><a class="nav-link" href="#">Mis
+							pedidos</a></li>
+					<li class="nav-item">		
+								<a class="nav-link"
+								th:href="@{/misFacturas/{idUsuario}(idUsuario = ${usuario.id})}">Mis Facturas</a>
+							</li>
+					<li class="nav-item dropdown"><a
+						class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+						role="button" aria-haspopup="true" aria-expanded="false">Cuenta</a>
+						<div class="dropdown-menu">
+							<a class="dropdown-item"
+								th:href="@{/editarPerfil/{idUsuario}(idUsuario = ${usuario.id})}">Editar
+								perfil</a> <a class="dropdown-item" href="#"></a> <a
+								class="dropdown-item" href="#">Cerrar sesi&oacute;n</a>
+							<div class="dropdown-divider"></div>
+							<a class="dropdown-item"
+								th:href="@{/eliminarCuenta/{idUsuario}(idUsuario = ${usuario.id})}"
+								style="color: red;" onClick="return confirmarEliminarCuenta()">Eliminar cuenta</a>
+						</div></li>
+					<li class="nav-item"><a class="nav-link" href="#">Soporte</a></li>
+				</ul>
+				<form class="form-inline my-2 my-lg-0">
+					<input class="form-control mr-sm-2" type="text"
+						placeholder="B&uacute;squeda">
+					<button class="btn btn-secondary my-2 my-sm-0" type="submit">Buscar</button>
+				</form>
+			</div>
+		</nav>
+	</div>
+</body>
+</html>
