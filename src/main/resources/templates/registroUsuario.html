@@ -10,8 +10,9 @@
 	<div>
 		<img src="/images/fondos/registroCliente.png">
 		<div id="divisionPrincipal">
-			<form action="#" th:object="${usuario}"
-				th:action="@{/guardarUsuario}" method="post">
+			<form action="#" th:object="${usuario}" th:action="@{/guardarUsuario}" method="post" enctype="multipart/form-data">
+				<input type="hidden" id="agregarUrl" th:field="*{urlFoto}">
+				<input type="hidden" id="cambioUrl" name="cambioUrl" value="false">
 				<table>
 					<tr th:if="${usuario.rol.equals('Cliente')}">
 						<td colspan="2" class="colCentrado"><span class="titulo">Registro
@@ -23,6 +24,12 @@
 					</tr>
 					<tr>
 						<td colspan="2"><div id="divEsp1"></div></td>
+					</tr>
+					<tr>
+						<td><span>FOTO:</span></td>
+						<td>
+							
+						</td>
 					</tr>
 					<tr>
 						<td><span>DNI:</span></td>
@@ -95,5 +102,6 @@
 			</form>
 		</div>
 	</div>
+	<script src="js/subirImagen.js" th:src="@{/js/subirImagen.js}"></script>
 </body>
 </html>

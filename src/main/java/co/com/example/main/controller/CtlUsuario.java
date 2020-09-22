@@ -1,12 +1,19 @@
 package co.com.example.main.controller;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.cloudinary.utils.ObjectUtils;
+
+import co.com.example.main.CloudinaryConfig;
 import co.com.example.main.domain.Producto;
 import co.com.example.main.domain.Usuario;
 import co.com.example.main.repository.RepoProducto;
@@ -28,6 +35,9 @@ public class CtlUsuario {
 
 	@Autowired
 	private RepoProveedor repoProveedor;
+	
+	@Autowired
+	private CloudinaryConfig cloudc;
 
 	@GetMapping("")
 	public String index(Model model) {
@@ -128,7 +138,14 @@ public class CtlUsuario {
 	}
 
 	@PostMapping("/guardarUsuario")
-	public String guardarUsaurio(Model model, Usuario usuario) {
+	public String guardarUsaurio(Model model, Usuario usuario, @RequestParam("file") MultipartFile file) {
+		try {
+			Map uploadResult = cloudc.upload(file.getBytes(), ObjectUtils.asMap("resourcetype", "auto"));
+			System.out.println(uploadResult.get("url").toString());
+			usuario.setUrlFoto(uploadResult.get("url").toString());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		if (usuario.getCodigoEmpresa() == null) {
 			usuario.setRol("Cliente");
 			repoUsuario.save(usuario);
