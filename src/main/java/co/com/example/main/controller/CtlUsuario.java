@@ -174,8 +174,17 @@ public class CtlUsuario {
 	}
 
 	@PostMapping("/modificarUsuario/{idUsuario}")
-	public String modificarUsuario(Model model, Usuario usuario, @PathVariable("idUsuario") int idUsuario) {
+	public String modificarUsuario(Model model, Usuario usuario, @PathVariable("idUsuario") int idUsuario, @RequestParam("file") MultipartFile file, @RequestParam("cambioUrl") boolean cambioUrl) {
 		usuario.setId(idUsuario);
+		if (cambioUrl) {
+			try {
+				Map uploadResult = cloudc.upload(file.getBytes(), ObjectUtils.asMap("resourcetype", "auto"));
+				System.out.println(uploadResult.get("url").toString());
+				usuario.setUrlFoto(uploadResult.get("url").toString());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 		this.repoUsuario.save(usuario);
 		model.addAttribute("usuario", usuario);
 		model.addAttribute("listaProveedores", this.repoProveedor.findAll());

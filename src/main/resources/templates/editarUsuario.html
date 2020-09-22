@@ -6,11 +6,9 @@
 <div th:replace="fragment/linksHeader :: links"></div>
 </head>
 <body style="overflow-x: hidden;">
-
 	<div th:if="${usuario.rol.equals('Vendedor')}">
 		<div th:replace="fragment/vendedor/navBar :: nav"></div>
 	</div>
-
 	<div th:if="${usuario.rol.equals('Cliente')}">
 		<div th:replace="fragment/navBar :: nav"></div>
 	</div>
@@ -22,8 +20,7 @@
 				<h2>Tus datos</h2>
 			</div>
 			<div class="card-body">
-				<form action="#" method="post" th:object="${usuario}"
-					th:action="@{'/modificarUsuario/' + ${usuario.id}}">
+				<form action="#" method="post" th:object="${usuario}" th:action="@{'/modificarUsuario/' + ${usuario.id}}">
 					<div class="form-group">
 						<label>DNI:</label> <input class="form-control" th:field="*{DNI}" style="pointer-events: none;">
 					</div>
@@ -51,8 +48,7 @@
 						<label>Rol:</label><input class="form-control" th:field="*{rol}" style="pointer-events: none;">
 					</div>
 					<div class="form-group">
-						<button type="submit" class="btn btn-success">Guardar
-							cambios</button>
+						<button type="submit" class="btn btn-success">Guardar cambios</button>
 					</div>
 				</form>
 			</div>
@@ -62,6 +58,6 @@
 	<div style="margin-top: 100px;">
 		<footer th:replace="fragment/footer :: footer"></footer>
 	</div>
-
+	<script src="js/subirImagen.js" th:src="@{/js/subirImagen.js}"></script>
 </body>
 </html>
