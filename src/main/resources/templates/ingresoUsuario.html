@@ -88,57 +88,37 @@
 			</div>
 			<div class="col-sm"></div>
 		</div>
-		<table
-			style="width: 820px; height: 371px; margin-left: 450px; margin-top: 30px; margin-bottom: 100px; padding: 5px;">
-			<thead>
-				<tr>
-					<th colspan="3"
-						style="text-align: center; border-top: 1px solid lightgray; border-bottom: 1px solid lightgray;">
-						<h1 style="color: #e7dec8; text-decoration: none;">
-							Productos <i class="fas fa-box-open"></i>
-						</h1>
-					</th>
-				</tr>
-			</thead>
-			<div th:if="${listaProductos.isEmpty()}">
-				<tbody>
-					<tr>
-						<td style="text-align: center;"><span
-							style="font-size: 30px;">No se han encontrado productos.
-								:(</span></td>
-					</tr>
-				</tbody>
-			</div>
-			<div th:if="${!listaProductos.isEmpty()}">
-				<tbody>
-					<tr th:each="producto : ${listaProductos}">
-						<td
-							style="border-right: 1px solid lightgray; border-bottom: 1px solid lightgray; text-align: center;">
-							<a
-							th:href="@{'/detalleProducto/' + ${usuario.id} + '/' + ${producto.id}}">
-								<div class="card">
-									<div class="card-img-top">
+		
+		<h1 style="color: #e7dec8; text-decoration: none;" id="tituloProductos">
+			Productos <i class="fas fa-box-open"></i>
+		</h1>
+		
+		<div class="container" id="containerProductos">
+		
+		<div th:if="${listaProductos.isEmpty()}">
+			<span style="font-size: 30px;">No se han encontrado productos.
+				:(</span>
+		</div>
+		
+		<div th:if="${!listaProductos.isEmpty()}">
+			<a th:each="producto : ${listaProductos}" 
+			th:href="@{'/detalleProducto/' + ${usuario.id} + '/' + ${producto.id}}" class="card" id="anuncio">
+					<div>
+						<img id="imcargar" th:src="${producto.urlFoto}"
+							class="img-fluid rounded mt-2"
+							style='width: 14rem;'>
+					</div>
+					<div class="card-body" id="cuerpoCard">
+						<h4 th:text="${producto.nombre}"></h4>
+						<h5 th:text="'$ '+${producto.precio}"></h5>
+					</div>
+			</a>
+		</div>
+		
+		</div>
 
-										<img id="imcargar" th:src="${producto.urlFoto}"
-											class="img-fluid rounded mt-2"
-											style='width: 14rem; heigth: auto;'>
-									</div>
-									<div class="card-body">
-										<h4 th:text="${producto.nombre}"></h4>
-										<h5 th:text="'$'+${producto.precio}"></h5>
-									</div>
-								</div>
-						</a>
-						</td>
-					</tr>
-				</tbody>
-			</div>
-		</table>
-	</div>
-	<footer>
-		<div style="height: 300px; background-color: black;"
-			id="blackDivisionFooter"></div>
-		<div th:replace="fragment/footer :: footer"></div>
-	</footer>
+		<footer>
+			<div th:replace="fragment/footer :: footer"></div>
+		</footer>
 </body>
 </html>

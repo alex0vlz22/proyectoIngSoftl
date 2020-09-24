@@ -1,10 +1,47 @@
 body{
 	/*background: linear-gradient(to bottom, #fcdab7, #1e5f74 , #133b5c, #1d2d50, black);*/
-	background: url('../images/fondos/fondoDark.jpg');
+	background: url('../images/fondos/darkWallBiggest.png');
 	overflow-x: hidden;
+}
+
+#tituloProductos{
+	margin-top: 40px;
+	margin-left: 746px;
+}
+
+#containerProductos{
+	display: inline-block;
+	width: 748px;
+	height: 650px;
+	margin-left: 490px;
+	border-top: 1px solid white;
+	padding: 10px;
+}
+
+#anuncio{
+	display: block;
+	width: 230px;
+	height: 280px;
+	padding: 10px;
+	margin: 2px;
+	float: left;
+	margin-right: 10px;
+	margin-bottom: 10px;
+	background: linear-gradient(to bottom, 	d, d);
+	border: 1px thin black;
+}
+
+#anuncio:hover {
+	filter: brightness(0.9);
+	text-decoration: none;
+	border: 1px solid white;
+}
+
+#cuerpoCard{
+	text-align: center;
 }
 
 footer{
 	width: 1366px;
-	margin-top: -130px;
+	margin-top: 103px;
 }
