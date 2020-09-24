@@ -12,89 +12,109 @@
 
 	<div>
 		<table>
-		<tr>
-			<td><div id="divisionDatos">
-					<form action="#" th:object="${subcategoria}"
-						th:action="@{/guardarSubcategoria/{idVendedor}(idVendedor = ${idVendedor})}" method="post">
-						<table align="center">
-							<thead id="theadDatos">
+			<tr>
+				<td><div id="divisionDatos">
+						<form action="#" th:object="${subcategoria}"
+							th:action="@{/guardarSubcategoria/{idVendedor}(idVendedor = ${idVendedor})}"
+							method="post" class="card" style="padding: 20px; margin-left: 240px; margin-top: 100px;">
+							<table align="center">
+								<thead id="theadDatos">
+									<tr>
+										<th colspan="2" id="columnaTitulo"><h2>Gesti&oacute;n
+												de subcategor&iacute;a</h2>
+											<hr style="background-color: white;"></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td><div id="divisionInvisible1"></div></td>
+									</tr>
+									<tr id="filaDatos">
+										<td id="columnaDatosIzquierda"><span id="nombre">Nombre:</span></td>
+										<td id="columnaDatosDerecha"><input autofocus
+											required="true" type="text" placeholder="Nombre"
+											th:field="*{nombre}" id="campoNombre" class="form-control" /></td>
+									</tr>
+									<tr id="filaCategoria">
+										<td id="columnaDatosIzquierda"><br>
+										<span id="categoria">Categor&iacute;a:</span></td>
+										<td id="columnaDatosDerecha">
+
+											<div id="siHayCategorias">
+												<br> <select th:field="*{idCategoria}"
+													class="form-control">
+													<option value="0">Seleccionar</option>
+													<option th:each="categoria : ${listaCategorias}"
+														th:text="${categoria.nombre}" th:value="${categoria.id}"></option>
+												</select>
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td colspan="2" style="text-align: center;">
+											<hr style="background-color: white;">
+											<button id="guardar" type="submit" class="btn btn-success">Guardar</button>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</form>
+					</div></td>
+				<td>
+					<div th:if="${listaSubcategorias.isEmpty()}"
+						id="divisionNoHaySubcategorias" class="card"
+						style="padding: 20px; margin-left: 100px;">
+						<h5>No hay subcategor&iacute;as registradas a&uacute;n. :(</h5>
+					</div>
+					<div th:if="${!listaSubcategorias.isEmpty()}"
+						id="divisionSiHaySubategorias" class="card" style="padding: 20px; margin-left: 100px; margin-top: 100px;">
+						<table align="center" id="tablaSubcategorias"
+							class="table table-primary" style="text-align: center">
+							<thead>
 								<tr>
-									<th colspan="2" id="columnaTitulo"><br><br><br><br><br><span id="titulo">Gesti&oacute;n de subcategor&iacute;a</span>
-									<hr></th>
+									<th colspan="4">
+										<h3>Registros</h3>
+									</th>
+								</tr>
+								<tr>
+									<th class="tituloTabla">Nombre</th>
+									<th class="tituloTabla">Categor&iacute;a</th>
+									<th class="tituloTabla">Editar</th>
+									<th class="tituloTabla">Eliminar</th>
 								</tr>
 							</thead>
 							<tbody>
-								<tr><td><div id="divisionInvisible1"></div></td></tr>
-								<tr id="filaDatos">
-									<td id="columnaDatosIzquierda"><span id="nombre">Nombre:</span></td>
-									<td id="columnaDatosDerecha"><input autofocus required="true" type="text"
-										placeholder="Nombre" th:field="*{nombre}" id="campoNombre"/></td>
-								</tr>
-								<tr id="filaCategoria">
-									<td id="columnaDatosIzquierda"><span id="categoria">Categor&iacute;a:</span></td>
-									<td id="columnaDatosDerecha">
-										
-											<div id="siHayCategorias">
-												<select th:field="*{idCategoria}">
-													<option value="0">Seleccionar</option>
-													<option th:each="categoria : ${listaCategorias}" th:text="${categoria.nombre}" th:value="${categoria.id}"></option>
-												</select>
-											</div>	
-										</td>
-								</tr>
-								<tr>
-									<td colspan="2">
-										<button id="guardar" type="submit" class="btn btn-success">Guardar</button>
-									</td>
+								<tr th:each="subcategoria : ${listaSubcategorias}"
+									id="filaRegistro">
+									<td th:text="${subcategoria.nombre}" id="columnaNombre"></td>
+									<td th:text="${subcategoria.categoria.nombre}"
+										id="columnaCategoria"></td>
+									<td id="columnaEditar"><a class="btn btn-info"
+										style="font-size: 25px; padding: 3px 10px; border-radius: 50%;"
+										th:href="@{/editarSubcategoria/{id}(id=${subcategoria.id})}">
+											<i class="fas fa-pencil-ruler"></i>
+									</a></td>
+									<td id="columnaEliminar"><a class="btn btn-danger"
+										style="font-size: 25px; padding: 3px 10px; border-radius: 50%;"
+										th:href="@{/eliminarSubcategoria/{id}(id=${subcategoria.id})}">
+											<i class="fas fa-trash"></i>
+									</a></td>
 								</tr>
 							</tbody>
 						</table>
-					</form>
-				</div></td>
-				<td>
-				<div th:if="${listaSubcategorias.isEmpty()}"
-					id="divisionNoHaySubcategorias">
-					<br><br><br><br><br><br><br>
-					<span id="mensajeNoHayCategorias">No hay subcategor&iacute;as
-						registradas a&uacute;n. :(</span>
-				</div>
-				<div th:if="${!listaSubcategorias.isEmpty()}"
-					id="divisionSiHaySubategorias">
-					<table align="center" id="tablaSubcategorias">
-						<thead>
-							<tr>
-								<th class="tituloTabla">Nombre</th>
-								<th class="tituloTabla">Categor&iacute;a</th>
-								<th class="tituloTabla">Editar</th>
-								<th class="tituloTabla">Eliminar</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr th:each="subcategoria : ${listaSubcategorias}" id="filaRegistro">
-								<td th:text="${subcategoria.nombre}" id="columnaNombre"></td>
-								<td th:text="${subcategoria.categoria.nombre}" id="columnaCategoria"></td>
-								<td id="columnaEditar"><a
-									th:href="@{/editarSubcategoria/{id}(id=${subcategoria.id})}">
-									<i class="far fa-edit"></i></a></td>
-								<td id="columnaEliminar"><a
-									th:href="@{/eliminarSubcategoria/{id}(id=${subcategoria.id})}">	
-									<i class="fas fa-trash-alt"></i></a></td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-			</td>
-		</tr>
-		<tr>
+					</div>
+				</td>
+			</tr>
+			<tr>
 
-		</tr>
-	</table>
+			</tr>
+		</table>
 	</div>
 
 	<div id="divisionFooter"></div>
 
 </body>
-<footer style="margin-top: 100px;">
+<footer style="margin-top: 200px;">
 	<div th:replace="fragment/footer :: footer"></div>
 </footer>
 </html>

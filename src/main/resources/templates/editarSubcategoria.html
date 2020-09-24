@@ -14,13 +14,13 @@
 		<div id="divisionPrincipal">
 			<form action="#"
 				th:action=@{/modificarSubcategoria/{id}(id=${idSubcategoria})}
-				th:object="${subcategoria}" method="post">
-				<table align="center">
+				th:object="${subcategoria}" method="post" class="card" style="width: 400px; padding: 20px; margin-left: 500px; margin-top: 100px; position: absolute;">
+				<table>
 					<thead>
 						<tr>
-							<th colspan="2" id="colTitulo"><br>Edici&oacute;n de
-								subcategor&iacute;a
-								<hr></th>
+							<th colspan="2" id="colTitulo" style="text-align: center;"><h2>Edici&oacute;n de
+								subcategor&iacute;a</h2>
+								<hr style="background-color: white;"></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -30,22 +30,22 @@
 						<tr>
 							<td><span id="nombre">Nuevo nombre :</span></td>
 							<td><input autofocus type="text" th:field="*{nombre}" required="true"
-								placeholder="Nuevo nombre" /></td>
+								placeholder="Nuevo nombre" class="form-control"/></td>
 						</tr>
 						<tr>
 							<td><div id="divisionInvisible1"></div></td>
 						</tr>
 						<tr>
-							<td><span id="categoria">Nueva categor&iacute;a:</span></td>
-							<td><select id="comboCategorias" th:field="*{idCategoria}">
+							<td><br><span id="categoria">Nueva categor&iacute;a:</span></td>
+							<td><br><select id="comboCategorias" th:field="*{idCategoria}" class="form-control">
 									<option th:each="categoria : ${listaCategorias}"
 										th:value="${categoria.id}" th:text="${categoria.nombre}"></option>
 							</select>
 						</tr>
 						<tr>
-							<td colspan="2">
-								<button id="boton" type="submit"
-									class="animate__animated animate__pulse">Guardar</button>
+							<td colspan="2" style="text-align: center;">
+								<hr style="background-color: white;">
+								<button id="boton" type="submit" class="btn btn-success">Guardar cambios</button>
 							</td>
 						</tr>
 					</tbody>
@@ -55,7 +55,7 @@
 	</div>
 
 </body>
-<footer style="margin-top: 100px;">
+<footer style="margin-top: 650px;">
 	<div th:replace="fragment/footer :: footer"></div>
 </footer>
 </html>
