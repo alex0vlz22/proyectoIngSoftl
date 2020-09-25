@@ -3,6 +3,7 @@ package co.com.example.main.controller;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,7 +36,7 @@ public class CtlUsuario {
 
 	@Autowired
 	private RepoProveedor repoProveedor;
-	
+
 	@Autowired
 	private CloudinaryConfig cloudc;
 
@@ -46,18 +47,19 @@ public class CtlUsuario {
 	}
 
 	@GetMapping("/inicio/{idUsuario}")
-	public String inicio(Model model, @PathVariable int idUsuario) {
+	public String inicio(Model model, @PathVariable("idUsuario") int idUsuario,
+			@RequestParam(defaultValue = "0") int page) {
 		Usuario u = repoUsuario.findById(idUsuario);
 		model.addAttribute("usuario", u);
 		model.addAttribute("listaSubcategorias", this.repoSubcategoria.findAll());
 		model.addAttribute("listaProveedores", this.repoProveedor.findAll());
-		model.addAttribute("listaProductos", this.repoProducto.findAll());
+		model.addAttribute("listaProductos", this.repoProducto.findAll(PageRequest.of(page, 6)));
 		model.addAttribute("producto", new Producto());
 		return "ingresoUsuario";
 	}
 
 	@GetMapping("/ingreso")
-	public String ingresoUsuario(Model model, Usuario usuario) {
+	public String ingresoUsuario(Model model, Usuario usuario, @RequestParam(defaultValue = "0") int page) {
 		if (usuario.getRol().equals("Cliente")) {
 			try {
 				Usuario u = repoUsuario.findByDNI(usuario.getDNI());
@@ -65,7 +67,7 @@ public class CtlUsuario {
 					model.addAttribute("usuario", u);
 					model.addAttribute("listaSubcategorias", this.repoSubcategoria.findAll());
 					model.addAttribute("listaProveedores", this.repoProveedor.findAll());
-					model.addAttribute("listaProductos", this.repoProducto.findAll());
+					model.addAttribute("listaProductos", this.repoProducto.findAll(PageRequest.of(page, 6)));
 					model.addAttribute("producto", new Producto());
 					return "ingresoUsuario";
 				} else {
@@ -84,7 +86,7 @@ public class CtlUsuario {
 					model.addAttribute("usuario", u);
 					model.addAttribute("listaProveedores", this.repoProveedor.findAll());
 					model.addAttribute("listaSubcategorias", this.repoSubcategoria.findAll());
-					model.addAttribute("listaProductos", this.repoProducto.findAll());
+					model.addAttribute("listaProductos", this.repoProducto.findAll(PageRequest.of(page, 6)));
 					model.addAttribute("producto", new Producto());
 					return "ingresoUsuario";
 				} else {
@@ -174,7 +176,9 @@ public class CtlUsuario {
 	}
 
 	@PostMapping("/modificarUsuario/{idUsuario}")
-	public String modificarUsuario(Model model, Usuario usuario, @PathVariable("idUsuario") int idUsuario, @RequestParam("file") MultipartFile file, @RequestParam("cambioUrl") boolean cambioUrl) {
+	public String modificarUsuario(Model model, Usuario usuario, @PathVariable("idUsuario") int idUsuario,
+			@RequestParam("file") MultipartFile file, @RequestParam("cambioUrl") boolean cambioUrl,
+			@RequestParam(defaultValue = "0") int page) {
 		usuario.setId(idUsuario);
 		if (cambioUrl) {
 			try {
@@ -189,7 +193,7 @@ public class CtlUsuario {
 		model.addAttribute("usuario", usuario);
 		model.addAttribute("listaProveedores", this.repoProveedor.findAll());
 		model.addAttribute("listaSubcategorias", this.repoSubcategoria.findAll());
-		model.addAttribute("listaProductos", this.repoProducto.findAll());
+		model.addAttribute("listaProductos", this.repoProducto.findAll(PageRequest.of(page, 6)));
 		model.addAttribute("producto", new Producto());
 		return "redirect:/inicio/" + idUsuario;
 	}

@@ -12,7 +12,7 @@ body{
 #containerProductos{
 	display: inline-block;
 	width: 748px;
-	height: 650px;
+	height: auto;
 	margin-left: 490px;
 	border-top: 1px solid white;
 	padding: 10px;
@@ -39,6 +39,18 @@ body{
 
 #cuerpoCard{
 	text-align: center;
+}
+
+#paginacion{
+	display: inline-block;
+	margin-left: 830px;
+	width: 200px;
+	text-align: center;
+}
+
+#pagElement{
+	display: block;
+	float: left;
 }
 
 footer{

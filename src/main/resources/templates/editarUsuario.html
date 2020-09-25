@@ -5,7 +5,7 @@
 <title>Edici&oacute;n de datos</title>
 <div th:replace="fragment/linksHeader :: links"></div>
 </head>
-<body style="background: url('../images/fondos/darkWallBiggest.png');">
+<body style="background: url('../images/fondos/darkWallBiggest.png'); overflow-x: hidden;">
 	<div th:if="${usuario.rol.equals('Vendedor')}">
 		<div th:replace="fragment/vendedor/navBar :: nav"></div>
 	</div>

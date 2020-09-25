@@ -1,18 +1,21 @@
 package co.com.example.main.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.tomcat.util.http.fileupload.impl.FileSizeLimitExceededException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
@@ -52,6 +55,17 @@ public class CtlProducto {
 	@Autowired
 	private RepoBodega repoBodega;
 
+	@GetMapping("/pag/{idUsuario}/{page}")
+	public String pag(Model model, @PathVariable("idUsuario") int idUsuario, @PathVariable("page") int page) {
+		Usuario u = repoUsuario.findById(idUsuario);
+		model.addAttribute("usuario", u);
+		model.addAttribute("listaSubcategorias", this.repoSubcategoria.findAll());
+		model.addAttribute("listaProveedores", this.repoProveedor.findAll());
+		model.addAttribute("listaProductos", this.repoProducto.findAll(PageRequest.of(page, 6)));
+		model.addAttribute("producto", new Producto());
+		return "ingresoUsuario";
+	}
+	
 	@GetMapping("/detalleProducto/{idUsuario}/{idProducto}")
 	public String detalleProducto(Model model, @PathVariable("idUsuario") int idUsuario,
 			@PathVariable("idProducto") int idProducto) {
@@ -80,7 +94,7 @@ public class CtlProducto {
 
 	@PostMapping("/guardarProducto/{idVendedor}")
 	public String guardarProducto(Model model, Producto producto, @RequestParam("file") MultipartFile file,
-			@PathVariable int idVendedor) {
+			@PathVariable int idVendedor){
 		Proveedor p = repoProveedor.findById(producto.getIdProveedor());
 		Subcategoria c = repoSubcategoria.findById(producto.getIdSubcategoria());
 		Bodega b = repoBodega.findById(producto.getIdBodega());
@@ -94,7 +108,9 @@ public class CtlProducto {
 			System.out.println(uploadResult.get("url").toString());
 			producto.setUrlFoto(uploadResult.get("url").toString());
 		} catch (Exception e) {
+			// LA FOTO EXCEDE EL TAMANO MAXIMO
 			e.printStackTrace();
+			System.out.println("TAMANOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO MAXIMOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
 		}
 		repoProducto.save(producto);
 		model.addAttribute("producto", new Producto());
@@ -188,14 +204,16 @@ public class CtlProducto {
 	public String buscarPorPalabras(Model model, @PathVariable int idUsuario, Producto producto) {
 		String palabras = producto.getDescripcion();
 		List<Producto> listaProductos = (List<Producto>) repoProducto.findAllByNombreContainingIgnoreCase(palabras);
+		
 		if (listaProductos.size() == 0) {
 			listaProductos = (List<Producto>) repoProducto.findAllByDescripcionContainingIgnoreCase(palabras);
+			
 		}
 		model.addAttribute("usuario", repoUsuario.findById(idUsuario));
 		model.addAttribute("producto", new Producto());
 		model.addAttribute("listaSubcategorias", this.repoSubcategoria.findAll());
 		model.addAttribute("listaProveedores", this.repoProveedor.findAll());
-		model.addAttribute("listaProductos", listaProductos);
+		model.addAttribute("listaProductos", new PageImpl<>(listaProductos));
 		return "ingresoUsuario";
 	}
 
