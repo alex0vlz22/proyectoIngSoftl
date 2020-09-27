@@ -65,7 +65,7 @@ public class CtlProducto {
 		model.addAttribute("producto", new Producto());
 		return "ingresoUsuario";
 	}
-	
+
 	@GetMapping("/detalleProducto/{idUsuario}/{idProducto}")
 	public String detalleProducto(Model model, @PathVariable("idUsuario") int idUsuario,
 			@PathVariable("idProducto") int idProducto) {
@@ -80,24 +80,27 @@ public class CtlProducto {
 	}
 
 	@GetMapping("/registroProducto/{idVendedor}")
-	public String registroProducto(Model model, @PathVariable int idVendedor, @RequestParam(defaultValue = "0") int page) {
+	public String registroProducto(Model model, @PathVariable int idVendedor,
+			@RequestParam(defaultValue = "0") int page) {
 		model.addAttribute("producto", new Producto());
 		model.addAttribute("usuario", repoUsuario.findById(idVendedor));
 		model.addAttribute("listaProveedores", repoProveedor.findAll());
 		model.addAttribute("listaSubcategorias", repoSubcategoria.findAll());
-		model.addAttribute("listaProductos", repoProducto.findByVendedor(PageRequest.of(page, 4), repoUsuario.findById(idVendedor)));
+		model.addAttribute("listaProductos",
+				repoProducto.findByVendedor(PageRequest.of(page, 4), repoUsuario.findById(idVendedor)));
 		model.addAttribute("listaBodegas", repoBodega.findAll());
 		model.addAttribute("idVendedor", idVendedor);
 		return "registroProducto";
 	}
-	
+
 	@GetMapping("/registroProducto/{idVendedor}/pag/{page}")
 	public String pagRegistroProducto(Model model, @PathVariable int idVendedor, @PathVariable("page") int page) {
 		model.addAttribute("producto", new Producto());
 		model.addAttribute("usuario", repoUsuario.findById(idVendedor));
 		model.addAttribute("listaProveedores", repoProveedor.findAll());
 		model.addAttribute("listaSubcategorias", repoSubcategoria.findAll());
-		model.addAttribute("listaProductos", repoProducto.findByVendedor(PageRequest.of(page, 4), repoUsuario.findById(idVendedor)));
+		model.addAttribute("listaProductos",
+				repoProducto.findByVendedor(PageRequest.of(page, 4), repoUsuario.findById(idVendedor)));
 		model.addAttribute("listaBodegas", repoBodega.findAll());
 		model.addAttribute("idVendedor", idVendedor);
 		return "registroProducto";
@@ -105,7 +108,7 @@ public class CtlProducto {
 
 	@PostMapping("/guardarProducto/{idVendedor}")
 	public String guardarProducto(Model model, Producto producto, @RequestParam("file") MultipartFile file,
-			@PathVariable int idVendedor){
+			@PathVariable int idVendedor) {
 		Proveedor p = repoProveedor.findById(producto.getIdProveedor());
 		Subcategoria c = repoSubcategoria.findById(producto.getIdSubcategoria());
 		Bodega b = repoBodega.findById(producto.getIdBodega());
@@ -215,10 +218,10 @@ public class CtlProducto {
 	public String buscarPorPalabras(Model model, @PathVariable int idUsuario, Producto producto) {
 		String palabras = producto.getDescripcion();
 		List<Producto> listaProductos = (List<Producto>) repoProducto.findAllByNombreContainingIgnoreCase(palabras);
-		
+
 		if (listaProductos.size() == 0) {
 			listaProductos = (List<Producto>) repoProducto.findAllByDescripcionContainingIgnoreCase(palabras);
-			
+
 		}
 		model.addAttribute("usuario", repoUsuario.findById(idUsuario));
 		model.addAttribute("producto", new Producto());

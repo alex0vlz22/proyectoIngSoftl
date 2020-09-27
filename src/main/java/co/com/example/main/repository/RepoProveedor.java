@@ -1,10 +1,11 @@
 package co.com.example.main.repository;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 
 import co.com.example.main.domain.Proveedor;
 
-public interface RepoProveedor extends CrudRepository<Proveedor, Integer>{
+public interface RepoProveedor extends JpaRepository<Proveedor, Integer>{
 
 	Proveedor findById(int id);
 	
