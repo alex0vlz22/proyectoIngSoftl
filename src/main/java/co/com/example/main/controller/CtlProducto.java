@@ -80,15 +80,26 @@ public class CtlProducto {
 	}
 
 	@GetMapping("/registroProducto/{idVendedor}")
-	public String registroProducto(Model model, @PathVariable int idVendedor) {
+	public String registroProducto(Model model, @PathVariable int idVendedor, @RequestParam(defaultValue = "0") int page) {
 		model.addAttribute("producto", new Producto());
 		model.addAttribute("usuario", repoUsuario.findById(idVendedor));
 		model.addAttribute("listaProveedores", repoProveedor.findAll());
 		model.addAttribute("listaSubcategorias", repoSubcategoria.findAll());
-		model.addAttribute("listaProductos", repoProducto.findByVendedor(repoUsuario.findById(idVendedor)));
+		model.addAttribute("listaProductos", repoProducto.findByVendedor(PageRequest.of(page, 4), repoUsuario.findById(idVendedor)));
 		model.addAttribute("listaBodegas", repoBodega.findAll());
 		model.addAttribute("idVendedor", idVendedor);
+		return "registroProducto";
+	}
+	
+	@GetMapping("/registroProducto/{idVendedor}/pag/{page}")
+	public String pagRegistroProducto(Model model, @PathVariable int idVendedor, @PathVariable("page") int page) {
 		model.addAttribute("producto", new Producto());
+		model.addAttribute("usuario", repoUsuario.findById(idVendedor));
+		model.addAttribute("listaProveedores", repoProveedor.findAll());
+		model.addAttribute("listaSubcategorias", repoSubcategoria.findAll());
+		model.addAttribute("listaProductos", repoProducto.findByVendedor(PageRequest.of(page, 4), repoUsuario.findById(idVendedor)));
+		model.addAttribute("listaBodegas", repoBodega.findAll());
+		model.addAttribute("idVendedor", idVendedor);
 		return "registroProducto";
 	}
 

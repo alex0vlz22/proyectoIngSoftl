@@ -27,7 +27,8 @@
 									<tr>
 										<th colspan="2" id="tituloCategoria"><h1>Gesti&oacute;n
 												de productos</h1>
-											<hr style="background-color: white;"><br></th>
+											<hr style="background-color: white;">
+											<br></th>
 									</tr>
 								</thead>
 								<tbody>
@@ -163,6 +164,13 @@
 								</tr>
 							</tbody>
 						</table>
+						<div id="paginacion">
+							<a
+								th:each="i : ${#numbers.sequence(0,listaProductos.totalPages-1)}"
+								class="page-link btn btn-primary"
+								th:href="@{'/registroProducto/' + ${usuario.id} + '/pag/' + ${i}}" th:text="${i}"
+								id="pagElement" align="center"></a>
+						</div>
 					</div>
 				</td>
 			</tr>

@@ -4,6 +4,8 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -31,7 +33,7 @@ public interface RepoProducto extends JpaRepository<Producto, Integer> {
 	@Query("Select p from Producto p join Proveedor pr on pr.id=p.proveedor where pr.nombre=' ?1 ' ")
 	public Iterable<Producto> ordenarPorProveedor(String nombreProveedor);
 
-	List<Producto> findByVendedor(Usuario usuario);
+	Page<Producto> findByVendedor(Pageable page, Usuario usuario);
 
 	public Iterable<Producto> findAllByNombreContainingIgnoreCase(String nombre);
 
