@@ -15,6 +15,8 @@ public class Carrito {
 	@GeneratedValue
 	private int id;
 	
+	private int cantidad = 1;
+	
 	@ManyToOne
 	private Usuario usuario;
 	

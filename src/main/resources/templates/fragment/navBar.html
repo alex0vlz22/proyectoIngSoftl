@@ -25,7 +25,7 @@
 					</a></li>
 					<li class="nav-item"><a class="nav-link" href="#">Mis
 							pedidos</a></li>
-					<li class="nav-item"><a class="nav-link" href="#"> <i class="fas fa-shopping-cart"></i> Carrito </a></li>
+					<li class="nav-item"><a class="nav-link" th:href="@{/carrito/{idUsuario}(idUsuario = ${usuario.id})}"> <i class="fas fa-shopping-cart"></i> Carrito </a></li>
 					<li class="nav-item"><a class="nav-link"
 						th:href="@{/misFacturas/{idUsuario}(idUsuario = ${usuario.id})}">Mis
 							Facturas</a></li>

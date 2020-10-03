@@ -430,5 +430,35 @@ public class CtlProducto {
 			return "detalleProducto";
 		}
 	}
+	
+	@GetMapping("/carrito/{idUsuario}")
+	public String miCarrito(Model model, @PathVariable("idUsuario") int idUsuario) {
+		Usuario user = this.repoUsuario.findById(idUsuario);
+		double valorTotal = 0;
+		valorTotal = calcularPrecio(idUsuario, valorTotal, user);
+		model.addAttribute("valorTotal", valorTotal);
+		model.addAttribute("listaProductos", this.repoCarrito.findByUsuario(PageRequest.of(0, 12), user));
+		model.addAttribute("usuario", user);
+		model.addAttribute("producto", new Producto());
+		return "carrito";
+	}
+
+	private double calcularPrecio(int idUsuario, double valorTotal, Usuario user) {
+		List<Carrito> lista = this.repoCarrito.findByUsuario(user);
+		if(lista.isEmpty()) {
+			return 0;
+		}else {
+			for(Carrito carrito : lista) {
+				valorTotal += carrito.getProducto().getPrecio() * carrito.getCantidad();
+			}
+		}
+		return valorTotal;
+	}
+	
+	@GetMapping("/eliminar/prod/{idCarrito}/carrito/{idUsuario}")
+	public String eliminarDelCarrito(Model model, @PathVariable("idCarrito") int idCarrito, @PathVariable("idUsuario") int idUsuario){
+		this.repoCarrito.deleteById(idCarrito);
+		return "redirect:/carrito/"+idUsuario;
+	}
 
 }
