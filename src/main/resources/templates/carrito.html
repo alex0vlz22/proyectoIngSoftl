@@ -23,7 +23,7 @@
 
 	<div class="containerxd">
 		<div id="divNoProductos" th:if="${listaProductos.isEmpty()}">
-			<span>A&uacute;n no hay productos en tu carrito. :()</span>
+			<span id="mensajeNoHayProductos">A&uacute;n no hay productos en tu carrito. :(</span>
 		</div>
 		<div id="divProductos" th:if="${!listaProductos.isEmpty()}">
 			<div class="card" th:each="carrito : ${listaProductos}" id="producto">

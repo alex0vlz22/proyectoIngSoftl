@@ -70,3 +70,11 @@ body{
 	margin-left: 55px;
 	text-decoration: underline;
 }
+
+#divNoProductos{
+	width: auto;
+	height: auto;
+	font-size: 30px;
+	text-align: center;
+	margin-bottom: 400px;
+}
