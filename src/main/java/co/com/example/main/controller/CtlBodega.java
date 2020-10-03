@@ -1,8 +1,8 @@
 package co.com.example.main.controller;
 
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,12 +24,24 @@ public class CtlBodega {
 	@Autowired
 	private RepoUsuario repoUsuario;
 	
-	@GetMapping("/registroBodega/{idVendedor}")
-	public String registroBodega(Model model, @PathVariable int idVendedor) {
+	@GetMapping("registroBodega/{idVendedor}/pag/{page}")
+	public String registroBodegaPag(Model model, @PathVariable("idVendedor") int idVendedor, @PathVariable("page") int page) {
+		Usuario user = repoUsuario.findById(idVendedor);
 		model.addAttribute("idVendedor", idVendedor);
 		model.addAttribute("bodega", new Bodega());
-		model.addAttribute("listaBodegas", repoBodega.findAll());
-		model.addAttribute("usuario", repoUsuario.findById(idVendedor));
+		model.addAttribute("listaBodegas", repoBodega.findByUsuario(PageRequest.of(page, 3), user));
+		model.addAttribute("usuario", user);
+		model.addAttribute("producto", new Producto());
+		return "registroBodega";
+	}
+	
+	@GetMapping("/registroBodega/{idVendedor}")
+	public String registroBodega(Model model, @PathVariable int idVendedor) {
+		Usuario user = this.repoUsuario.findById(idVendedor);
+		model.addAttribute("idVendedor", idVendedor);
+		model.addAttribute("bodega", new Bodega());
+		model.addAttribute("listaBodegas", this.repoBodega.findByUsuario(PageRequest.of(0, 3), user));
+		model.addAttribute("usuario", user);
 		model.addAttribute("producto", new Producto());
 		return "registroBodega";
 	}

@@ -82,26 +82,28 @@ public class CtlProducto {
 	@GetMapping("/registroProducto/{idVendedor}")
 	public String registroProducto(Model model, @PathVariable int idVendedor,
 			@RequestParam(defaultValue = "0") int page) {
+		Usuario user = this.repoUsuario.findById(idVendedor);
 		model.addAttribute("producto", new Producto());
-		model.addAttribute("usuario", repoUsuario.findById(idVendedor));
+		model.addAttribute("usuario", user);
 		model.addAttribute("listaProveedores", repoProveedor.findAll());
 		model.addAttribute("listaSubcategorias", repoSubcategoria.findAll());
 		model.addAttribute("listaProductos",
 				repoProducto.findByVendedor(PageRequest.of(page, 4), repoUsuario.findById(idVendedor)));
-		model.addAttribute("listaBodegas", repoBodega.findAll());
+		model.addAttribute("listaBodegas", this.repoBodega.findByUsuario(user));
 		model.addAttribute("idVendedor", idVendedor);
 		return "registroProducto";
 	}
 
 	@GetMapping("/registroProducto/{idVendedor}/pag/{page}")
 	public String pagRegistroProducto(Model model, @PathVariable int idVendedor, @PathVariable("page") int page) {
+		Usuario user = this.repoUsuario.findById(idVendedor);
 		model.addAttribute("producto", new Producto());
-		model.addAttribute("usuario", repoUsuario.findById(idVendedor));
+		model.addAttribute("usuario", user);
 		model.addAttribute("listaProveedores", repoProveedor.findAll());
 		model.addAttribute("listaSubcategorias", repoSubcategoria.findAll());
 		model.addAttribute("listaProductos",
 				repoProducto.findByVendedor(PageRequest.of(page, 4), repoUsuario.findById(idVendedor)));
-		model.addAttribute("listaBodegas", repoBodega.findAll());
+		model.addAttribute("listaBodegas", this.repoBodega.findByUsuario(user));
 		model.addAttribute("idVendedor", idVendedor);
 		return "registroProducto";
 	}
@@ -113,6 +115,10 @@ public class CtlProducto {
 		Subcategoria c = repoSubcategoria.findById(producto.getIdSubcategoria());
 		Bodega b = repoBodega.findById(producto.getIdBodega());
 		Usuario u = repoUsuario.findById(idVendedor);
+
+		// Se debe agregar a bodega el atributo espacio disponible, para comparar con la cantidad del producto y así
+		// permitir o no que se agregue.
+		
 		producto.setProveedor(p);
 		producto.setSubcategoria(c);
 		producto.setBodega(b);

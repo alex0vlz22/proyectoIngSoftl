@@ -1,11 +1,16 @@
 package co.com.example.main.repository;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import co.com.example.main.domain.Subcategoria;
+import co.com.example.main.domain.Usuario;
 
-public interface RepoSubcategoria extends CrudRepository<Subcategoria, Integer>{
+public interface RepoSubcategoria extends JpaRepository<Subcategoria, Integer>{
 
 	Subcategoria findById(int id);
+	
+	Page<Subcategoria> findByUsuario(Pageable page, Usuario user);
 	
 }

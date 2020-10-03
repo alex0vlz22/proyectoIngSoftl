@@ -1,6 +1,7 @@
 package co.com.example.main.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import co.com.example.main.domain.Categoria;
 import co.com.example.main.domain.Producto;
+import co.com.example.main.domain.Usuario;
 import co.com.example.main.repository.RepoCategoria;
 import co.com.example.main.repository.RepoUsuario;
 
@@ -21,12 +23,24 @@ public class CtlCategoria {
 	@Autowired
 	private RepoUsuario repoUsuario;
 	
-	@GetMapping("/registroCategoria/{idVendedor}")
-	public String registroCategoria(Model model, @PathVariable int idVendedor) {
+	@GetMapping("registroCategoria/{idUsuario}/pag/{page}")
+	public String registroCategoriaPag(Model model, @PathVariable("idUsuario") int idVendedor, @PathVariable("page") int page) {
+		Usuario user = this.repoUsuario.findById(idVendedor);
 		model.addAttribute("categoria", new Categoria());
 		model.addAttribute("idVendedor", idVendedor);
-		model.addAttribute("listaCategorias", repoCategoria.findAll());
-		model.addAttribute("usuario", repoUsuario.findById(idVendedor));
+		model.addAttribute("listaCategorias", this.repoCategoria.findByUsuario(PageRequest.of(page, 2), user));
+		model.addAttribute("usuario", user);
+		model.addAttribute("producto", new Producto());
+		return "registroCategoria";
+	}
+	
+	@GetMapping("/registroCategoria/{idVendedor}")
+	public String registroCategoria(Model model, @PathVariable int idVendedor) {
+		Usuario user = this.repoUsuario.findById(idVendedor);
+		model.addAttribute("categoria", new Categoria());
+		model.addAttribute("idVendedor", idVendedor);
+		model.addAttribute("listaCategorias", this.repoCategoria.findByUsuario(PageRequest.of(0, 2), user));
+		model.addAttribute("usuario", user);
 		model.addAttribute("producto", new Producto());
 		return "registroCategoria";
 	}

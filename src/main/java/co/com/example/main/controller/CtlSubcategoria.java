@@ -1,6 +1,7 @@
 package co.com.example.main.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import co.com.example.main.domain.Categoria;
 import co.com.example.main.domain.Producto;
 import co.com.example.main.domain.Subcategoria;
+import co.com.example.main.domain.Usuario;
 import co.com.example.main.repository.RepoCategoria;
 import co.com.example.main.repository.RepoSubcategoria;
 import co.com.example.main.repository.RepoUsuario;
@@ -26,13 +28,27 @@ public class CtlSubcategoria {
 	@Autowired
 	private RepoUsuario repoUsuario;
 
-	@GetMapping("/registroSubcategoria/{idVendedor}")
-	public String registroSubcategoria(Model model, @PathVariable int idVendedor) {
+	@GetMapping("/registroSubcategoria/{idVendedor}/pag/{page}")
+	public String registroSubcategoria(Model model, @PathVariable("idVendedor") int idVendedor,
+			@PathVariable("page") int page) {
+		Usuario user = this.repoUsuario.findById(idVendedor);
 		model.addAttribute("subcategoria", new Subcategoria());
 		model.addAttribute("idVendedor", idVendedor);
-		model.addAttribute("listaSubcategorias", repoSubcategoria.findAll());
+		model.addAttribute("listaSubcategorias", this.repoSubcategoria.findByUsuario(PageRequest.of(page, 2), user));
 		model.addAttribute("listaCategorias", repoCategoria.findAll());
-		model.addAttribute("usuario", repoUsuario.findById(idVendedor));
+		model.addAttribute("usuario", user);
+		model.addAttribute("producto", new Producto());
+		return "registroSubcategoria";
+	}
+
+	@GetMapping("/registroSubcategoria/{idVendedor}")
+	public String registroSubcategoria(Model model, @PathVariable int idVendedor) {
+		Usuario user = this.repoUsuario.findById(idVendedor);
+		model.addAttribute("subcategoria", new Subcategoria());
+		model.addAttribute("idVendedor", idVendedor);
+		model.addAttribute("listaSubcategorias", this.repoSubcategoria.findByUsuario(PageRequest.of(0, 2), user));
+		model.addAttribute("listaCategorias", repoCategoria.findAll());
+		model.addAttribute("usuario", user);
 		model.addAttribute("producto", new Producto());
 		return "registroSubcategoria";
 	}

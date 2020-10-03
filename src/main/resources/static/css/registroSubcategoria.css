@@ -3,3 +3,14 @@ body{
 	background: url('../images/fondos/fondoDark.jpg');
 	overflow-x: hidden;
 }
+
+#paginacion {
+	display: inline-block;
+	width: 400px;
+	text-align: center;
+}
+
+#pagElement {
+	display: block;
+	float: left;
+}

@@ -16,7 +16,8 @@
 				<td><div id="divisionDatos">
 						<form action="#" th:object="${subcategoria}"
 							th:action="@{/guardarSubcategoria/{idVendedor}(idVendedor = ${idVendedor})}"
-							method="post" class="card" style="padding: 20px; margin-left: 240px; margin-top: 100px;">
+							method="post" class="card"
+							style="padding: 20px; margin-left: 240px; margin-top: 100px; height: 350px;">
 							<table align="center">
 								<thead id="theadDatos">
 									<tr>
@@ -36,8 +37,8 @@
 											th:field="*{nombre}" id="campoNombre" class="form-control" /></td>
 									</tr>
 									<tr id="filaCategoria">
-										<td id="columnaDatosIzquierda"><br>
-										<span id="categoria">Categor&iacute;a:</span></td>
+										<td id="columnaDatosIzquierda"><br> <span
+											id="categoria">Categor&iacute;a:</span></td>
 										<td id="columnaDatosDerecha">
 
 											<div id="siHayCategorias">
@@ -67,7 +68,8 @@
 						<h5>No hay subcategor&iacute;as registradas a&uacute;n. :(</h5>
 					</div>
 					<div th:if="${!listaSubcategorias.isEmpty()}"
-						id="divisionSiHaySubategorias" class="card" style="padding: 20px; margin-left: 100px; margin-top: 100px;">
+						id="divisionSiHaySubategorias" class="card"
+						style="padding: 20px; margin-left: 100px; margin-top: 100px; height: 350px;">
 						<table align="center" id="tablaSubcategorias"
 							class="table table-primary" style="text-align: center">
 							<thead>
@@ -102,6 +104,13 @@
 								</tr>
 							</tbody>
 						</table>
+						<div id="paginacion">
+							<a
+								th:each="i : ${#numbers.sequence(0,listaSubcategorias.totalPages-1)}"
+								class="page-link btn btn-primary"
+								th:href="@{'/registroSubcategoria/' + ${usuario.id} + '/pag/' + ${i}}"
+								th:text="${i}" id="pagElement" align="center"></a>
+						</div>
 					</div>
 				</td>
 			</tr>

@@ -29,7 +29,8 @@ public class CtlProveedor {
 		model.addAttribute("proveedor", new Proveedor());
 		model.addAttribute("idVendedor", idVendedor);
 		model.addAttribute("usuario", repoUsuario.findById(idVendedor));
-		model.addAttribute("listaProveedores", repoProveedor.findAll(PageRequest.of(page, 2)));
+		model.addAttribute("listaProveedores",
+				this.repoProveedor.findByUsuario(PageRequest.of(page, 2), this.repoUsuario.findById(idVendedor)));
 		model.addAttribute("producto", new Producto());
 		return "registroProveedor";
 	}
@@ -39,7 +40,8 @@ public class CtlProveedor {
 		model.addAttribute("proveedor", new Proveedor());
 		model.addAttribute("idVendedor", idVendedor);
 		model.addAttribute("usuario", repoUsuario.findById(idVendedor));
-		model.addAttribute("listaProveedores", repoProveedor.findAll(PageRequest.of(page, 2)));
+		model.addAttribute("listaProveedores",
+				this.repoProveedor.findByUsuario(PageRequest.of(page, 2), this.repoUsuario.findById(idVendedor)));
 		model.addAttribute("producto", new Producto());
 		return "registroProveedor";
 	}

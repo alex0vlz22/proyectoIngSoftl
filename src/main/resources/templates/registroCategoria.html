@@ -30,14 +30,14 @@
 									<td><div id="divisionInvisible1"></div></td>
 								</tr>
 								<tr id="filaDatos">
-									<td id="columnaDatosIzquierda"><span id="nombre">Nombre</span><input
+									<td id="columnaDatosIzquierda"><span id="nombre" class="mt-10">Nombre</span><input
 										autofocus required="true" type="text" placeholder="Nombre"
 										th:field="*{nombre}" id="campoNombre" class="form-control" /></td>
 								</tr>
 								<tr>
 									<td colspan="2" style="text-align: center">
 										<button id="Guardar" type="submit" class="btn btn-success"
-											style="margin-top: 20px;">Guardar</button>
+											style="margin-top: 30px;">Guardar</button>
 									</td>
 								</tr>
 							</tbody>
@@ -84,6 +84,13 @@
 										</tr>
 									</tbody>
 								</table>
+								<div id="paginacion">
+										<a
+											th:each="i : ${#numbers.sequence(0,listaCategorias.totalPages-1)}"
+											class="page-link btn btn-primary"
+											th:href="@{'/registroCategoria/' + ${usuario.id} + '/pag/' + ${i}}"
+											th:text="${i}" id="pagElement" align="center"></a>
+									</div>
 							</div>
 						</div>
 
