@@ -9,6 +9,10 @@
 <body>
 
 	<div class="form-group" th:replace="fragment/vendedor/navBar :: nav"></div>
+	
+	<div th:if="${bodegaSinEspacio == true}" id="divErrorBodega">
+		<span class="alert alert-danger">&iexcl;No queda espacio suficiente en la bodega para tal cantidad!</span>
+	</div>
 
 		<form action="#" th:object="${productoParaEditar}"
 			th:action="@{/modificarProducto/{id}(id=${productoParaEditar.id})}"

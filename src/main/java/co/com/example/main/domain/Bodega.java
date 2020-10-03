@@ -29,6 +29,8 @@ public class Bodega {
 	
 	private int capacidad;
 	
+	private int espacioDisponible;
+	
 	@OneToMany(mappedBy = "bodega", cascade = CascadeType.REMOVE)
 	private List<Producto> producto;
 	

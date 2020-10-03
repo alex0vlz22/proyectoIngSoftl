@@ -49,6 +49,7 @@ public class CtlBodega {
 	@PostMapping("/guardarBodega/{idVendedor}")
 	public String guardarBodega(Model model, Bodega b, @PathVariable int idVendedor) {
 		b.setUsuario(repoUsuario.findById(idVendedor));
+		b.setEspacioDisponible(b.getCapacidad());
 		repoBodega.save(b);
 		model.addAttribute("bodega", new Bodega());
 		model.addAttribute("idVendedor", idVendedor);

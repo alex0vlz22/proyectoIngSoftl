@@ -1,13 +1,10 @@
 package co.com.example.main.controller;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.tomcat.util.http.fileupload.impl.FileSizeLimitExceededException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
@@ -83,7 +80,9 @@ public class CtlProducto {
 	public String registroProducto(Model model, @PathVariable int idVendedor,
 			@RequestParam(defaultValue = "0") int page) {
 		Usuario user = this.repoUsuario.findById(idVendedor);
+		model.addAttribute("bodegaSinEspacio", false);
 		model.addAttribute("producto", new Producto());
+		model.addAttribute("productoForm", new Producto());
 		model.addAttribute("usuario", user);
 		model.addAttribute("listaProveedores", repoProveedor.findAll());
 		model.addAttribute("listaSubcategorias", repoSubcategoria.findAll());
@@ -97,7 +96,9 @@ public class CtlProducto {
 	@GetMapping("/registroProducto/{idVendedor}/pag/{page}")
 	public String pagRegistroProducto(Model model, @PathVariable int idVendedor, @PathVariable("page") int page) {
 		Usuario user = this.repoUsuario.findById(idVendedor);
+		model.addAttribute("bodegaSinEspacio", false);
 		model.addAttribute("producto", new Producto());
+		model.addAttribute("productoForm", new Producto());
 		model.addAttribute("usuario", user);
 		model.addAttribute("listaProveedores", repoProveedor.findAll());
 		model.addAttribute("listaSubcategorias", repoSubcategoria.findAll());
@@ -116,30 +117,50 @@ public class CtlProducto {
 		Bodega b = repoBodega.findById(producto.getIdBodega());
 		Usuario u = repoUsuario.findById(idVendedor);
 
-		// Se debe agregar a bodega el atributo espacio disponible, para comparar con la cantidad del producto y así
-		// permitir o no que se agregue.
-		
-		producto.setProveedor(p);
-		producto.setSubcategoria(c);
-		producto.setBodega(b);
-		producto.setVendedor(u);
-		try {
-			Map uploadResult = cloudc.upload(file.getBytes(), ObjectUtils.asMap("resourcetype", "auto"));
-			System.out.println(uploadResult.get("url").toString());
-			producto.setUrlFoto(uploadResult.get("url").toString());
-		} catch (Exception e) {
-			// LA FOTO EXCEDE EL TAMANO MAXIMO
-			e.printStackTrace();
-			System.out.println("TAMANOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO MAXIMOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+		if (producto.getCantidad() <= b.getEspacioDisponible() && producto.getCantidad() <= b.getCapacidad()) {
+			b.setEspacioDisponible(b.getEspacioDisponible() - producto.getCantidad());
+			this.repoBodega.save(b);
+			producto.setProveedor(p);
+			producto.setSubcategoria(c);
+			producto.setBodega(b);
+			producto.setVendedor(u);
+			try {
+				Map uploadResult = cloudc.upload(file.getBytes(), ObjectUtils.asMap("resourcetype", "auto"));
+				System.out.println(uploadResult.get("url").toString());
+				producto.setUrlFoto(uploadResult.get("url").toString());
+			} catch (Exception e) {
+				// LA FOTO EXCEDE EL TAMANO MAXIMO
+				e.printStackTrace();
+				System.out.println(
+						"TAMANOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO MAXIMOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+			}
+			repoProducto.save(producto);
+			model.addAttribute("bodegaSinEspacio", false);
+			model.addAttribute("productoForm", new Producto());
+			model.addAttribute("listaProveedores", repoProveedor.findAll());
+			model.addAttribute("listaSubcategorias", repoSubcategoria.findAll());
+			model.addAttribute("listaProductos",
+					repoProducto.findByVendedor(PageRequest.of(0, 4), repoUsuario.findById(idVendedor)));
+			model.addAttribute("listaBodegas", this.repoBodega.findByUsuario(this.repoUsuario.findById(idVendedor)));
+			model.addAttribute("producto", new Producto());
+
+			model.addAttribute("usuario", this.repoUsuario.findById(idVendedor));
+
+			return "registroProducto";
+		} else {
+			model.addAttribute("bodegaSinEspacio", true);
+			model.addAttribute("productoForm", producto);
+			model.addAttribute("listaProveedores", repoProveedor.findAll());
+			model.addAttribute("listaSubcategorias", repoSubcategoria.findAll());
+			model.addAttribute("listaProductos",
+					repoProducto.findByVendedor(PageRequest.of(0, 4), repoUsuario.findById(idVendedor)));
+			model.addAttribute("listaBodegas", this.repoBodega.findByUsuario(this.repoUsuario.findById(idVendedor)));
+			model.addAttribute("producto", new Producto());
+
+			model.addAttribute("usuario", this.repoUsuario.findById(idVendedor));
+
+			return "registroProducto";
 		}
-		repoProducto.save(producto);
-		model.addAttribute("producto", new Producto());
-		model.addAttribute("listaProveedores", repoProveedor.findAll());
-		model.addAttribute("listaSubcategorias", repoSubcategoria.findAll());
-		model.addAttribute("listaProductos", repoProducto.findAll());
-		model.addAttribute("listaBodegas", repoBodega.findAll());
-		model.addAttribute("producto", new Producto());
-		return "redirect:/registroProducto/" + idVendedor;
 	}
 
 	@GetMapping("/editarProducto/{id}")
@@ -147,10 +168,11 @@ public class CtlProducto {
 		int idVendedor = repoProducto.findById(id).getVendedor().getId();
 		try {
 			Producto p = repoProducto.findById(id);
+			model.addAttribute("bodegaSinEspacio", false);
 			model.addAttribute("productoParaEditar", p);
 			model.addAttribute("listaProveedores", repoProveedor.findAll());
 			model.addAttribute("listaSubcategorias", repoSubcategoria.findAll());
-			model.addAttribute("listaBodegas", repoBodega.findAll());
+			model.addAttribute("listaBodegas", this.repoBodega.findByUsuario(this.repoUsuario.findById(idVendedor)));
 			model.addAttribute("usuario", p.getVendedor());
 			model.addAttribute("idVendedor", p.getVendedor().getId());
 			model.addAttribute("producto", new Producto());
@@ -168,38 +190,69 @@ public class CtlProducto {
 		Proveedor pro = repoProveedor.findById(p.getIdProveedor());
 		Subcategoria c = repoSubcategoria.findById(p.getIdSubcategoria());
 		Bodega b = repoBodega.findById(p.getIdBodega());
-		p.setId(id);
-		p.setProveedor(pro);
-		p.setSubcategoria(c);
-		p.setBodega(b);
-		p.setVendedor(repoUsuario.findById(idVendedor));
-		if (cambioUrl) {
-			try {
-				Map uploadResult = cloudc.upload(file.getBytes(), ObjectUtils.asMap("resourcetype", "auto"));
-				System.out.println(uploadResult.get("url").toString());
-				p.setUrlFoto(uploadResult.get("url").toString());
-			} catch (Exception e) {
-				e.printStackTrace();
+
+		Producto productoViejo = this.repoProducto.findById(id);
+		b.setEspacioDisponible(b.getEspacioDisponible() + productoViejo.getCantidad());
+
+		if (p.getCantidad() <= b.getEspacioDisponible() && p.getCantidad() <= b.getCapacidad()) {
+
+			// modificando el nuevo espacio disponible
+			b.setEspacioDisponible(b.getEspacioDisponible() - p.getCantidad());
+			this.repoBodega.save(b);
+
+			p.setId(id);
+			p.setProveedor(pro);
+			p.setSubcategoria(c);
+			p.setBodega(b);
+			p.setVendedor(repoUsuario.findById(idVendedor));
+			if (cambioUrl) {
+				try {
+					Map uploadResult = cloudc.upload(file.getBytes(), ObjectUtils.asMap("resourcetype", "auto"));
+					System.out.println(uploadResult.get("url").toString());
+					p.setUrlFoto(uploadResult.get("url").toString());
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
+			repoProducto.save(p);
+			model.addAttribute("bodegaSinEspacio", false);
+			model.addAttribute("productoForm", new Producto());
+			model.addAttribute("listaProveedores", repoProveedor.findAll());
+			model.addAttribute("listaSubcategorias", repoSubcategoria.findAll());
+			model.addAttribute("listaProductos",
+					repoProducto.findByVendedor(PageRequest.of(0, 4), repoUsuario.findById(idVendedor)));
+			model.addAttribute("listaBodegas", repoBodega.findAll());
+			model.addAttribute("producto", new Producto());
+			model.addAttribute("usuario", this.repoUsuario.findById(idVendedor));
+			return "redirect:/registroProducto/" + idVendedor;
+		} else {
+			p.setId(id);
+			p.setProveedor(pro);
+			p.setSubcategoria(c);
+			p.setBodega(b);
+			p.setVendedor(repoUsuario.findById(idVendedor));
+			model.addAttribute("bodegaSinEspacio", true);
+			model.addAttribute("productoParaEditar", p);
+			model.addAttribute("listaProveedores", repoProveedor.findAll());
+			model.addAttribute("listaSubcategorias", repoSubcategoria.findAll());
+			model.addAttribute("listaProductos", repoProducto.findAll());
+			model.addAttribute("listaBodegas", this.repoBodega.findByUsuario(this.repoUsuario.findById(idVendedor)));
+			model.addAttribute("producto", new Producto());
+			model.addAttribute("usuario", this.repoUsuario.findById(idVendedor));
+			return "editarProducto";
 		}
-		repoProducto.save(p);
-		model.addAttribute("producto", new Producto());
-		model.addAttribute("listaProveedores", repoProveedor.findAll());
-		model.addAttribute("listaSubcategorias", repoSubcategoria.findAll());
-		model.addAttribute("listaProductos", repoProducto.findAll());
-		model.addAttribute("listaBodegas", repoBodega.findAll());
-		model.addAttribute("producto", new Producto());
-		return "redirect:/registroProducto/" + idVendedor;
 	}
 
 	@GetMapping("/eliminarProducto/{id}")
 	public String eliminarProducto(Model model, @PathVariable int id) {
 		int idVendedor = repoProducto.findById(id).getVendedor().getId();
 		repoProducto.deleteById(id);
+		model.addAttribute("bodegaSinEspacio", false);
 		model.addAttribute("producto", new Producto());
 		model.addAttribute("listaProveedores", repoProveedor.findAll());
 		model.addAttribute("listaSubcategorias", repoSubcategoria.findAll());
-		model.addAttribute("listaProductos", repoProducto.findAll());
+		model.addAttribute("listaProductos",
+				repoProducto.findByVendedor(PageRequest.of(0, 4), repoUsuario.findById(idVendedor)));
 		model.addAttribute("listaBodegas", repoBodega.findAll());
 		model.addAttribute("producto", new Producto());
 		return "redirect:/registroProducto/" + idVendedor;

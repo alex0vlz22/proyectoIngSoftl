@@ -10,13 +10,17 @@
 
 	<div class="form-group" th:replace="fragment/vendedor/navBar :: nav"></div>
 
+	<div th:if="${bodegaSinEspacio == true}" id="divErrorBodega">
+		<span class="alert alert-danger">&iexcl;No queda espacio suficiente en la bodega para tal cantidad!</span>
+	</div>
+
 	<div>
 		<table id="tablaPrincipal">
 			<tr>
 				<td>
 					<div id="divisionPrincipal" class="card"
 						style="padding: 20px; margin-top: 100px; margin-left: 130px;">
-						<form action="#" th:object="${producto}"
+						<form action="#" th:object="${productoForm}"
 							th:action="@{/guardarProducto/{idVendedor}(idVendedor = ${idVendedor})}"
 							method="post" enctype="multipart/form-data">
 							<input type="hidden" id="agregarUrl" th:field="*{urlFoto}">
@@ -35,7 +39,7 @@
 									<tr>
 										<td><span class="etiqueta">Nombre:</span></td>
 										<td><input class="form-control" autofocus type="text"
-											placeholder="Nombre" required="true" th:field="*{nombre}" /></td>
+											placeholder="Nombre" required="true" th:field="*{nombre}"/></td>
 									</tr>
 									<tr>
 										<td><br> <span class="etiqueta">Descripci&oacute;n:</span></td>
