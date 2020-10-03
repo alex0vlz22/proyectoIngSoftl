@@ -60,4 +60,7 @@ public class Usuario {
 	@OneToMany(mappedBy = "usuario", cascade = CascadeType.REMOVE)
 	private List<Subcategoria> subcategoria;
 	
+	@OneToMany(mappedBy = "usuario", cascade = CascadeType.REMOVE)
+	private List<Carrito> carrito;
+	
 }

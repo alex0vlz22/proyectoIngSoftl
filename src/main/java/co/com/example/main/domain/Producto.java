@@ -1,11 +1,15 @@
 package co.com.example.main.domain;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
 import lombok.Data;
@@ -32,6 +36,9 @@ public class Producto {
 	@Column(length = 255)
 	private String urlFoto;
 
+	@OneToMany(mappedBy = "producto", cascade = CascadeType.REMOVE)
+	private List<Carrito> carrito;
+	
 	@ManyToOne
 	private Proveedor proveedor;
 	

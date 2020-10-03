@@ -21,11 +21,13 @@ import org.springframework.web.multipart.MultipartFile;
 import com.cloudinary.utils.ObjectUtils;
 import co.com.example.main.CloudinaryConfig;
 import co.com.example.main.domain.Bodega;
+import co.com.example.main.domain.Carrito;
 import co.com.example.main.domain.Producto;
 import co.com.example.main.domain.Proveedor;
 import co.com.example.main.domain.Subcategoria;
 import co.com.example.main.domain.Usuario;
 import co.com.example.main.repository.RepoBodega;
+import co.com.example.main.repository.RepoCarrito;
 import co.com.example.main.repository.RepoProducto;
 import co.com.example.main.repository.RepoProveedor;
 import co.com.example.main.repository.RepoSubcategoria;
@@ -52,6 +54,9 @@ public class CtlProducto {
 	@Autowired
 	private RepoBodega repoBodega;
 
+	@Autowired
+	private RepoCarrito repoCarrito;
+
 	@GetMapping("/pag/{idUsuario}/{page}")
 	public String pag(Model model, @PathVariable("idUsuario") int idUsuario, @PathVariable("page") int page) {
 		Usuario u = repoUsuario.findById(idUsuario);
@@ -61,19 +66,6 @@ public class CtlProducto {
 		model.addAttribute("listaProductos", this.repoProducto.findAll(PageRequest.of(page, 6)));
 		model.addAttribute("producto", new Producto());
 		return "ingresoUsuario";
-	}
-
-	@GetMapping("/detalleProducto/{idUsuario}/{idProducto}")
-	public String detalleProducto(Model model, @PathVariable("idUsuario") int idUsuario,
-			@PathVariable("idProducto") int idProducto) {
-		Usuario usuario = repoUsuario.findById(idUsuario);
-		Producto producto = repoProducto.findById(idProducto);
-		model.addAttribute("usuario", usuario);
-		model.addAttribute("productoVisualizado", producto);
-		model.addAttribute("proveedor", producto.getProveedor());
-		model.addAttribute("subcategoria", producto.getSubcategoria());
-		model.addAttribute("producto", new Producto());
-		return "detalleProducto";
 	}
 
 	@GetMapping("/registroProducto/{idVendedor}")
@@ -118,22 +110,19 @@ public class CtlProducto {
 		Usuario u = repoUsuario.findById(idVendedor);
 
 		if (producto.getCantidad() <= b.getEspacioDisponible() && producto.getCantidad() <= b.getCapacidad()) {
+			try {
+				Map uploadResult = cloudc.upload(file.getBytes(), ObjectUtils.asMap("resourcetype", "auto"));
+				System.out.println(uploadResult.get("url").toString());
+				producto.setUrlFoto(uploadResult.get("url").toString());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			b.setEspacioDisponible(b.getEspacioDisponible() - producto.getCantidad());
 			this.repoBodega.save(b);
 			producto.setProveedor(p);
 			producto.setSubcategoria(c);
 			producto.setBodega(b);
 			producto.setVendedor(u);
-			try {
-				Map uploadResult = cloudc.upload(file.getBytes(), ObjectUtils.asMap("resourcetype", "auto"));
-				System.out.println(uploadResult.get("url").toString());
-				producto.setUrlFoto(uploadResult.get("url").toString());
-			} catch (Exception e) {
-				// LA FOTO EXCEDE EL TAMANO MAXIMO
-				e.printStackTrace();
-				System.out.println(
-						"TAMANOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO MAXIMOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
-			}
 			repoProducto.save(producto);
 			model.addAttribute("bodegaSinEspacio", false);
 			model.addAttribute("productoForm", new Producto());
@@ -145,7 +134,6 @@ public class CtlProducto {
 			model.addAttribute("producto", new Producto());
 
 			model.addAttribute("usuario", this.repoUsuario.findById(idVendedor));
-
 			return "registroProducto";
 		} else {
 			model.addAttribute("bodegaSinEspacio", true);
@@ -196,15 +184,6 @@ public class CtlProducto {
 
 		if (p.getCantidad() <= b.getEspacioDisponible() && p.getCantidad() <= b.getCapacidad()) {
 
-			// modificando el nuevo espacio disponible
-			b.setEspacioDisponible(b.getEspacioDisponible() - p.getCantidad());
-			this.repoBodega.save(b);
-
-			p.setId(id);
-			p.setProveedor(pro);
-			p.setSubcategoria(c);
-			p.setBodega(b);
-			p.setVendedor(repoUsuario.findById(idVendedor));
 			if (cambioUrl) {
 				try {
 					Map uploadResult = cloudc.upload(file.getBytes(), ObjectUtils.asMap("resourcetype", "auto"));
@@ -214,6 +193,14 @@ public class CtlProducto {
 					e.printStackTrace();
 				}
 			}
+			b.setEspacioDisponible(b.getEspacioDisponible() - p.getCantidad());
+			this.repoBodega.save(b);
+
+			p.setId(id);
+			p.setProveedor(pro);
+			p.setSubcategoria(c);
+			p.setBodega(b);
+			p.setVendedor(repoUsuario.findById(idVendedor));
 			repoProducto.save(p);
 			model.addAttribute("bodegaSinEspacio", false);
 			model.addAttribute("productoForm", new Producto());
@@ -397,6 +384,51 @@ public class CtlProducto {
 			return true;
 		}
 		return false;
+	}
+
+	@GetMapping("/detalleProducto/{idUsuario}/{idProducto}")
+	public String detalleProducto(Model model, @PathVariable("idUsuario") int idUsuario,
+			@PathVariable("idProducto") int idProducto) {
+		Usuario usuario = repoUsuario.findById(idUsuario);
+		Producto producto = repoProducto.findById(idProducto);
+		model.addAttribute("agregado", false);
+		model.addAttribute("agotado", false);
+		model.addAttribute("usuario", usuario);
+		model.addAttribute("productoVisualizado", producto);
+		model.addAttribute("proveedor", producto.getProveedor());
+		model.addAttribute("subcategoria", producto.getSubcategoria());
+		model.addAttribute("producto", new Producto());
+		return "detalleProducto";
+	}
+
+	@GetMapping("/producto/{idProducto}/carrito/{idUsuario}")
+	public String agregarCarrito(Model model, @PathVariable("idProducto") int idProducto,
+			@PathVariable("idUsuario") int idUsuario) {
+		Usuario usuario = repoUsuario.findById(idUsuario);
+		Producto producto = repoProducto.findById(idProducto);
+		if (producto.getCantidad() == 0) {
+			model.addAttribute("agregado", false);
+			model.addAttribute("agotado", true);
+			model.addAttribute("usuario", usuario);
+			model.addAttribute("productoVisualizado", producto);
+			model.addAttribute("proveedor", producto.getProveedor());
+			model.addAttribute("subcategoria", producto.getSubcategoria());
+			model.addAttribute("producto", new Producto());
+			return "detalleProducto";
+		} else {
+			Carrito productoCarrito = new Carrito();
+			productoCarrito.setProducto(producto);
+			productoCarrito.setUsuario(usuario);
+			this.repoCarrito.save(productoCarrito);
+			model.addAttribute("agregado", true);
+			model.addAttribute("agotado", false);
+			model.addAttribute("usuario", usuario);
+			model.addAttribute("productoVisualizado", producto);
+			model.addAttribute("proveedor", producto.getProveedor());
+			model.addAttribute("subcategoria", producto.getSubcategoria());
+			model.addAttribute("producto", new Producto());
+			return "detalleProducto";
+		}
 	}
 
 }

@@ -110,7 +110,7 @@
 	</div>
 
 		<footer>
-			<div style="height: 100px; backgroud-color: black;"></div>
+			<div th:if="${listaProductos.isEmpty()}" style="height: 100px; backgroud-color: black;"></div>
 			<div th:replace="fragment/footer :: footer"></div>
 		</footer>
 </body>

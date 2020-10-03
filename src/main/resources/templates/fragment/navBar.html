@@ -20,15 +20,15 @@
 
 			<div class="collapse navbar-collapse" id="navbarColor01">
 				<ul class="navbar-nav mr-auto">
-					<li class="nav-item active"><a class="nav-link" href="#">Inicio
+					<li class="nav-item active"><a class="nav-link" th:href="@{/inicio/{idUsuario}(idUsuario = ${usuario.id})}">Inicio
 							<span class="sr-only">(current)</span>
 					</a></li>
 					<li class="nav-item"><a class="nav-link" href="#">Mis
 							pedidos</a></li>
-					<li class="nav-item">		
-								<a class="nav-link"
-								th:href="@{/misFacturas/{idUsuario}(idUsuario = ${usuario.id})}">Mis Facturas</a>
-							</li>
+					<li class="nav-item"><a class="nav-link" href="#"> <i class="fas fa-shopping-cart"></i> Carrito </a></li>
+					<li class="nav-item"><a class="nav-link"
+						th:href="@{/misFacturas/{idUsuario}(idUsuario = ${usuario.id})}">Mis
+							Facturas</a></li>
 					<li class="nav-item dropdown"><a
 						class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
 						role="button" aria-haspopup="true" aria-expanded="false">Cuenta</a>
@@ -40,11 +40,14 @@
 							<div class="dropdown-divider"></div>
 							<a class="dropdown-item"
 								th:href="@{/eliminarCuenta/{idUsuario}(idUsuario = ${usuario.id})}"
-								style="color: red;" onClick="return confirmarEliminarCuenta()">Eliminar cuenta</a>
+								style="color: red;" onClick="return confirmarEliminarCuenta()">Eliminar
+								cuenta</a>
 						</div></li>
 					<li class="nav-item"><a class="nav-link" href="#">Soporte</a></li>
 				</ul>
-				<form class="form-inline my-2 my-lg-0" th:action="@{/busquedaPorPalabras/{idUsuario}(idUsuario = ${usuario.id})}" th:object="${producto}">
+				<form class="form-inline my-2 my-lg-0"
+					th:action="@{/busquedaPorPalabras/{idUsuario}(idUsuario = ${usuario.id})}"
+					th:object="${producto}">
 					<input class="form-control mr-sm-2" type="text"
 						placeholder="B&uacute;squeda" th:field="*{descripcion}">
 					<button class="btn btn-info my-2 my-sm-0" type="submit">Buscar</button>
