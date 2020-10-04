@@ -1,6 +1,7 @@
 package co.com.example.main.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -22,12 +23,18 @@ import com.cloudinary.utils.ObjectUtils;
 import co.com.example.main.CloudinaryConfig;
 import co.com.example.main.domain.Bodega;
 import co.com.example.main.domain.Carrito;
+import co.com.example.main.domain.DetalleFactura;
+import co.com.example.main.domain.Facturaa;
+import co.com.example.main.domain.Pedido;
 import co.com.example.main.domain.Producto;
 import co.com.example.main.domain.Proveedor;
 import co.com.example.main.domain.Subcategoria;
 import co.com.example.main.domain.Usuario;
 import co.com.example.main.repository.RepoBodega;
 import co.com.example.main.repository.RepoCarrito;
+import co.com.example.main.repository.RepoDetalleFactura;
+import co.com.example.main.repository.RepoFacturaa;
+import co.com.example.main.repository.RepoPedido;
 import co.com.example.main.repository.RepoProducto;
 import co.com.example.main.repository.RepoProveedor;
 import co.com.example.main.repository.RepoSubcategoria;
@@ -56,6 +63,15 @@ public class CtlProducto {
 
 	@Autowired
 	private RepoCarrito repoCarrito;
+
+	@Autowired
+	private RepoPedido repoPedido;
+
+	@Autowired
+	private RepoFacturaa repoFactura;
+
+	@Autowired
+	private RepoDetalleFactura repoDetalleFactura;
 
 	@GetMapping("/pag/{idUsuario}/{page}")
 	public String pag(Model model, @PathVariable("idUsuario") int idUsuario, @PathVariable("page") int page) {
@@ -430,14 +446,21 @@ public class CtlProducto {
 			return "detalleProducto";
 		}
 	}
-	
+
 	@GetMapping("/carrito/{idUsuario}")
 	public String miCarrito(Model model, @PathVariable("idUsuario") int idUsuario) {
 		Usuario user = this.repoUsuario.findById(idUsuario);
 		double valorTotal = 0;
 		valorTotal = calcularPrecio(idUsuario, valorTotal, user);
+		// validaciones
+		model.addAttribute("productoNoDisponible", false);
+		model.addAttribute("productoAgotado", "");
+		model.addAttribute("noHayProductos", false);
+		model.addAttribute("compraRealizada", false);
+		//
 		model.addAttribute("valorTotal", valorTotal);
 		model.addAttribute("listaProductos", this.repoCarrito.findByUsuario(PageRequest.of(0, 12), user));
+		model.addAttribute("listaProductosNoPage", this.repoCarrito.findByUsuario(user));
 		model.addAttribute("usuario", user);
 		model.addAttribute("producto", new Producto());
 		return "carrito";
@@ -445,20 +468,148 @@ public class CtlProducto {
 
 	private double calcularPrecio(int idUsuario, double valorTotal, Usuario user) {
 		List<Carrito> lista = this.repoCarrito.findByUsuario(user);
-		if(lista.isEmpty()) {
+		if (lista.isEmpty()) {
 			return 0;
-		}else {
-			for(Carrito carrito : lista) {
+		} else {
+			for (Carrito carrito : lista) {
 				valorTotal += carrito.getProducto().getPrecio() * carrito.getCantidad();
 			}
 		}
 		return valorTotal;
 	}
-	
+
 	@GetMapping("/eliminar/prod/{idCarrito}/carrito/{idUsuario}")
-	public String eliminarDelCarrito(Model model, @PathVariable("idCarrito") int idCarrito, @PathVariable("idUsuario") int idUsuario){
+	public String eliminarDelCarrito(Model model, @PathVariable("idCarrito") int idCarrito,
+			@PathVariable("idUsuario") int idUsuario) {
 		this.repoCarrito.deleteById(idCarrito);
-		return "redirect:/carrito/"+idUsuario;
+		return "redirect:/carrito/" + idUsuario;
+	}
+
+	@GetMapping("/realizarCompra/{idUsuario}/productos")
+	public String comprar(Model model, @PathVariable("idUsuario") int idComprador) {
+
+		Usuario user = this.repoUsuario.findById(idComprador);
+		List<Carrito> listaProductos = this.repoCarrito.findByUsuario(user);
+
+		if (listaProductos.isEmpty()) {
+			// validaciones
+			model.addAttribute("productoNoDisponible", false);
+			model.addAttribute("productoAgotado", "");
+			model.addAttribute("noHayProductos", true);
+			model.addAttribute("compraRealizada", false);
+			//
+			double valorTotal = 0;
+			valorTotal = calcularPrecio(idComprador, valorTotal, user);
+			model.addAttribute("valorTotal", valorTotal);
+			model.addAttribute("listaProductos", this.repoCarrito.findByUsuario(PageRequest.of(0, 12), user));
+			model.addAttribute("listaProductosNoPage", this.repoCarrito.findByUsuario(user));
+			model.addAttribute("usuario", user);
+			model.addAttribute("producto", new Producto());
+		} else {
+			String productoValidado = validarAlgunProductoAgotado(listaProductos);
+			if (!productoValidado.equals("")) {
+				// validaciones
+				model.addAttribute("productoNoDisponible", true);
+				model.addAttribute("productoAgotado", productoValidado);
+				model.addAttribute("noHayProductos", false);
+				model.addAttribute("compraRealizada", false);
+				//
+				double valorTotal = 0;
+				valorTotal = calcularPrecio(idComprador, valorTotal, user);
+				model.addAttribute("valorTotal", valorTotal);
+				model.addAttribute("listaProductos", this.repoCarrito.findByUsuario(PageRequest.of(0, 12), user));
+				model.addAttribute("listaProductosNoPage", this.repoCarrito.findByUsuario(user));
+				model.addAttribute("usuario", user);
+				model.addAttribute("producto", new Producto());
+			} else {
+				Pedido pedido = new Pedido();
+				pedido = construirPedido(listaProductos, idComprador, pedido);
+				Facturaa factura = new Facturaa();
+				factura = construirFactura(listaProductos, idComprador, pedido, factura);
+				construirDetalle(listaProductos, idComprador, pedido, factura);
+				// validaciones
+				model.addAttribute("productoNoDisponible", false);
+				model.addAttribute("productoAgotado", "");
+				model.addAttribute("noHayProductos", false);
+				model.addAttribute("compraRealizada", true);
+				//
+				double valorTotal = 0;
+				valorTotal = calcularPrecio(idComprador, valorTotal, user);
+				model.addAttribute("valorTotal", valorTotal);
+				model.addAttribute("listaProductos", this.repoCarrito.findByUsuario(PageRequest.of(0, 12), user));
+				model.addAttribute("listaProductosNoPage", this.repoCarrito.findByUsuario(user));
+				model.addAttribute("usuario", user);
+				model.addAttribute("producto", new Producto());
+			}
+		}
+		return "carrito";
+	}
+
+	private String validarAlgunProductoAgotado(List<Carrito> listaProductos) {
+		for (Carrito c : listaProductos) {
+			if (c.getProducto().getCantidad() == 0) {
+				return c.getProducto().getNombre();
+			}
+		}
+		return "";
+	}
+
+	private Pedido construirPedido(List<Carrito> listaProductos, int idComprador, Pedido pedido) {
+		int cantidadArticulos = 0;
+		double valorTotal = 0;
+		for (Carrito c : listaProductos) {
+			cantidadArticulos += c.getCantidad();
+			valorTotal += c.getProducto().getPrecio() * c.getCantidad();
+
+			// modifico la cantidad del producto comprado en la base de datos, es decir, le
+			// resto
+			// la cantidad que se haya comprado
+			Producto p = this.repoProducto.findById(c.getProducto().getId());
+			p.setCantidad(p.getCantidad() - c.getCantidad());
+			this.repoProducto.save(p);
+
+			// modifico la cantidad de la bodega, es decir, había un espacio ocupado por el
+			// producto
+			// en la bodega, pero ahora, ese espacio queda disponible.
+			Bodega b = this.repoBodega.findById(c.getProducto().getBodega().getId());
+			b.setEspacioDisponible(b.getEspacioDisponible() + c.getCantidad());
+			this.repoBodega.save(b);
+		}
+		pedido.setCantidadArticulos(cantidadArticulos);
+		pedido.setUsuario(this.repoUsuario.findById(idComprador));
+		pedido.setValorTotal(valorTotal);
+		this.repoPedido.save(pedido);
+		return pedido;
+	}
+
+	private Facturaa construirFactura(List<Carrito> listaProductos, int idComprador, Pedido pedido, Facturaa factura) {
+		double valorTotal = 0;
+		for (Carrito c : listaProductos) {
+			valorTotal += c.getProducto().getPrecio() * c.getCantidad();
+		}
+		Date fecha = new Date(System.currentTimeMillis());
+		factura.setPedido(pedido);
+		factura.setComprador(this.repoUsuario.findById(idComprador));
+		factura.setFecha(fecha);
+		factura.setValorTotal(valorTotal);
+		this.repoFactura.save(factura);
+		return factura;
+	}
+
+	private void construirDetalle(List<Carrito> listaProductos, int idComprador, Pedido pedido, Facturaa factura) {
+		DetalleFactura detalleFactura;
+		for (Carrito c : listaProductos) {
+			detalleFactura = new DetalleFactura();
+			detalleFactura.setProducto(c.getProducto());
+			detalleFactura.setFactura(factura);
+			detalleFactura.setVendedor(c.getProducto().getVendedor());
+			detalleFactura.setCantidad(c.getCantidad());
+			Date fecha = new Date(System.currentTimeMillis());
+			detalleFactura.setFecha(fecha);
+			detalleFactura.setValor(c.getProducto().getPrecio() * c.getCantidad());
+			this.repoDetalleFactura.save(detalleFactura);
+			this.repoCarrito.delete(c);
+		}
 	}
 
 }

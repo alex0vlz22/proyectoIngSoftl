@@ -39,6 +39,9 @@ public class Producto {
 	@OneToMany(mappedBy = "producto", cascade = CascadeType.REMOVE)
 	private List<Carrito> carrito;
 	
+	@OneToMany(mappedBy = "producto", cascade = CascadeType.REMOVE)
+	private List<DetalleFactura> detalleFactura;
+	
 	@ManyToOne
 	private Proveedor proveedor;
 	

@@ -10,6 +10,19 @@
 
 	<div class="form-group" th:replace="fragment/navBar :: nav"></div>
 
+	<div id="compraRealizada" th:if="${compraRealizada == true}">
+		<div class="alert alert-success" role="alert">&iexcl;Compra
+			realizada!, puedes verificar esto en 'pedidos'.</div>
+	</div>
+	<div id="noHayProductos" th:if="${noHayProductos == true}">
+		<div class="alert alert-danger" role="alert">&iexcl;A&uacute;n
+			no hay productos en tu carrito!</div>
+	</div>
+	<div id="productoAgotado" th:if="${productoNoDisponible == true}">
+		<div class="alert alert-warning" role="alert" 
+		th:text="'El producto: ' + ${productoAgotado} + ' se agot&oacute; antes de realizar la compra. :('"></div>
+	</div>
+
 	<div class="containerx">
 		<div id="informacion">
 			<span id="titulo"><i class="fas fa-shopping-cart"></i> Mi
@@ -17,13 +30,16 @@
 				th:text="'Total a pagar: $ ' + ${valorTotal} + ' COP'"></span>
 		</div>
 		<div id="divBotonComprar">
-			<button class="btn btn-success">Realizar compra</button>
+			<a class="btn btn-success"
+				th:href="@{'/realizarCompra/' + ${usuario.id} + '/productos'}">Realizar
+				compra</a>
 		</div>
 	</div>
 
 	<div class="containerxd">
 		<div id="divNoProductos" th:if="${listaProductos.isEmpty()}">
-			<span id="mensajeNoHayProductos">A&uacute;n no hay productos en tu carrito. :(</span>
+			<span id="mensajeNoHayProductos">A&uacute;n no hay productos
+				en tu carrito. :(</span>
 		</div>
 		<div id="divProductos" th:if="${!listaProductos.isEmpty()}">
 			<div class="card" th:each="carrito : ${listaProductos}" id="producto">
@@ -34,7 +50,8 @@
 				<div class="card-body" id="cuerpoCard">
 					<h4 th:text="${carrito.producto.nombre}"></h4>
 					<h5 th:text="'$ '+${carrito.producto.precio}"></h5>
-					<a class="btn btn-danger mt-2" th:href="@{'/eliminar/prod/' + ${carrito.id} + '/carrito/' + ${usuario.id}}">
+					<a class="btn btn-danger mt-2"
+						th:href="@{'/eliminar/prod/' + ${carrito.id} + '/carrito/' + ${usuario.id}}">
 						<i class="fas fa-trash"></i>
 					</a>
 				</div>
@@ -43,8 +60,7 @@
 	</div>
 
 	<footer>
-		<div
-			style="height: 130px; backgroud-color: black;"></div>
+		<div style="height: 130px; backgroud-color: black;"></div>
 		<div th:replace="fragment/footer :: footer"></div>
 	</footer>
 

@@ -12,6 +12,7 @@ body{
 
 .containerx{
 	display: inline-block;
+	margin-top: 30px;
 	width: 1270px;
 }
 
@@ -77,4 +78,33 @@ body{
 	font-size: 30px;
 	text-align: center;
 	margin-bottom: 400px;
+}
+
+#compraRealizada{
+	text-align: center;
+	animation: bajar 0.5s;
+	position: absolute;
+	width: 100%;
+}
+
+#noHayProductos{
+	text-align: center;
+	animation: bajar 0.5s;
+	position: absolute;
+	width: 100%;
+}
+
+#productoAgotado{
+	text-align: center;
+	animation: bajar 0.5s;
+	position: absolute;
+	width: 100%;
+}
+
+@keyframes bajar{
+	0%{
+		opacity: 0;
+	}100%{
+		opacity: 1;
+	}
 }

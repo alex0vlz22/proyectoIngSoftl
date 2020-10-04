@@ -38,6 +38,15 @@ public class Usuario {
 	
 	private String urlFoto;
 	
+	@OneToMany(mappedBy = "usuario", cascade = CascadeType.REMOVE)
+	private List<Pedido> pedido;
+	
+	@OneToMany(mappedBy = "comprador", cascade = CascadeType.REMOVE)
+	private List<Facturaa> facturaComprador;
+	
+	@OneToMany(mappedBy = "vendedor", cascade = CascadeType.REMOVE)
+	private List<DetalleFactura> detalleFacturaVendedor;
+	
 	// codigoEmpresa es un campo disponible en el registro usuario
 	// solo si quien se quiere registrar es un vendedor, el codigoEmpresa
 	// sería un código cualquiera inventado por nosotros, a la hora de crear
