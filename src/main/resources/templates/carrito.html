@@ -23,10 +23,10 @@
 		th:text="'El producto: ' + ${productoAgotado} + ' se agot&oacute; antes de realizar la compra. :('"></div>
 	</div>
 
-	<div class="containerx">
+	<div class="containerx p-1 ml-4">
 		<div id="informacion">
-			<span id="titulo"><i class="fas fa-shopping-cart"></i> Mi
-				carrito <br></span> <span id="totalPago"
+			<h1><i class="fas fa-shopping-cart"></i> Mi
+				carrito <br></h1> <span id="totalPago"
 				th:text="'Total a pagar: $ ' + ${valorTotal} + ' COP'"></span>
 		</div>
 		<div id="divBotonComprar">
@@ -35,6 +35,8 @@
 				compra</a>
 		</div>
 	</div>
+	
+	<hr style="background-color: white;">
 
 	<div class="containerxd">
 		<div id="divNoProductos" th:if="${listaProductos.isEmpty()}">
