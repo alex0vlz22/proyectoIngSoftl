@@ -34,6 +34,15 @@ public class CtlFacturaa {
 		model.addAttribute("usuario", user);
 		return "visualizarFacturas";
 	}
+	
+	@GetMapping("/visualizarFacturas/{idUsuario}/page/{page}")
+	public String visualizarFacturas(Model model, @PathVariable("idUsuario") int idUsuario, @PathVariable("page") int page) {
+		Usuario user = this.repoUsuario.findById(idUsuario);
+		model.addAttribute("producto", new Producto());
+		model.addAttribute("listaFacturas", this.repoFactura.findByComprador(PageRequest.of(page, 5), user));
+		model.addAttribute("usuario", user);
+		return "visualizarFacturas";
+	}
 
 	@GetMapping("/visualizarDetalle/{idFactura}/{idUsuario}")
 	public String visualizarDetalleFactura(Model model, @PathVariable("idUsuario") int idUsuario,
@@ -41,6 +50,17 @@ public class CtlFacturaa {
 		Facturaa f = this.repoFactura.findById(idFactura);
 		model.addAttribute("producto", new Producto());
 		model.addAttribute("listaDetalles", this.repoDetalleFactura.findByFactura(PageRequest.of(0, 6), f));
+		model.addAttribute("usuario", this.repoUsuario.findById(idUsuario));
+		model.addAttribute("factura", f);
+		return "detalleFactura";
+	}
+
+	@GetMapping("/visualizarDetalle/{idFactura}/{idUsuario}/{page}")
+	public String pagVisualizarDetalleFactura(Model model, @PathVariable("idUsuario") int idUsuario,
+			@PathVariable("idFactura") int idFactura, @PathVariable("page") int page) {
+		Facturaa f = this.repoFactura.findById(idFactura);
+		model.addAttribute("producto", new Producto());
+		model.addAttribute("listaDetalles", this.repoDetalleFactura.findByFactura(PageRequest.of(page, 6), f));
 		model.addAttribute("usuario", this.repoUsuario.findById(idUsuario));
 		model.addAttribute("factura", f);
 		return "detalleFactura";

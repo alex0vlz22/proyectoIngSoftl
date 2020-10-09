@@ -14,12 +14,17 @@
 		<div class="form-group" th:replace="fragment/vendedor/navBar :: nav"></div>
 
 		<div th:if="${agotado == true}" class="notificacion">
-			<div class="alert alert-danger mensajeNotificacion" role="alert">Este producto se
-				encuentra agotado.</div>
+			<div class="alert alert-danger mensajeNotificacion" role="alert">Este
+				producto se encuentra agotado.</div>
 		</div>
 		<div th:if="${agregado == true}" class="notificacion">
-			<div class="alert alert-success mensajeNotificacion" role="alert">Producto agregado
-				al carrito.</div>
+			<div class="alert alert-success mensajeNotificacion" role="alert">Producto
+				agregado al carrito.</div>
+		</div>
+		<div th:if="${yaEnCarrito == true}" class="notificacion">
+			<div class="alert alert-success mensajeNotificacion" role="alert">Este
+				producto ya se encuentra agregado al carrito, c&oacute;mpralo y
+				vuelve por otro.</div>
 		</div>
 
 		<div id="main" class="container">
@@ -58,12 +63,17 @@
 	<div th:if="${usuario.rol.equals('Cliente')}" id="cliente">
 		<div class="form-group" th:replace="fragment/navBar :: nav"></div>
 		<div th:if="${agotado == true}" class="notificacion">
-			<div class="alert alert-danger mensajeNotificacion" role="alert">Este producto se
-				encuentra agotado.</div>
+			<div class="alert alert-danger mensajeNotificacion" role="alert">Este
+				producto se encuentra agotado.</div>
 		</div>
 		<div th:if="${agregado == true}" class="notificacion">
-			<div class="alert alert-success mensajeNotificacion" role="alert">Producto agregado
-				al carrito.</div>
+			<div class="alert alert-success mensajeNotificacion" role="alert">Producto
+				agregado al carrito.</div>
+		</div>
+		<div th:if="${yaEnCarrito == true}" class="notificacion">
+			<div class="alert alert-danger mensajeNotificacion" role="alert" id="yaEnCarrito">Este
+				producto ya se encuentra agregado al carrito, c&oacute;mpralo y
+				vuelve por otro.</div>
 		</div>
 		<div id="main" class="container">
 			<div id="divImg">
@@ -72,7 +82,7 @@
 			</div>
 			<div class="description" id="descripcionProd">
 				<div id="divCantidad" class="form-group">
-					<label>Cantidad restante:</label> <label
+					<label>Disponible:</label> <label
 						th:value="${productoVisualizado.cantidad}"
 						th:text="${productoVisualizado.cantidad}"></label>
 				</div>
@@ -96,7 +106,7 @@
 				</div>
 				<hr style="background-color: gray;">
 				<div id="divComprar" class="form-group">
-					<a
+					<a type="submit"
 						th:href="@{'/producto/'+${productoVisualizado.id}+'/carrito/'+${usuario.id}}"
 						class="btn btn-success mt-3" id="botonAgregar"><i
 						class="fas fa-cart-plus"></i> Agregar al carrito</a>
@@ -104,7 +114,9 @@
 			</div>
 		</div>
 	</div>
+
 	<div style="height: 100px; backgroud-color: black;"></div>
 	<div th:replace="fragment/footer :: footer"></div>
+
 </body>
 </html>

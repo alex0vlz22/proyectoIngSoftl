@@ -6,3 +6,14 @@ body{
 	overflow-x: hidden;
 }
 
+#paginacion{
+	display: inline-block;
+	width: 100%;
+	text-align: center;
+}
+
+#pagElement{
+	display: block;
+	float: left;
+}
+

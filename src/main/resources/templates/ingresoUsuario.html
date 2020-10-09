@@ -49,7 +49,7 @@
 			</div>
 		</div>
 
-		<div id="paginacion">
+		<div id="paginacion" th:if="${!listaProductos.isEmpty()}">
 			<a th:each="i : ${#numbers.sequence(0,listaProductos.totalPages-1)}"
 				class="page-link btn btn-primary"
 				th:href="@{'/pag/' + ${usuario.id} + '/' + ${i}}" th:text="${i}"

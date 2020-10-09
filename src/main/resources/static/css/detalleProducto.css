@@ -47,8 +47,13 @@ img:hover{
 	position: absolute;
 }
 
+#yaEnCarrito{
+	width: 800px;
+	margin-left: -130px;
+}
+
 .mensajeNotificacion:hover{
-	animation: shake 0.3s;
+	/*animation: shake 0.3s;*/
 }
 
 @keyframes shake{

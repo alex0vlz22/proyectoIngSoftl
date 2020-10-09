@@ -409,11 +409,13 @@ public class CtlProducto {
 		Producto producto = repoProducto.findById(idProducto);
 		model.addAttribute("agregado", false);
 		model.addAttribute("agotado", false);
+		model.addAttribute("yaEnCarrito", false);
 		model.addAttribute("usuario", usuario);
 		model.addAttribute("productoVisualizado", producto);
 		model.addAttribute("proveedor", producto.getProveedor());
 		model.addAttribute("subcategoria", producto.getSubcategoria());
 		model.addAttribute("producto", new Producto());
+		model.addAttribute("prodAgregar", new Producto());
 		return "detalleProducto";
 	}
 
@@ -422,9 +424,11 @@ public class CtlProducto {
 			@PathVariable("idUsuario") int idUsuario) {
 		Usuario usuario = repoUsuario.findById(idUsuario);
 		Producto producto = repoProducto.findById(idProducto);
+
 		if (producto.getCantidad() == 0) {
 			model.addAttribute("agregado", false);
 			model.addAttribute("agotado", true);
+			model.addAttribute("yaEnCarrito", false);
 			model.addAttribute("usuario", usuario);
 			model.addAttribute("productoVisualizado", producto);
 			model.addAttribute("proveedor", producto.getProveedor());
@@ -432,19 +436,42 @@ public class CtlProducto {
 			model.addAttribute("producto", new Producto());
 			return "detalleProducto";
 		} else {
-			Carrito productoCarrito = new Carrito();
-			productoCarrito.setProducto(producto);
-			productoCarrito.setUsuario(usuario);
-			this.repoCarrito.save(productoCarrito);
-			model.addAttribute("agregado", true);
-			model.addAttribute("agotado", false);
-			model.addAttribute("usuario", usuario);
-			model.addAttribute("productoVisualizado", producto);
-			model.addAttribute("proveedor", producto.getProveedor());
-			model.addAttribute("subcategoria", producto.getSubcategoria());
-			model.addAttribute("producto", new Producto());
-			return "detalleProducto";
+			if (validarProductoYaEnCarrito(idProducto, idUsuario)) {
+				model.addAttribute("agregado", false);
+				model.addAttribute("agotado", false);
+				model.addAttribute("yaEnCarrito", true);
+				model.addAttribute("usuario", usuario);
+				model.addAttribute("productoVisualizado", producto);
+				model.addAttribute("proveedor", producto.getProveedor());
+				model.addAttribute("subcategoria", producto.getSubcategoria());
+				model.addAttribute("producto", new Producto());
+				return "detalleProducto";
+			} else {
+				Carrito productoCarrito = new Carrito();
+				productoCarrito.setProducto(producto);
+				productoCarrito.setUsuario(usuario);
+				this.repoCarrito.save(productoCarrito);
+				model.addAttribute("agregado", true);
+				model.addAttribute("agotado", false);
+				model.addAttribute("yaEnCarrito", false);
+				model.addAttribute("usuario", usuario);
+				model.addAttribute("productoVisualizado", producto);
+				model.addAttribute("proveedor", producto.getProveedor());
+				model.addAttribute("subcategoria", producto.getSubcategoria());
+				model.addAttribute("producto", new Producto());
+				return "detalleProducto";
+			}
 		}
+	}
+
+	private boolean validarProductoYaEnCarrito(int idProducto, int idUsuario) {
+		List<Carrito> lista = this.repoCarrito.findByUsuario(this.repoUsuario.findById(idUsuario));
+		for (Carrito c : lista) {
+			if (c.getProducto().getId() == idProducto) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@GetMapping("/carrito/{idUsuario}")

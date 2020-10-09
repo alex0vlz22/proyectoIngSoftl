@@ -18,3 +18,14 @@ body{
 	width: 100%;
 	padding: 20px;
 }
+
+#paginacion{
+	display: inline-block;
+	width: 100%;
+	text-align: center;
+}
+
+#pagElement{
+	display: block;
+	float: left;
+}

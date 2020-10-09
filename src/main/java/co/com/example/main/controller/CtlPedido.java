@@ -17,10 +17,10 @@ public class CtlPedido {
 
 	@Autowired
 	private RepoPedido repoPedido;
-	
+
 	@Autowired
 	private RepoUsuario repoUsuario;
-	
+
 	@GetMapping("/visualizarPedidos/{idUsuario}")
 	public String visualizarPedidos(Model model, @PathVariable("idUsuario") int idUsuario) {
 		Usuario user = this.repoUsuario.findById(idUsuario);
@@ -29,5 +29,15 @@ public class CtlPedido {
 		model.addAttribute("producto", new Producto());
 		return "visualizarPedidos";
 	}
-	
+
+	@GetMapping("/visualizarPedidos/{idUsuario}/page/{page}")
+	public String visualizarPagPedidos(Model model, @PathVariable("idUsuario") int idUsuario,
+			@PathVariable("page") int page) {
+		Usuario user = this.repoUsuario.findById(idUsuario);
+		model.addAttribute("usuario", user);
+		model.addAttribute("listaPedidos", this.repoPedido.findByUsuario(PageRequest.of(page, 6), user));
+		model.addAttribute("producto", new Producto());
+		return "visualizarPedidos";
+	}
+
 }

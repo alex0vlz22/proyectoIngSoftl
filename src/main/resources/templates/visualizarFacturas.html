@@ -36,6 +36,12 @@
 			class="col-sm"
 			th:text="'Valor total: $ ' + ${factura.valorTotal} + ' COP'"></span>
 		</a>
+		<div id="paginacion" th:if="${!listaFacturas.isEmpty()}">
+			<a th:each="i : ${#numbers.sequence(0,listaFacturas.totalPages-1)}"
+				class="page-link btn btn-primary"
+				th:href="@{'/visualizarFacturas/' + ${usuario.id} + '/page/' + ${i}}"
+				th:text="${i}" id="pagElement" align="center"></a>
+		</div>
 	</div>
 
 	<footer style="margin-top: 300px;" th:if="${!listaFacturas.isEmpty()}">

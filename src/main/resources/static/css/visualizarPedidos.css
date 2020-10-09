@@ -63,3 +63,16 @@ footer{
 	width: 100%;
 	margin-top: -45px;
 }
+
+#paginacion{
+	margin-top: 40px;
+	display: inline-block;
+	width: 100%;
+	text-align: center;
+}
+
+#pagElement{
+	display: block;
+	float: left;
+}
+
