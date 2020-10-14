@@ -1,7 +1,8 @@
-package co.com.example.main;
+package co.com.example.main.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.List;
 
@@ -17,19 +18,18 @@ import co.com.example.main.repository.RepoUsuario;
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
-public class TestRepoUsuario {
+public class RepoUsuarioTest {
 	
 	@Autowired
 	private TestEntityManager entityManager;
 	
 	@Autowired
 	RepoUsuario repoUsuario;
-	
 	@Test
 	public void testListarVacio() {
 		Iterable<Usuario> lista = repoUsuario.findAll();
 		assertThat(lista).isEmpty();
-	}	
+	}
 	
 	@Test
 	public void testGuardar() {
@@ -42,7 +42,9 @@ public class TestRepoUsuario {
 		user.setRol("Cliente");
 		user.setUrlFoto("www");
 		user.setDireccion("dffd");
-		Usuario usuario = repoUsuario.save(user);
-		assertThat(usuario).hasFieldOrPropertyWithValue("nombre", "j");
+		Usuario usuario = entityManager.persist(user);
+		assertNotNull(usuario);
 	}
+	
+	
 }
