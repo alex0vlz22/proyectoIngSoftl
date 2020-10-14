@@ -24,6 +24,9 @@ public class RepoUsuarioTest {
 	@Autowired
 	private TestEntityManager entityManager;
 	
+	@Autowired
+	RepoUsuario repoUsuario;
+	
 	private Usuario getUsuario(String dni) {
 		Usuario user = new Usuario();
 		user.setDNI(dni);
@@ -37,8 +40,7 @@ public class RepoUsuarioTest {
 		return user;
 	}
 	
-	@Autowired
-	RepoUsuario repoUsuario;
+	
 	
 	@Test
 	public void testListarVacio() {
