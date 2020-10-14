@@ -12,27 +12,23 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import co.com.example.main.domain.Categoria;
+import co.com.example.main.domain.Subcategoria;
 import co.com.example.main.domain.Usuario;
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
-public class RepoCategoriaTest {
-	
+public class RepoSubcategoriaTest {
+
 	@Autowired
 	private TestEntityManager entityManager;
 	
 	@Autowired
-	RepoCategoria repoCategoria;
+	RepoSubcategoria repoSubcategoria;
 	
-	/*
-	@Autowired
-	RepoUsuario repoUsuario;
-	*/
-	
-	private Categoria getCategoria(String nombre, String dni) {
+	private Subcategoria getSubcategoria(String nombre) {
 		/*
 		Usuario user = new Usuario();
-		user.setDNI(dni);
+		user.setDNI("1");
 		user.setNombre("j");
 		user.setApellido("j");
 		user.setTelefono("5754567");
@@ -40,64 +36,63 @@ public class RepoCategoriaTest {
 		user.setRol("Cliente");
 		user.setUrlFoto("www");
 		user.setDireccion("dffd");
-		user = repoUsuario.save(user);
-		*/
+		
+		
 		Categoria categoria = new Categoria();
-		categoria.setNombre(nombre);
-		//categoria.setUsuario(user);
-		return categoria;
+		categoria.setNombre("primera");
+		categoria.setUsuario(user);
+		*/
+		
+		Subcategoria subcategoria = new Subcategoria();
+		subcategoria.setNombre(nombre);
+		//subcategoria.setCategoria(categoria);
+		//subcategoria.setUsuario(user);
+		return subcategoria;
 	}
 	
 	
 	
 	@Test
 	public void testListarVacio() {
-		Iterable<Categoria> lista = repoCategoria.findAll();
+		Iterable<Subcategoria> lista = repoSubcategoria.findAll();
 		assertThat(lista).isEmpty();
 	}
 	
 	@Test
 	public void testGuardar() {
-		Categoria cate = entityManager.persist(getCategoria("primera", "1"));
-		assertNotNull(cate);
+		Subcategoria sub = entityManager.persist(getSubcategoria("primera"));
+		assertNotNull(sub);
 	}
 	
 	@Test
 	public void testBuscarId() {
-		Categoria cate = entityManager.persist(getCategoria("primera", "1"));
-		Categoria  b = repoCategoria.findById(cate.getId());
-		assertThat(cate).isEqualTo(b);
+		Subcategoria sub = entityManager.persist(getSubcategoria("primera"));
+		Subcategoria  b = repoSubcategoria.findById(sub.getId());
+		assertThat(sub).isEqualTo(b);
 	}
 	
 	@Test
 	public void TestModificar() {
-		Categoria cate = entityManager.persist(getCategoria("primera", "1"));
-		cate.setNombre("t");
-		Categoria update = repoCategoria.save(cate);
-		assertThat(update).isEqualTo(cate);
+		Subcategoria sub = entityManager.persist(getSubcategoria("primera"));
+		sub.setNombre("t");
+		Subcategoria update = repoSubcategoria.save(sub);
+		assertThat(update).isEqualTo(sub);
 	}
 	
 	@Test
 	public void testEliminar() {
-		Categoria cate = entityManager.persist(getCategoria("primera", "1"));
-		repoCategoria.delete(cate);
-		Categoria b = repoCategoria.findById(cate.getId());
+		Subcategoria sub = entityManager.persist(getSubcategoria("primera"));
+		repoSubcategoria.delete(sub);
+		Subcategoria b = repoSubcategoria.findById(sub.getId());
 		assertNull(b);
 	}
 	
 	@Test
 	public void testListarTodos() {
-		entityManager.persist(getCategoria("primera", "1"));
-		
-		Iterable<Categoria> lista = repoCategoria.findAll();
+		Subcategoria sub = entityManager.persist(getSubcategoria("primera"));
+		Iterable<Subcategoria> lista = repoSubcategoria.findAll();
 		assertThat(lista).isNotEmpty();
 	}
 	
-	@Test
-	public void testBuscarNombre() {
-		Categoria cate = entityManager.persist(getCategoria("tercera", "3"));
-		Categoria  b = repoCategoria.findByNombre(cate.getNombre());
-		assertThat(cate).isEqualTo(b);
-	}
-
+	
 }
