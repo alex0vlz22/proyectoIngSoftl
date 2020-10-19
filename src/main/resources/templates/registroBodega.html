@@ -38,7 +38,10 @@
 									<tr>
 										<td colspan="2"><span id="capacidad">Capacidad</span> <input
 											placeholder="capacidad" th:field="*{capacidad}"
-											required="true" type="number" class="form-control" /></td>
+											required="true" type="number" class="form-control" /> <span
+											th:if="${#fields.hasErrors('capacidad')}"
+											th:errors="*{capacidad}" class="text-danger"></span> <span th:text="${error}"
+											class="text-danger"></span></td>
 									</tr>
 									<tr>
 										<td colspan="2" style="text-align: center;"><button

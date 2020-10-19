@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.Min;
 
 import lombok.Data;
 
@@ -26,7 +27,7 @@ public class Bodega {
 	private String nombre;
 	
 	private String direccion;
-	
+	@Min(1)
 	private int capacidad;
 	
 	private int espacioDisponible;
