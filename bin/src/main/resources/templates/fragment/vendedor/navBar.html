@@ -47,7 +47,7 @@
 				<form class="form-inline my-2 my-lg-0" th:action="@{/busquedaPorPalabras/{idUsuario}(idUsuario = ${usuario.id})}" th:object="${producto}">
 					<input class="form-control mr-sm-2" type="text" 
 						placeholder="B&uacute;squeda" th:field="*{descripcion}">
-					<button class="btn btn-secondary my-2 my-sm-0" type="button" style="margin-right: 10px;">Buscar</button>
+					<button class="btn btn-info my-2 my-sm-0" type="submit" style="margin-right: 10px;">Buscar</button>
 				</form>
 			</div>
 		</nav>

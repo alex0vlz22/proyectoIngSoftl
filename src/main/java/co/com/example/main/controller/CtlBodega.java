@@ -34,7 +34,7 @@ public class CtlBodega {
 		Usuario user = repoUsuario.findById(idVendedor);
 		model.addAttribute("idVendedor", idVendedor);
 		model.addAttribute("bodega", new Bodega());
-		model.addAttribute("listaBodegas", repoBodega.findByUsuario(PageRequest.of(page, 3), user));
+		model.addAttribute("listaBodegas", this.repoBodega.findAll(PageRequest.of(page, 3)));
 		model.addAttribute("usuario", user);
 		model.addAttribute("producto", new Producto());
 		return "registroBodega";
@@ -45,7 +45,7 @@ public class CtlBodega {
 		Usuario user = this.repoUsuario.findById(idVendedor);
 		model.addAttribute("idVendedor", idVendedor);
 		model.addAttribute("bodega", new Bodega());
-		model.addAttribute("listaBodegas", this.repoBodega.findByUsuario(PageRequest.of(0, 3), user));
+		model.addAttribute("listaBodegas", this.repoBodega.findAll(PageRequest.of(0, 3)));
 		model.addAttribute("usuario", user);
 		model.addAttribute("producto", new Producto());
 		return "registroBodega";
@@ -57,11 +57,12 @@ public class CtlBodega {
 		b.setEspacioDisponible(b.getCapacidad());
 		model.addAttribute("bodega", new Bodega());
 		model.addAttribute("idVendedor", idVendedor);
-		model.addAttribute("listaBodegas", repoBodega.findAll());
+		model.addAttribute("listaBodegas", this.repoBodega.findAll(PageRequest.of(0, 3)));
 		model.addAttribute("producto", new Producto());
 
 		if (result.hasErrors()) {
 			model.addAttribute("usuario", repoUsuario.findById(idVendedor));
+			
 			model.addAttribute("error", "El valor debe ser mayor que 1");
 			return "registroBodega";
 		} else {

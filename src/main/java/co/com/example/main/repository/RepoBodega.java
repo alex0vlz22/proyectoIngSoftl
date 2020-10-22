@@ -13,7 +13,9 @@ public interface RepoBodega extends CrudRepository<Bodega, Integer>{
 
 	Bodega findById(int id);
 	
+	Page<Bodega> findAll(Pageable page);
+	
 	List<Bodega> findByUsuario(Usuario user);
 	
-	Page<Bodega> findByUsuario(Pageable page, Usuario user);
+	
 }

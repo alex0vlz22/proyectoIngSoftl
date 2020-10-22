@@ -1,106 +1,51 @@
 @charset "ISO-8859-1";
 
 body{
-	background: linear-gradient(to bottom, #fcdab7, #1e5f74 , #133b5c, #1d2d50, black);
+	/*background: linear-gradient(to bottom, #fcdab7, #1e5f74 , #133b5c, #1d2d50, black);*/
+	background: url('../images/fondos/darkWallHigher.png');
 	overflow-x: hidden;
 }
 
-#tablaPrincipal{
-	margin-left: 200px;
-}
-
-#divisionPrincipal, #divisionNoHayProductos, #divisionSiHayProductos{
-	border: 1px solid lightgray;
-	height: 900px;
-	width: 400px;
-	background-color: white;
-	opacity: 0.9;
-	border-radius: 10px;
-	margin-top: 90px;
-}
-
- #divisionSiHayProductos{
- 	border: 1px solid lightgray;
-	height: 500px;
-	width: 480px;
-	background-color: white;
-	opacity: 0.9;
-	border-radius: 10px;
-	margin-top: 90px;
-	
- }
- 
-
-#divisionPrincipal{
-	margin-right: 160px;
-}
-
-#tituloCategoria{
-	text-align: center;
-	font-size: 25px;
-	font-family: sans-serif;
-	margin-left: 50px;
-}
-
-#botonGuardar{
-	margin-top: 30px;
-	margin-left: 85px;
-	border: 1px solid lightgray;
-	height: 35px;
-	width: 100px;
-	border-radius: 5px;
-	background-color: black;
-	color: white;
-}
-
-#botonGuardar:hover{
-	font-size: 17px;
-}
-
-select{
-	width: 180px;
-}
-
-.etiqueta{
-	margin-right: 10px;
-}
-
-#divisionNoHayProductos{
+#paginacion{
+	display: inline-block;
+	width: 200px;
 	text-align: center;
 }
 
-#mensajeNoHayProductos{
-	font-family: cursive;
-	font-size: 30px;
+#pagElement{
+	display: block;
+	float: left;
 }
 
-.filaProductos{
-	text-align:center;
-	
+#divErrorBodega{
+	position:absolute;
+	margin-left: 460px;
+	margin-top: 20px;
+	animation: sacudir 0.8s;
 }
 
-.columnaProductos{
-	text-align:center;
-	border: 1px solid lightgray;
+@keyframes sacudir{
+	0%{
+        transform: translateX(-5px);
+    }10%{
+        transform: translateX(5px);
+    }20%{
+        transform: translateX(-5px);
+    }30%{
+        transform: translateX(5px);
+    }40%{
+        transform: translateX(-5px);
+    }50%{
+        transform: translateX(5px);
+    }60%{
+        transform: translateX(-5px);
+    }70%{
+        transform: translateX(5px);
+    }80%{
+        transform: translateX(-5px);
+    }90%{
+        transform: translateX(5px);
+    }100%{
+        transform: translateX(-5px);
+    }
 }
-
-#botonEG{
-	color: black;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
