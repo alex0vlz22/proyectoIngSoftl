@@ -28,6 +28,13 @@ public class CtlBodega {
 	@Autowired
 	private RepoUsuario repoUsuario;
 
+	public boolean existeBodega(String nombre) {
+		if (repoBodega.findByNombre(nombre) != null) {
+			return true;
+		}
+		return false;
+	}
+
 	@GetMapping("registroBodega/{idVendedor}/pag/{page}")
 	public String registroBodegaPag(Model model, @PathVariable("idVendedor") int idVendedor,
 			@PathVariable("page") int page) {
@@ -55,36 +62,21 @@ public class CtlBodega {
 	public String guardarBodega(@Valid Bodega b, BindingResult result, Model model, @PathVariable int idVendedor) {
 		b.setUsuario(repoUsuario.findById(idVendedor));
 		b.setEspacioDisponible(b.getCapacidad());
-		model.addAttribute("bodega", new Bodega());
 		model.addAttribute("idVendedor", idVendedor);
 		model.addAttribute("listaBodegas", this.repoBodega.findAll(PageRequest.of(0, 3)));
 		model.addAttribute("producto", new Producto());
-
+		model.addAttribute("bodega", b);
+		model.addAttribute("usuario", repoUsuario.findById(idVendedor));
+		if (existeBodega(b.getNombre())) {
+			model.addAttribute("error", "El nombre de las bodegas es irrepetible");
+			return "registroBodega";
+		}
 		if (result.hasErrors()) {
-			model.addAttribute("usuario", repoUsuario.findById(idVendedor));
-			
-			model.addAttribute("error", "El valor debe ser mayor que 1");
 			return "registroBodega";
 		} else {
-			if (buscarBodegaPorNombre(b.getNombre()) != null) {
-				model.addAttribute("error", "Ya existe una bodega con el mismo nombre");
-				model.addAttribute("usuario", repoUsuario.findById(idVendedor));
-				return "registroBodega";
-			} else {
-				repoBodega.save(b);
-				return "redirect:/registroBodega/" + idVendedor;
-			}
+			repoBodega.save(b);
+			return "redirect:/registroBodega/" + idVendedor;
 		}
-	}
-
-	private Bodega buscarBodegaPorNombre(String nombre) {
-		List<Bodega> listaBodegas = (List<Bodega>) repoBodega.findAll();
-		for (int i = 0; i < listaBodegas.size(); i++) {
-			if (listaBodegas.get(i).getNombre().equals(nombre)) {
-				return listaBodegas.get(i);
-			}
-		}
-		return null;
 	}
 
 	@GetMapping("/editarBodega/{id}")

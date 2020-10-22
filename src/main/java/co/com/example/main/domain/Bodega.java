@@ -13,6 +13,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Min;
 
+import org.hibernate.validator.constraints.UniqueElements;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+
 import lombok.Data;
 
 @Entity
@@ -25,17 +28,17 @@ public class Bodega {
 	
 	@Column(unique = true)
 	private String nombre;
-	
+
 	private String direccion;
 	@Min(1)
 	private int capacidad;
-	
+
 	private int espacioDisponible;
-	
+
 	@OneToMany(mappedBy = "bodega", cascade = CascadeType.REMOVE)
 	private List<Producto> producto;
-	
+
 	@ManyToOne
 	private Usuario usuario;
-	
+
 }

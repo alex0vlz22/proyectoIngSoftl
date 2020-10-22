@@ -17,5 +17,7 @@ public interface RepoBodega extends CrudRepository<Bodega, Integer>{
 	
 	List<Bodega> findByUsuario(Usuario user);
 	
+	Bodega findByNombre(String nombre);
+	
 	
 }
