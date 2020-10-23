@@ -89,17 +89,45 @@ public class CtlBodega {
 	}
 
 	@PostMapping("/modificarBodega/{id}")
-	public String modificarBodega(Model model, @PathVariable int id, Bodega b) {
+	public String modificarBodega(@Valid Bodega b, BindingResult result, @PathVariable int id, Model model) {
 		Bodega bodAux = repoBodega.findById(id);
+
 		int idVendedor = bodAux.getUsuario().getId();
+
 		b.setId(id);
 		b.setUsuario(repoUsuario.findById(idVendedor));
-		repoBodega.save(b);
-		model.addAttribute("bodega", new Bodega());
-		model.addAttribute("listaBodegas", repoBodega.findAll());
-		model.addAttribute("idVendedor", idVendedor);
-		model.addAttribute("producto", new Producto());
-		return "redirect:/registroBodega/" + idVendedor;
+		if (repoBodega.findAllByNombre(b.getNombre()).size() >= 1) {
+			if (repoBodega.findByNombre(b.getNombre()).getId() != bodAux.getId()) {
+				model.addAttribute("error", "Ya hay una bodega con este nombre");
+				model.addAttribute("bodega", b);
+				model.addAttribute("listaBodegas", repoBodega.findAll());
+				model.addAttribute("idVendedor", idVendedor);
+				model.addAttribute("usuario", bodAux.getUsuario());
+				model.addAttribute("producto", new Producto());
+				return "editarBodega";
+
+			}
+		}
+		if (result.hasErrors()) {
+			model.addAttribute("bodega", b);
+			model.addAttribute("listaBodegas", repoBodega.findAll());
+			model.addAttribute("idVendedor", idVendedor);
+			model.addAttribute("producto", new Producto());
+			model.addAttribute("usuario", bodAux.getUsuario());
+			return "editarBodega";
+
+		} else {
+			bodAux = repoBodega.findById(b.getId());
+			bodAux.setCapacidad(b.getCapacidad());
+			bodAux.setNombre(b.getNombre());
+			bodAux.setDireccion(b.getDireccion());
+			repoBodega.save(bodAux);
+			model.addAttribute("bodega", new Bodega());
+			model.addAttribute("listaBodegas", repoBodega.findAll());
+			model.addAttribute("idVendedor", idVendedor);
+			model.addAttribute("producto", new Producto());
+			return "redirect:/registroBodega/" + idVendedor;
+		}
 	}
 
 	@GetMapping("/eliminarBodega/{id}")
