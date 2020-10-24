@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
+import javax.validation.constraints.Size;
 
 import lombok.Data;
 
@@ -23,6 +24,7 @@ public class Subcategoria {
 	private int id;
 	
 	@Column(unique=true)
+	@Size(min=3, max=35, message = "Ingrese entre 3 y 35 caracteres")
 	private String nombre;
 	
 	@ManyToOne

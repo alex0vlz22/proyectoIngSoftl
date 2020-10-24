@@ -11,9 +11,9 @@ import co.com.example.main.domain.Usuario;
 public interface RepoCategoria extends JpaRepository<Categoria, Integer> {
 
 	Categoria findById(int id);
-	
+
 	Categoria findByNombre(String nombre);
-	
-	Page<Categoria> findByUsuario(Pageable page, Usuario user);
-	
+
+	Page<Categoria> findAll(Pageable page);
+
 }

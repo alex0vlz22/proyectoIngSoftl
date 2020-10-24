@@ -32,7 +32,7 @@ public class CtlCategoria {
 		Usuario user = this.repoUsuario.findById(idVendedor);
 		model.addAttribute("categoria", new Categoria());
 		model.addAttribute("idVendedor", idVendedor);
-		model.addAttribute("listaCategorias", this.repoCategoria.findByUsuario(PageRequest.of(page, 2), user));
+		model.addAttribute("listaCategorias", this.repoCategoria.findAll(PageRequest.of(page, 2)));
 		model.addAttribute("usuario", user);
 		model.addAttribute("producto", new Producto());
 		return "registroCategoria";
@@ -43,7 +43,7 @@ public class CtlCategoria {
 		Usuario user = this.repoUsuario.findById(idVendedor);
 		model.addAttribute("categoria", new Categoria());
 		model.addAttribute("idVendedor", idVendedor);
-		model.addAttribute("listaCategorias", this.repoCategoria.findByUsuario(PageRequest.of(0, 2), user));
+		model.addAttribute("listaCategorias", this.repoCategoria.findAll(PageRequest.of(0, 2)));
 		model.addAttribute("usuario", user);
 		model.addAttribute("producto", new Producto());
 		return "registroCategoria";
@@ -57,7 +57,7 @@ public class CtlCategoria {
 			Usuario user = this.repoUsuario.findById(idVendedor);
 			model.addAttribute("categoria", categoria);
 			model.addAttribute("idVendedor", idVendedor);
-			model.addAttribute("listaCategorias", this.repoCategoria.findByUsuario(PageRequest.of(0, 2), user));
+			model.addAttribute("listaCategorias", this.repoCategoria.findAll(PageRequest.of(0, 2)));
 			model.addAttribute("usuario", user);
 			model.addAttribute("producto", new Producto());
 			return "registroCategoria";
@@ -67,7 +67,7 @@ public class CtlCategoria {
 			Usuario user = this.repoUsuario.findById(idVendedor);
 			model.addAttribute("categoria", categoria);
 			model.addAttribute("idVendedor", idVendedor);
-			model.addAttribute("listaCategorias", this.repoCategoria.findByUsuario(PageRequest.of(0, 2), user));
+			model.addAttribute("listaCategorias", this.repoCategoria.findAll(PageRequest.of(0, 2)));
 			model.addAttribute("usuario", user);
 			model.addAttribute("producto", new Producto());
 			model.addAttribute("error", "Intente un nombre no registrado");

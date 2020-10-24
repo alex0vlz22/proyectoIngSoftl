@@ -7,10 +7,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import co.com.example.main.domain.Subcategoria;
 import co.com.example.main.domain.Usuario;
 
-public interface RepoSubcategoria extends JpaRepository<Subcategoria, Integer>{
+public interface RepoSubcategoria extends JpaRepository<Subcategoria, Integer> {
 
 	Subcategoria findById(int id);
-	
-	Page<Subcategoria> findByUsuario(Pageable page, Usuario user);
-	
+
+	Page<Subcategoria> findAll(Pageable page);
+
+	Subcategoria findByNombre(String nombre);
+
 }
