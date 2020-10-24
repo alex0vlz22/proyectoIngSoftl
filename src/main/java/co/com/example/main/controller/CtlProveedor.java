@@ -86,10 +86,26 @@ public class CtlProveedor {
 	}
 
 	@PostMapping("/modificarProveedor/{id}")
-	public String modificarProveedor(Model model, Proveedor proveedor, @PathVariable int id) {
+	public String modificarProveedor(@Valid Proveedor proveedor, BindingResult result, Model model,
+			@PathVariable int id) {
 		int idVendedor = repoProveedor.findById(id).getUsuario().getId();
 		proveedor.setId(id);
 		proveedor.setUsuario(repoUsuario.findById(idVendedor));
+		if (result.hasErrors()) {
+			model.addAttribute("proveedor", proveedor);
+			model.addAttribute("usuario", repoProveedor.findById(id).getUsuario());
+			model.addAttribute("producto", new Producto());
+			return "editarProveedor";
+		}
+		if (repoProveedor.findByNombre(proveedor.getNombre()) != null) {
+			if (repoProveedor.findByNombre(proveedor.getNombre()).getId() != id) {
+				model.addAttribute("proveedor", proveedor);
+				model.addAttribute("usuario", repoProveedor.findById(id).getUsuario());
+				model.addAttribute("producto", new Producto());
+				model.addAttribute("error", "Ya existe un proveedor con este nombre");
+				return "editarProveedor";
+			}
+		}
 		repoProveedor.save(proveedor);
 		model.addAttribute("proveedor", new Proveedor());
 		model.addAttribute("listaProveedores", repoProveedor.findAll());
