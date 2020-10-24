@@ -2,10 +2,13 @@ package co.com.example.main.controller;
 
 import java.util.Map;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -140,7 +143,8 @@ public class CtlUsuario {
 	}
 
 	@PostMapping("/guardarUsuario")
-	public String guardarUsaurio(Model model, Usuario usuario, @RequestParam("file") MultipartFile file) {
+	public String guardarUsaurio(@Valid Usuario usuario, BindingResult result, Model model,
+			@RequestParam("file") MultipartFile file) {
 		try {
 			Map uploadResult = cloudc.upload(file.getBytes(), ObjectUtils.asMap("resourcetype", "auto"));
 			System.out.println(uploadResult.get("url").toString());
@@ -149,6 +153,18 @@ public class CtlUsuario {
 			e.printStackTrace();
 		}
 		if (usuario.getCodigoEmpresa() == null) {
+			if (result.hasErrors()) {
+				usuario.setRol("Cliente");
+				model.addAttribute("usuario", usuario);
+				return "registroUsuario";
+			}
+
+			if (repoUsuario.findByDNI(usuario.getDNI()) != null) {
+				model.addAttribute("error", "Ya existe un usuario con el mismo DNI");
+				usuario.setRol("Cliente");
+				model.addAttribute("usuario", usuario);
+				return "registroUsuario";
+			}
 			usuario.setRol("Cliente");
 			repoUsuario.save(usuario);
 			model.addAttribute("usuarioRegistrado", true);
@@ -166,6 +182,13 @@ public class CtlUsuario {
 				return "registroUsuario";
 			}
 		}
+	}
+
+	public boolean existeUnUsuario(String DNI) {
+		if (repoUsuario.findByDNI(DNI) != null) {
+			return true;
+		}
+		return false;
 	}
 
 	@GetMapping("/editarPerfil/{idUsuario}")

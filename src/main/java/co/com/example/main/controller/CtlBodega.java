@@ -98,7 +98,7 @@ public class CtlBodega {
 		b.setUsuario(repoUsuario.findById(idVendedor));
 		if (repoBodega.findAllByNombre(b.getNombre()).size() >= 1) {
 			if (repoBodega.findByNombre(b.getNombre()).getId() != bodAux.getId()) {
-				model.addAttribute("error", "Ya hay una bodega con este nombre");
+				model.addAttribute("error", "Ya hay otra bodega con este nombre");
 				model.addAttribute("bodega", b);
 				model.addAttribute("listaBodegas", repoBodega.findAll());
 				model.addAttribute("idVendedor", idVendedor);
