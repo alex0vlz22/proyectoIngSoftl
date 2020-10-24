@@ -8,12 +8,12 @@ import org.springframework.data.repository.CrudRepository;
 import co.com.example.main.domain.Proveedor;
 import co.com.example.main.domain.Usuario;
 
-public interface RepoProveedor extends JpaRepository<Proveedor, Integer>{
+public interface RepoProveedor extends JpaRepository<Proveedor, Integer> {
 
 	Proveedor findById(int id);
-	
+
 	Proveedor findByNombre(String nombre);
-	
-	Page<Proveedor> findByUsuario(Pageable page, Usuario user);
-	
+
+	Page<Proveedor> findAll(Pageable page);
+
 }

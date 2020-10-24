@@ -113,12 +113,32 @@ public class CtlSubcategoria {
 	}
 
 	@PostMapping("/modificarSubcategoria/{id}")
-	public String modificarSubcategoria(Model model, Subcategoria s, @PathVariable int id) {
+	public String modificarSubcategoria(@Valid Subcategoria s, BindingResult result, Model model,
+			@PathVariable int id) {
 		int idVendedor = repoSubcategoria.findById(id).getUsuario().getId();
 		Categoria c = repoCategoria.findById(s.getIdCategoria());
 		s.setCategoria(c);
 		s.setId(id);
 		s.setUsuario(repoUsuario.findById(idVendedor));
+		if (result.hasErrors()) {
+			model.addAttribute("subcategoria", s);
+			model.addAttribute("listaCategorias", repoCategoria.findAll());
+			model.addAttribute("usuario", s.getUsuario());
+			model.addAttribute("idSubcategoria", s.getId());
+			model.addAttribute("producto", new Producto());
+			return "editarSubcategoria";
+		}
+		if (repoSubcategoria.findByNombre(s.getNombre()) != null) {
+			if (repoSubcategoria.findByNombre(s.getNombre()).getId() != id) {
+				model.addAttribute("error", "Intente con otro nombre");
+				model.addAttribute("subcategoria", s);
+				model.addAttribute("listaCategorias", repoCategoria.findAll());
+				model.addAttribute("usuario", s.getUsuario());
+				model.addAttribute("idSubcategoria", s.getId());
+				model.addAttribute("producto", new Producto());
+				return "editarSubcategoria";
+			}
+		}
 		repoSubcategoria.save(s);
 		model.addAttribute("subcategoria", new Subcategoria());
 		model.addAttribute("listaSubcategorias", repoSubcategoria.findAll());

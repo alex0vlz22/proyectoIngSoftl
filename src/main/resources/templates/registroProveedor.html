@@ -31,7 +31,10 @@
 										<tr>
 											<td><span class="label">Nombre</span><input autofocus
 												required="true" type="text" th:field="*{nombre}"
-												placeholder="Nombre" class="form-control" /></td>
+												placeholder="Nombre" class="form-control" /><span
+												th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"
+												class="text-danger"></span> <span th:text="${error}"
+												class="text-danger"></span></td>
 										</tr>
 										<tr>
 											<td><div id="divEsp1"></div></td>
@@ -39,7 +42,9 @@
 										<tr>
 											<td><span class="label">Descripci&oacute;n</span><input
 												type="text" th:field="*{descripcion}" required="true"
-												placeholder="Descripci&oacute;n" class="form-control" /></td>
+												placeholder="Descripci&oacute;n" class="form-control" /> <span
+												th:if="${#fields.hasErrors('descripcion')}"
+												th:errors="*{descripcion}" class="text-danger"></span></td>
 										</tr>
 										<tr>
 											<td colspan="2" style="text-align: center;"><button

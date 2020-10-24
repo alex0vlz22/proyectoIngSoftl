@@ -1,9 +1,12 @@
 package co.com.example.main.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,8 +32,7 @@ public class CtlProveedor {
 		model.addAttribute("proveedor", new Proveedor());
 		model.addAttribute("idVendedor", idVendedor);
 		model.addAttribute("usuario", repoUsuario.findById(idVendedor));
-		model.addAttribute("listaProveedores",
-				this.repoProveedor.findByUsuario(PageRequest.of(page, 2), this.repoUsuario.findById(idVendedor)));
+		model.addAttribute("listaProveedores", this.repoProveedor.findAll(PageRequest.of(page, 2)));
 		model.addAttribute("producto", new Producto());
 		return "registroProveedor";
 	}
@@ -40,15 +42,32 @@ public class CtlProveedor {
 		model.addAttribute("proveedor", new Proveedor());
 		model.addAttribute("idVendedor", idVendedor);
 		model.addAttribute("usuario", repoUsuario.findById(idVendedor));
-		model.addAttribute("listaProveedores",
-				this.repoProveedor.findByUsuario(PageRequest.of(page, 2), this.repoUsuario.findById(idVendedor)));
+		model.addAttribute("listaProveedores", this.repoProveedor.findAll(PageRequest.of(page, 2)));
 		model.addAttribute("producto", new Producto());
 		return "registroProveedor";
 	}
 
 	@PostMapping("/guardarProveedor/{idVendedor}")
-	public String guardarProveedor(Model model, Proveedor proveedor, @PathVariable int idVendedor) {
+	public String guardarProveedor(@Valid Proveedor proveedor, BindingResult result, Model model,
+			@PathVariable int idVendedor) {
 		proveedor.setUsuario(repoUsuario.findById(idVendedor));
+		if (result.hasErrors()) {
+			model.addAttribute("proveedor", proveedor);
+			model.addAttribute("idVendedor", idVendedor);
+			model.addAttribute("usuario", repoUsuario.findById(idVendedor));
+			model.addAttribute("listaProveedores", this.repoProveedor.findAll(PageRequest.of(0, 2)));
+			model.addAttribute("producto", new Producto());
+			return "registroProveedor";
+		}
+		if (repoProveedor.findByNombre(proveedor.getNombre()) != null) {
+			model.addAttribute("proveedor", proveedor);
+			model.addAttribute("idVendedor", idVendedor);
+			model.addAttribute("usuario", repoUsuario.findById(idVendedor));
+			model.addAttribute("listaProveedores", this.repoProveedor.findAll(PageRequest.of(0, 2)));
+			model.addAttribute("producto", new Producto());
+			model.addAttribute("error", "Intente con otro nombre");
+			return "registroProveedor";
+		}
 		repoProveedor.save(proveedor);
 		model.addAttribute("proveedor", new Proveedor());
 		model.addAttribute("listaProveedores", repoProveedor.findAll());
