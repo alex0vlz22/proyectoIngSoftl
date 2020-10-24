@@ -5,7 +5,8 @@
 <title>Edici&oacute;n de datos</title>
 <div th:replace="fragment/linksHeader :: links"></div>
 </head>
-<body style="background: url('../images/fondos/darkWallBiggest.png'); overflow-x: hidden;">
+<body
+	style="background: url('../images/fondos/darkWallBiggest.png'); overflow-x: hidden;">
 	<div th:if="${usuario.rol.equals('Vendedor')}">
 		<div th:replace="fragment/vendedor/navBar :: nav"></div>
 	</div>
@@ -13,7 +14,7 @@
 		<div th:replace="fragment/navBar :: nav"></div>
 	</div>
 	<div class="container m-3">
-		<div class="card " style="width: 32rem;	">
+		<div class="card " style="width: 32rem;">
 			<h2 class="card-title m-2">Tus datos</h2>
 			<div class="card-body">
 				<form action="#" method="post" th:object="${usuario}"
@@ -43,29 +44,39 @@
 								<div class="form-group">
 									<label for="nombre">NOMBRE:</label> <input type="text"
 										class="form-control" placeholder="Nombre" required="true"
-										th:field="*{nombre}" autofocus />
+										th:field="*{nombre}" autofocus /><span
+										th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"
+										class="text-danger"></span>
 								</div>
 								<div class="form-group">
 									<label for="apellidos">APELLIDOS:</label> <input type="text"
 										class="form-control" placeholder="Apellido" required="true"
-										th:field="*{apellido}" />
+										th:field="*{apellido}" /><span
+										th:if="${#fields.hasErrors('apellido')}"
+										th:errors="*{apellido}" class="text-danger"></span>
 								</div>
 								<div class="form-group">
 									<label for="telefono">Tel&eacute;fono:</label> <input
 										type="number" class="form-control"
 										placeholder="Tel&eacute;fono" required="true"
-										th:field="*{telefono}" />
+										th:field="*{telefono}" /><span
+										th:if="${#fields.hasErrors('telefono')}"
+										th:errors="*{telefono}" class="text-danger"></span>
 								</div>
 								<div class="form-group">
 									<label for="direccion">Direcci&oacute;n:</label> <input
 										type="text" class="form-control"
 										placeholder="Direcci&oacute;n" required="true"
-										th:field="*{direccion}" />
+										th:field="*{direccion}" /><span
+										th:if="${#fields.hasErrors('direccion')}"
+										th:errors="*{direccion}" class="text-danger"></span>
 								</div>
 								<div class="form-group">
 									<label for="correo">CORREO:</label> <input type="email"
 										class="form-control" placeholder="Correo" required="true"
-										th:field="*{correo}" />
+										th:field="*{correo}" /><span
+										th:if="${#fields.hasErrors('correo')}" th:errors="*{correo}"
+										class="text-danger"></span>
 								</div>
 								<div class="form-group">
 									<label>Rol:</label><input class="form-control"

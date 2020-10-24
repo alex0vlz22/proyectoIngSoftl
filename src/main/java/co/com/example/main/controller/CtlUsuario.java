@@ -184,6 +184,13 @@ public class CtlUsuario {
 		}
 	}
 
+	public boolean existenUsuarios(String DNI, int id) {
+		if (repoUsuario.findByDNI(DNI).getId() != repoUsuario.findById(id).getId()) {
+			return true;
+		}
+		return false;
+	}
+
 	public boolean existeUnUsuario(String DNI) {
 		if (repoUsuario.findByDNI(DNI) != null) {
 			return true;
@@ -199,9 +206,9 @@ public class CtlUsuario {
 	}
 
 	@PostMapping("/modificarUsuario/{idUsuario}")
-	public String modificarUsuario(Model model, Usuario usuario, @PathVariable("idUsuario") int idUsuario,
-			@RequestParam("file") MultipartFile file, @RequestParam("cambioUrl") boolean cambioUrl,
-			@RequestParam(defaultValue = "0") int page) {
+	public String modificarUsuario(@Valid Usuario usuario, BindingResult result, Model model,
+			@PathVariable("idUsuario") int idUsuario, @RequestParam("file") MultipartFile file,
+			@RequestParam("cambioUrl") boolean cambioUrl, @RequestParam(defaultValue = "0") int page) {
 		usuario.setId(idUsuario);
 		if (cambioUrl) {
 			try {
@@ -211,6 +218,13 @@ public class CtlUsuario {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+		}
+
+		if (result.hasErrors()) {
+			usuario.setRol("Cliente");
+			model.addAttribute("usuario", usuario);
+			model.addAttribute("producto", new Producto());
+			return "editarUsuario";
 		}
 		this.repoUsuario.save(usuario);
 		model.addAttribute("usuario", usuario);
