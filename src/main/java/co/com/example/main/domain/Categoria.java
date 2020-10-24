@@ -10,6 +10,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.Size;
+
+import org.hibernate.annotations.Check;
 
 import lombok.Data;
 
@@ -23,12 +26,14 @@ public class Categoria {
 	private int id;
 
 	@Column(unique = true)
+	@Size(min = 3, max = 30, message = "Ingrese entre 3 y 30 letras")
 	private String nombre;
 
 	@OneToMany(mappedBy = "categoria", cascade = CascadeType.REMOVE)
-	private List<Subcategoria> subcategoria;
 	
+	private List<Subcategoria> subcategoria;
+
 	@ManyToOne
 	private Usuario usuario;
-	
+
 }
