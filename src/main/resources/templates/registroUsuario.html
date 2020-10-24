@@ -92,12 +92,14 @@
 										required="true" th:field="*{codigoEmpresa}" /><span
 										th:if="${#fields.hasErrors('codigoEmpresa')}"
 										th:errors="*{codigoEmpresa}" class="text-danger"></span>
+									<div th:if="${errorCodigo == true}" id="errorCodigo"
+										class="animate__animated animate__bounceInLeft">
+										<span class="text-danger">Solicite un c&oacute;digo
+											valido en Recursos Humanos</span>
+									</div>
 								</div>
 								<button id="validar" class="btn btn-primary" type="submit">Validar</button>
-								<div th:if="${errorCodigo == true}" id="errorCodigo"
-									class="animate__animated animate__bounceInLeft">
-									<span>Hubo un error con el c&oacute;digo</span>
-								</div>
+
 							</div>
 						</div>
 					</div>
