@@ -140,6 +140,17 @@ public class CtlProducto {
 		}
 		if (repoProducto.findByNombre(producto.getNombre()) != null) {
 
+			model.addAttribute("bodegaSinEspacio", false);
+			model.addAttribute("productoForm", producto);
+			model.addAttribute("producto", new Producto());
+			model.addAttribute("usuario", this.repoUsuario.findById(idVendedor));
+			model.addAttribute("listaProveedores", repoProveedor.findAll());
+			model.addAttribute("listaSubcategorias", repoSubcategoria.findAll());
+			model.addAttribute("listaProductos", repoProducto.findAll(PageRequest.of(0, 4)));
+			model.addAttribute("listaBodegas", repoBodega.findAll());
+			model.addAttribute("idVendedor", idVendedor);
+			model.addAttribute("page", 0);
+			return "registroProducto";
 		}
 		if (producto.getCantidad() <= b.getEspacioDisponible() && producto.getCantidad() <= b.getCapacidad()) {
 			try {
