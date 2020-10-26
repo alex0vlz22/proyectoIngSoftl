@@ -5,12 +5,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -94,9 +96,8 @@ public class CtlProducto {
 		model.addAttribute("usuario", user);
 		model.addAttribute("listaProveedores", repoProveedor.findAll());
 		model.addAttribute("listaSubcategorias", repoSubcategoria.findAll());
-		model.addAttribute("listaProductos",
-				repoProducto.findByVendedor(PageRequest.of(page, 4), repoUsuario.findById(idVendedor)));
-		model.addAttribute("listaBodegas", this.repoBodega.findByUsuario(user));
+		model.addAttribute("listaProductos", repoProducto.findAll(PageRequest.of(page, 4)));
+		model.addAttribute("listaBodegas", this.repoBodega.findAll());
 		model.addAttribute("idVendedor", idVendedor);
 		return "registroProducto";
 	}
@@ -110,21 +111,36 @@ public class CtlProducto {
 		model.addAttribute("usuario", user);
 		model.addAttribute("listaProveedores", repoProveedor.findAll());
 		model.addAttribute("listaSubcategorias", repoSubcategoria.findAll());
-		model.addAttribute("listaProductos",
-				repoProducto.findByVendedor(PageRequest.of(page, 4), repoUsuario.findById(idVendedor)));
-		model.addAttribute("listaBodegas", this.repoBodega.findByUsuario(user));
+		model.addAttribute("listaProductos", repoProducto.findAll(PageRequest.of(page, 4)));
+		model.addAttribute("listaBodegas", this.repoBodega.findAll());
 		model.addAttribute("idVendedor", idVendedor);
 		return "registroProducto";
 	}
 
 	@PostMapping("/guardarProducto/{idVendedor}")
-	public String guardarProducto(Model model, Producto producto, @RequestParam("file") MultipartFile file,
-			@PathVariable int idVendedor) {
+	public String guardarProducto(@Valid Producto producto, BindingResult result, Model model,
+			@RequestParam("file") MultipartFile file, @PathVariable int idVendedor) {
 		Proveedor p = repoProveedor.findById(producto.getIdProveedor());
 		Subcategoria c = repoSubcategoria.findById(producto.getIdSubcategoria());
 		Bodega b = repoBodega.findById(producto.getIdBodega());
 		Usuario u = repoUsuario.findById(idVendedor);
 
+		if (result.hasErrors()) {
+			model.addAttribute("bodegaSinEspacio", false);
+			model.addAttribute("productoForm", producto);
+			model.addAttribute("producto", new Producto());
+			model.addAttribute("usuario", this.repoUsuario.findById(idVendedor));
+			model.addAttribute("listaProveedores", repoProveedor.findAll());
+			model.addAttribute("listaSubcategorias", repoSubcategoria.findAll());
+			model.addAttribute("listaProductos", repoProducto.findAll(PageRequest.of(0, 4)));
+			model.addAttribute("listaBodegas", repoBodega.findAll());
+			model.addAttribute("idVendedor", idVendedor);
+			model.addAttribute("page", 0);
+			return "registroProducto";
+		}
+		if (repoProducto.findByNombre(producto.getNombre()) != null) {
+
+		}
 		if (producto.getCantidad() <= b.getEspacioDisponible() && producto.getCantidad() <= b.getCapacidad()) {
 			try {
 				Map uploadResult = cloudc.upload(file.getBytes(), ObjectUtils.asMap("resourcetype", "auto"));
@@ -144,9 +160,8 @@ public class CtlProducto {
 			model.addAttribute("productoForm", new Producto());
 			model.addAttribute("listaProveedores", repoProveedor.findAll());
 			model.addAttribute("listaSubcategorias", repoSubcategoria.findAll());
-			model.addAttribute("listaProductos",
-					repoProducto.findByVendedor(PageRequest.of(0, 4), repoUsuario.findById(idVendedor)));
-			model.addAttribute("listaBodegas", this.repoBodega.findByUsuario(this.repoUsuario.findById(idVendedor)));
+			model.addAttribute("listaProductos", repoProducto.findAll(PageRequest.of(0, 4)));
+			model.addAttribute("listaBodegas", this.repoBodega.findAll());
 			model.addAttribute("producto", new Producto());
 
 			model.addAttribute("usuario", this.repoUsuario.findById(idVendedor));
@@ -156,9 +171,8 @@ public class CtlProducto {
 			model.addAttribute("productoForm", producto);
 			model.addAttribute("listaProveedores", repoProveedor.findAll());
 			model.addAttribute("listaSubcategorias", repoSubcategoria.findAll());
-			model.addAttribute("listaProductos",
-					repoProducto.findByVendedor(PageRequest.of(0, 4), repoUsuario.findById(idVendedor)));
-			model.addAttribute("listaBodegas", this.repoBodega.findByUsuario(this.repoUsuario.findById(idVendedor)));
+			model.addAttribute("listaProductos", repoProducto.findAll(PageRequest.of(0, 4)));
+			model.addAttribute("listaBodegas", this.repoBodega.findAll());
 			model.addAttribute("producto", new Producto());
 
 			model.addAttribute("usuario", this.repoUsuario.findById(idVendedor));
@@ -176,7 +190,7 @@ public class CtlProducto {
 			model.addAttribute("productoParaEditar", p);
 			model.addAttribute("listaProveedores", repoProveedor.findAll());
 			model.addAttribute("listaSubcategorias", repoSubcategoria.findAll());
-			model.addAttribute("listaBodegas", this.repoBodega.findByUsuario(this.repoUsuario.findById(idVendedor)));
+			model.addAttribute("listaBodegas", this.repoBodega.findAll());
 			model.addAttribute("usuario", p.getVendedor());
 			model.addAttribute("idVendedor", p.getVendedor().getId());
 			model.addAttribute("producto", new Producto());
@@ -222,8 +236,7 @@ public class CtlProducto {
 			model.addAttribute("productoForm", new Producto());
 			model.addAttribute("listaProveedores", repoProveedor.findAll());
 			model.addAttribute("listaSubcategorias", repoSubcategoria.findAll());
-			model.addAttribute("listaProductos",
-					repoProducto.findByVendedor(PageRequest.of(0, 4), repoUsuario.findById(idVendedor)));
+			model.addAttribute("listaProductos", repoProducto.findAll(PageRequest.of(0, 4)));
 			model.addAttribute("listaBodegas", repoBodega.findAll());
 			model.addAttribute("producto", new Producto());
 			model.addAttribute("usuario", this.repoUsuario.findById(idVendedor));
@@ -239,7 +252,7 @@ public class CtlProducto {
 			model.addAttribute("listaProveedores", repoProveedor.findAll());
 			model.addAttribute("listaSubcategorias", repoSubcategoria.findAll());
 			model.addAttribute("listaProductos", repoProducto.findAll());
-			model.addAttribute("listaBodegas", this.repoBodega.findByUsuario(this.repoUsuario.findById(idVendedor)));
+			model.addAttribute("listaBodegas", this.repoBodega.findAll());
 			model.addAttribute("producto", new Producto());
 			model.addAttribute("usuario", this.repoUsuario.findById(idVendedor));
 			return "editarProducto";
@@ -254,8 +267,7 @@ public class CtlProducto {
 		model.addAttribute("producto", new Producto());
 		model.addAttribute("listaProveedores", repoProveedor.findAll());
 		model.addAttribute("listaSubcategorias", repoSubcategoria.findAll());
-		model.addAttribute("listaProductos",
-				repoProducto.findByVendedor(PageRequest.of(0, 4), repoUsuario.findById(idVendedor)));
+		model.addAttribute("listaProductos", repoProducto.findAll(PageRequest.of(0, 4)));
 		model.addAttribute("listaBodegas", repoBodega.findAll());
 		model.addAttribute("producto", new Producto());
 		return "redirect:/registroProducto/" + idVendedor;

@@ -24,13 +24,16 @@
 					<td><span id="nombre">Nombre:</span><input autofocus
 						placeholder="Nombre" th:field="*{nombre}" required="true"
 						type="text" class="form-control" /> <span
-						th:if="@{existeBodega(nombre)}" th:text="${error}"
-						class="text-danger"></span></td>
+						th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"
+						class="text-danger"></span><span th:if="@{existeBodega(nombre)}"
+						th:text="${error}" class="text-danger"></span></td>
 				</tr>
 				<tr>
 					<td><span id="direccion">Direcci&oacute;n:</span><input
 						placeholder="Direcci&oacute;n" th:field="*{direccion}"
-						required="true" type="text" class="form-control" /></td>
+						required="true" type="text" class="form-control" /><span
+						th:if="${#fields.hasErrors('direccion')}" th:errors="*{direccion}"
+						class="text-danger"></span></td>
 				</tr>
 				<tr>
 					<td><span id="capacidad">Capacidad:</span><input

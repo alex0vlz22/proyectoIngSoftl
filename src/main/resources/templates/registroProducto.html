@@ -11,7 +11,8 @@
 	<div class="form-group" th:replace="fragment/vendedor/navBar :: nav"></div>
 
 	<div th:if="${bodegaSinEspacio == true}" id="divErrorBodega">
-		<span class="alert alert-danger">&iexcl;No queda espacio suficiente en la bodega para tal cantidad!</span>
+		<span class="alert alert-danger">&iexcl;No queda espacio
+			suficiente en la bodega para tal cantidad!</span>
 	</div>
 
 	<div>
@@ -31,15 +32,16 @@
 									<tr>
 										<th colspan="2" id="tituloCategoria"><h1>Gesti&oacute;n
 												de productos</h1>
-											<hr style="background-color: white;">
-											<br></th>
+											<hr style="background-color: white;"> <br></th>
 									</tr>
 								</thead>
 								<tbody>
 									<tr>
 										<td><span class="etiqueta">Nombre:</span></td>
 										<td><input class="form-control" autofocus type="text"
-											placeholder="Nombre" required="true" th:field="*{nombre}"/></td>
+											placeholder="Nombre" required="true" th:field="*{nombre}" />
+											<span th:if="${#fields.hasErrors('nombre')}"
+											th:errors="*{nombre}" class="text-danger"></span></td>
 									</tr>
 									<tr>
 										<td><br> <span class="etiqueta">Descripci&oacute;n:</span></td>
@@ -172,8 +174,8 @@
 							<a
 								th:each="i : ${#numbers.sequence(0,listaProductos.totalPages-1)}"
 								class="page-link btn btn-primary"
-								th:href="@{'/registroProducto/' + ${usuario.id} + '/pag/' + ${i}}" th:text="${i}"
-								id="pagElement" align="center"></a>
+								th:href="@{'/registroProducto/' + ${usuario.id} + '/pag/' + ${i}}"
+								th:text="${i}" id="pagElement" align="center"></a>
 						</div>
 					</div>
 				</td>

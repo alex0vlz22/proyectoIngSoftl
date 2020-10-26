@@ -33,7 +33,9 @@ public interface RepoProducto extends JpaRepository<Producto, Integer> {
 	@Query("Select p from Producto p join Proveedor pr on pr.id=p.proveedor where pr.nombre=' ?1 ' ")
 	public Iterable<Producto> ordenarPorProveedor(String nombreProveedor);
 
-	Page<Producto> findByVendedor(Pageable page, Usuario usuario);
+//	Page<Producto> findByVendedor(Pageable page, Usuario usuario);
+
+	Page<Producto> findAll(Pageable page);
 
 	public Iterable<Producto> findAllByNombreContainingIgnoreCase(String nombre);
 
@@ -45,4 +47,5 @@ public interface RepoProducto extends JpaRepository<Producto, Integer> {
 
 	public Iterable<Producto> findAllBySubcategoriaOrProveedor(Subcategoria s, Proveedor p);
 
+	public Producto findByNombre(String nombre);
 }
