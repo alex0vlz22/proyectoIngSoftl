@@ -28,11 +28,15 @@
 									<tr>
 										<td colspan="2"><span id="nombre">Nombre </span> <input
 											autofocus placeholder="Nombre" th:field="*{nombre}"
-											required="true" type="text" class="form-control" /> <span
+											required="true" type="text" class="form-control" /> 
+											<span
 											th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"
-											class="text-danger"></span><span
+											class="text-danger"></span>
+											<span
 											th:if="@{existeBodega(nombre)}" th:text="${error}"
-											class="text-danger"></span></td>
+											class="text-danger"></span>
+											
+											</td>
 									</tr>
 									<tr>
 										<td colspan="2"><span id="direccion">Direcci&oacute;n</span>

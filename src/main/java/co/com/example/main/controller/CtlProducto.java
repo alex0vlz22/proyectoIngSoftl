@@ -92,7 +92,6 @@ public class CtlProducto {
 		Usuario user = this.repoUsuario.findById(idVendedor);
 		model.addAttribute("bodegaSinEspacio", false);
 		model.addAttribute("producto", new Producto());
-		model.addAttribute("productoForm", new Producto());
 		model.addAttribute("usuario", user);
 		model.addAttribute("listaProveedores", repoProveedor.findAll());
 		model.addAttribute("listaSubcategorias", repoSubcategoria.findAll());
@@ -107,7 +106,6 @@ public class CtlProducto {
 		Usuario user = this.repoUsuario.findById(idVendedor);
 		model.addAttribute("bodegaSinEspacio", false);
 		model.addAttribute("producto", new Producto());
-		model.addAttribute("productoForm", new Producto());
 		model.addAttribute("usuario", user);
 		model.addAttribute("listaProveedores", repoProveedor.findAll());
 		model.addAttribute("listaSubcategorias", repoSubcategoria.findAll());
@@ -127,29 +125,29 @@ public class CtlProducto {
 
 		if (result.hasErrors()) {
 			model.addAttribute("bodegaSinEspacio", false);
-			model.addAttribute("productoForm", producto);
-			model.addAttribute("producto", new Producto());
+			model.addAttribute("producto", producto);
 			model.addAttribute("usuario", this.repoUsuario.findById(idVendedor));
 			model.addAttribute("listaProveedores", repoProveedor.findAll());
 			model.addAttribute("listaSubcategorias", repoSubcategoria.findAll());
 			model.addAttribute("listaProductos", repoProducto.findAll(PageRequest.of(0, 4)));
 			model.addAttribute("listaBodegas", repoBodega.findAll());
 			model.addAttribute("idVendedor", idVendedor);
-			model.addAttribute("page", 0);
+			System.out.println("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
+			System.out.println(producto.toString());
+			System.out.println(result.getAllErrors().toString());
 			return "registroProducto";
 		}
+		
 		if (repoProducto.findByNombre(producto.getNombre()) != null) {
 
 			model.addAttribute("bodegaSinEspacio", false);
-			model.addAttribute("productoForm", producto);
-			model.addAttribute("producto", new Producto());
+			model.addAttribute("producto", producto);
 			model.addAttribute("usuario", this.repoUsuario.findById(idVendedor));
 			model.addAttribute("listaProveedores", repoProveedor.findAll());
 			model.addAttribute("listaSubcategorias", repoSubcategoria.findAll());
 			model.addAttribute("listaProductos", repoProducto.findAll(PageRequest.of(0, 4)));
 			model.addAttribute("listaBodegas", repoBodega.findAll());
 			model.addAttribute("idVendedor", idVendedor);
-			model.addAttribute("page", 0);
 			return "registroProducto";
 		}
 		if (producto.getCantidad() <= b.getEspacioDisponible() && producto.getCantidad() <= b.getCapacidad()) {

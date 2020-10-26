@@ -27,8 +27,10 @@ public class Producto {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-	@Column(length = 50, unique = true)
+	
+	@Size(min = 3, max = 50, message = "Ingrese entre 3 y 50 caracteres")
 	private String nombre;
+	
 	@Size(min = 5, max = 50, message = "Ingrese entre 5 y 50 caracteres")
 	private String descripcion;
 
