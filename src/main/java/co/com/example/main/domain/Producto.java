@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 import lombok.Data;
@@ -27,20 +28,19 @@ public class Producto {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-	
-	@Size(min = 3, max = 50, message = "Ingrese entre 3 y 50 caracteres")
+	@Size(min = 3, max = 50, message = "Ingrese entre 3 y 50 caracteres. ")
 	private String nombre;
-	
-	@Size(min = 5, max = 50, message = "Ingrese entre 5 y 50 caracteres")
+	@Size(min = 5, max = 50, message = "Ingrese entre 5 y 50 caracteres. ")
 	private String descripcion;
 
-	@Min(value = 1, message = "La cantidad debe ser de al menos 1")
+	@Min(value = 1, message = "La cantidad debe ser de al menos 1. ")
 	private int cantidad;
 
-	@Min(value = 1, message = "El precio debe ser de al menos 1")
+	@Min(value = 1, message = "El precio debe ser de al menos 1. ")
 	private double precio;
 
 	@Column(length = 255)
+	@NotBlank(message = "Debe subir una foto desde su PC. ")
 	private String urlFoto;
 
 	@OneToMany(mappedBy = "producto", cascade = CascadeType.REMOVE)
