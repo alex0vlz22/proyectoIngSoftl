@@ -187,13 +187,12 @@ public class CtlProducto {
 		try {
 			Producto p = repoProducto.findById(id);
 			model.addAttribute("bodegaSinEspacio", false);
-			model.addAttribute("productoParaEditar", p);
+			model.addAttribute("producto", p);
 			model.addAttribute("listaProveedores", repoProveedor.findAll());
 			model.addAttribute("listaSubcategorias", repoSubcategoria.findAll());
 			model.addAttribute("listaBodegas", this.repoBodega.findAll());
 			model.addAttribute("usuario", p.getVendedor());
 			model.addAttribute("idVendedor", p.getVendedor().getId());
-			model.addAttribute("producto", new Producto());
 			return "editarProducto";
 		} catch (MaxUploadSizeExceededException e) {
 			// el archivo es demasiado grande equisde
@@ -231,9 +230,9 @@ public class CtlProducto {
 		producto.setSubcategoria(c);
 		producto.setBodega(b);
 		producto.setVendedor(repoUsuario.findById(idVendedor));
-		Producto productoParaEditar = producto;
+
 		if (result.hasErrors()) {
-			model.addAttribute("productoParaEditar", productoParaEditar);
+			model.addAttribute("producto", producto);
 			model.addAttribute("bodegaConEspacio", bodegaConEspacio);
 			model.addAttribute("listaProveedores", repoProveedor.findAll());
 			model.addAttribute("listaSubcategorias", repoSubcategoria.findAll());

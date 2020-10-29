@@ -15,8 +15,8 @@
 			suficiente en la bodega para tal cantidad!</span>
 	</div>
 
-	<form action="#" th:object="${productoParaEditar}"
-		th:action="@{/modificarProducto/{id}(id=${productoParaEditar.id})}"
+	<form action="#" th:object="${producto}"
+		th:action="@{/modificarProducto/{id}(id=${producto.id})}"
 		method="post" enctype="multipart/form-data">
 		<input type="hidden" id="agregarUrl" th:field="*{urlFoto}"> <input
 			type="hidden" id="cambioUrl" name="cambioUrl" value="false">
@@ -34,8 +34,7 @@
 				<tr>
 					<td>Nombre:</td>
 					<td><input autofocus type="text" placeholder="Nombre"
-						th:field="${productoParaEditar.nombre}" required="true"
-						class="form-control" /><span
+						th:field="${producto.nombre}" required="true" class="form-control" /><span
 						th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"
 						class="text-danger"></span></td>
 				</tr>
@@ -43,14 +42,14 @@
 					<td><br> <span class="etiqueta">Descripci&oacute;n:</span></td>
 					<td><br> <input autofocus type="text"
 						placeholder="Descripci&oacute;n" required="true"
-						th:field="*{descripcion}" class="form-control" /> <span
+						th:field="${producto.descripcion}" class="form-control" /> <span
 						th:if="${#fields.hasErrors('descripcion')}"
 						th:errors="*{descripcion}" class="text-danger"></span></td>
 				</tr>
 				<tr>
 					<td><br>Cantidad:</td>
 					<td><br> <input type="number" placeholder="Cantidad"
-						th:field="${productoParaEditar.cantidad}" required="true"
+						th:field="${producto.cantidad}" required="true"
 						class="form-control" /><span
 						th:if="${#fields.hasErrors('cantidad')}" th:errors="*{cantidad}"
 						class="text-danger"></span></td>
@@ -61,7 +60,7 @@
 						class="form-control">
 							<option th:each="subcategoria : ${listaSubcategorias}"
 								th:value="${subcategoria.id}" th:text="${subcategoria.nombre}"
-								th:selected="${subcategoria.id == productoParaEditar.subcategoria.id}"></option>
+								th:selected="${subcategoria.id == producto.subcategoria.id}"></option>
 					</select></td>
 				</tr>
 				<tr>
@@ -78,7 +77,7 @@
 						class="form-control">
 							<option th:each="proveedor : ${listaProveedores}"
 								th:text="${proveedor.nombre}" th:value="${proveedor.id}"
-								th:selected="${proveedor.id == productoParaEditar.proveedor.id}"></option>
+								th:selected="${proveedor.id == producto.proveedor.id}"></option>
 					</select></td>
 				</tr>
 				<tr>
@@ -98,7 +97,7 @@
 							<input type="file" id="file-upload" accept="image/*"
 								class="form-control-file" style='display: none;' name="file">
 							<div>
-								<img id="imcargar" th:src="${productoParaEditar.urlFoto}"
+								<img id="imcargar" th:src="${producto.urlFoto}"
 									class="img-fluid rounded mt-2"
 									style='width: 14rem; heigth: auto;'>
 							</div>
