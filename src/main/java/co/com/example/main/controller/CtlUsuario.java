@@ -65,36 +65,47 @@ public class CtlUsuario {
 	public String ingresoUsuario(Model model, Usuario usuario, @RequestParam(defaultValue = "0") int page) {
 		if (usuario.getRol().equals("Cliente")) {
 			try {
-				Usuario u = repoUsuario.findByDNI(usuario.getDNI());
-				if (u.getRol().equals("Cliente")) {
-					model.addAttribute("usuario", u);
-					model.addAttribute("listaSubcategorias", this.repoSubcategoria.findAll());
-					model.addAttribute("listaProveedores", this.repoProveedor.findAll());
-					model.addAttribute("listaProductos", this.repoProducto.findAll(PageRequest.of(page, 6)));
-					model.addAttribute("producto", new Producto());
-					return "ingresoUsuario";
+				Usuario u = repoUsuario.findByCorreo(usuario.getCorreo());
+				if (usuario.getContrasena().equals(u.getContrasena())) {
+					if (u.getRol().equals("Cliente")) {
+						model.addAttribute("usuario", u);
+						model.addAttribute("listaSubcategorias", this.repoSubcategoria.findAll());
+						model.addAttribute("listaProveedores", this.repoProveedor.findAll());
+						model.addAttribute("listaProductos", this.repoProducto.findAll(PageRequest.of(page, 6)));
+						model.addAttribute("producto", new Producto());
+						return "ingresoUsuario";
+					} else {
+						// no se encontro un cliente por este dni
+						model.addAttribute("noEncontrado", true);
+						return "login";
+					}
 				} else {
-					// no se encontro un cliente por este dni
-					model.addAttribute("noEncontrado", true);
+					model.addAttribute("errorContrasena", true);
 					return "login";
 				}
+
 			} catch (NullPointerException e) {
 				model.addAttribute("noEncontrado", true);
 				return "login";
 			}
 		} else {
 			try {
-				Usuario u = repoUsuario.findByDNI(usuario.getDNI());
-				if (u.getRol().equals("Vendedor")) {
-					model.addAttribute("usuario", u);
-					model.addAttribute("listaProveedores", this.repoProveedor.findAll());
-					model.addAttribute("listaSubcategorias", this.repoSubcategoria.findAll());
-					model.addAttribute("listaProductos", this.repoProducto.findAll(PageRequest.of(page, 6)));
-					model.addAttribute("producto", new Producto());
-					return "ingresoUsuario";
+				Usuario u = repoUsuario.findByCorreo(usuario.getCorreo());
+				if (u.getContrasena().equals(u.getContrasena())) {
+					if (u.getRol().equals("Vendedor")) {
+						model.addAttribute("usuario", u);
+						model.addAttribute("listaProveedores", this.repoProveedor.findAll());
+						model.addAttribute("listaSubcategorias", this.repoSubcategoria.findAll());
+						model.addAttribute("listaProductos", this.repoProducto.findAll(PageRequest.of(page, 6)));
+						model.addAttribute("producto", new Producto());
+						return "ingresoUsuario";
+					} else {
+						// no se encontro un vendedor por este dni
+						model.addAttribute("noEncontrado", true);
+						return "login";
+					}
 				} else {
-					// no se encontro un vendedor por este dni
-					model.addAttribute("noEncontrado", true);
+					model.addAttribute("errorContrasena", true);
 					return "login";
 				}
 			} catch (NullPointerException e) {
@@ -117,6 +128,7 @@ public class CtlUsuario {
 	@GetMapping("/login")
 	public String login(Model model) {
 		model.addAttribute("noEncontrado", false);
+		model.addAttribute("errorContrasena", false);
 		model.addAttribute("usuario", new Usuario());
 		return "login";
 	}
@@ -158,7 +170,6 @@ public class CtlUsuario {
 				model.addAttribute("usuario", usuario);
 				return "registroUsuario";
 			}
-
 			if (repoUsuario.findByDNI(usuario.getDNI()) != null) {
 				model.addAttribute("error", "Ya existe un usuario con el mismo DNI");
 				usuario.setRol("Cliente");

@@ -42,6 +42,8 @@ public class Usuario {
 
 	@Email(message = "Ingrese un correo Válido")
 	private String correo;
+	
+	private String contrasena;
 
 	private String rol;
 
