@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Archivo plano | factura</title>
+<div th:replace="fragment/linksHeader :: links"></div>
+<link rel="stylesheet" th:href="@{/css/FacturaArchivoPlano.css}" />
+</head>
+<body>
+<div style="padding: 10px; width: 100%;">
+	<table align="center">
+		<thead>
+			<td colspan="2">
+				<span id="titulo" th:text="'Factura # ' + ${factura.id}"></span>
+			</td>
+		</thead>
+		<tbody>
+			<tr>
+				<td colspan="2">
+					<span th:text="'Comprador: ' + ${comprador.nombre} + ' ' + ${comprador.apellido}"></span>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<span>Fecha:</span>
+				</td>
+				<td>
+					<span th:text="${factura.fecha}"></span>
+				</td>
+			</tr>
+			<tr th:each="detalle : ${listaDetalles}">
+				<td>
+					<span>Producto:</span><br>
+					<span>Cantidad:</span><br>
+					<span>Precio de compra:</span><br>
+					<span>Precio con IVA:</span><br>
+					<span>Precio sin IVA:</span>
+				</td>
+				<td>
+					<span th:text="${detalle.producto.nombre}"></span><br>
+					<span th:text="${detalle.cantidad}"></span><br>
+					<span th:text="${detalle.valor} + ' COP'"></span><br>
+					<span th:text="${detalle.producto.precioConIVA} + ' COP'"></span><br>
+					<span th:text="${detalle.producto.precio} + ' COP'"></span>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<span>Total:</span>
+				</td>
+				<td>
+					<span th:text="${factura.valorTotal} + ' COP'"></span>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	</div>
+</body>
+</html>

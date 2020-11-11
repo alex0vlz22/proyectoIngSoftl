@@ -44,7 +44,10 @@
 						th:text="${productoVisualizado.nombre}"></label>
 				</div>
 				<div id="divPrecio" class="form-group">
-					<label>Precio:</label> <label
+					<label>Precio:</label> <label th:if="${productoVisualizado.IVA}" 
+						th:value="${productoVisualizado.precioConIVA}"
+						th:text="${productoVisualizado.precioConIVA}"></label>
+						<label th:if="${!productoVisualizado.IVA}" 
 						th:value="${productoVisualizado.precio}"
 						th:text="${productoVisualizado.precio}"></label>
 				</div>
@@ -92,7 +95,10 @@
 						th:text="${productoVisualizado.nombre}"></label>
 				</div>
 				<div id="divPrecio" class="form-group">
-					<label>Precio:</label> <label
+					<label>Precio:</label> <label th:if="${productoVisualizado.IVA}" 
+						th:value="${productoVisualizado.precioConIVA}"
+						th:text="${productoVisualizado.precioConIVA}"></label>
+						<label th:if="${!productoVisualizado.IVA}" 
 						th:value="${productoVisualizado.precio}"
 						th:text="${productoVisualizado.precio}"></label>
 				</div>

@@ -25,16 +25,16 @@
 	</div>
 	<div id="divLlena" class="container mt-4 ml-4 p-4"
 		th:if="${!listaFacturas.isEmpty()}" style="width: 100%;">
-		<a class="row btn btn-primary" th:each="factura : ${listaFacturas}"
-			style="width: 100%; margin-bottom: 5px;"
-			th:href="@{'/visualizarDetalle/' + ${factura.id}} + '/' + ${usuario.id}">
-			<span class="col-sm" th:text="'ID: ' + ${factura.id}"></span> <span
-			class="col-sm" th:text="'ID pedido: ' + ${factura.pedido.id}"></span>
-			<span class="col-sm"
-			th:text="'Comprador: ' + ${factura.comprador.nombre} + ' ' + ${factura.comprador.apellido}"></span>
-			<span class="col-sm" th:text="'Fecha: ' + ${factura.fecha}"></span> <span
-			class="col-sm"
-			th:text="'Valor total: $ ' + ${factura.valorTotal} + ' COP'"></span>
+		<a th:each="factura : ${listaFacturas}" th:href="@{'/facturaArchivoPlano/' + ${usuario.id} + '/' + ${factura.id}}" style="color: white; text-decoration: underline;">Obtener archivo plano
+			<a class="row btn btn-primary" 
+				style="width: 100%; margin-bottom: 5px;"
+				th:href="@{'/visualizarDetalle/' + ${factura.id}} + '/' + ${usuario.id}">
+				<span class="col-sm" th:text="'ID: ' + ${factura.id}"></span>
+				<span class="col-sm" th:text="'ID pedido: ' + ${factura.pedido.id}"></span>
+				<span class="col-sm" th:text="'Comprador: ' + ${factura.comprador.nombre} + ' ' + ${factura.comprador.apellido}"></span>
+				<span class="col-sm" th:text="'Fecha: ' + ${factura.fecha}"></span> 
+				<span class="col-sm" th:text="'Valor total: $ ' + ${factura.valorTotal} + ' COP'"></span>
+			</a>
 		</a>
 		<div id="paginacion" th:if="${!listaFacturas.isEmpty()}">
 			<a th:each="i : ${#numbers.sequence(0,listaFacturas.totalPages-1)}"
