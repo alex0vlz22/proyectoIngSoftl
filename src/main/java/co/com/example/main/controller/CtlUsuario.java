@@ -63,14 +63,19 @@ public class CtlUsuario {
 
 	@GetMapping("/ingreso")
 	public String ingresoUsuario(Model model, Usuario usuario, @RequestParam(defaultValue = "0") int page) {
+		if (usuario.getCorreo().isEmpty()||usuario.getCorreo().length()<=6 || usuario.getContrasena().length()<7) {
+			model.addAttribute("noEncontrado", true);
+			model.addAttribute("correoVacio", "Ingrese un correo Válido ");
+			if (usuario.getContrasena().length()<7 ) {
+				model.addAttribute("noEncontrado", true);
+				model.addAttribute("contrasenaVacia", "Ingrese mas de 6 caracteres");
+			}
+			return "login";
+		} 
 		if (usuario.getRol().equals("Cliente")) {
 			try {
 				Usuario u = repoUsuario.findByCorreo(usuario.getCorreo());
-				if (usuario.getCorreo().isEmpty()||usuario.getCorreo().length()<=4) {
-					model.addAttribute("noEncontrado", true);
-					model.addAttribute("correoVacio", "Ingrese un correo Válido");
-					return "login";
-				} else if (usuario.getContrasena().equals(u.getContrasena())) {
+				if (usuario.getContrasena().equals(u.getContrasena())) {
 					if (u.getRol().equals("Cliente")) {
 						model.addAttribute("usuario", u);
 						model.addAttribute("listaSubcategorias", this.repoSubcategoria.findAll());
