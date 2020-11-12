@@ -66,7 +66,11 @@ public class CtlUsuario {
 		if (usuario.getRol().equals("Cliente")) {
 			try {
 				Usuario u = repoUsuario.findByCorreo(usuario.getCorreo());
-				if (usuario.getContrasena().equals(u.getContrasena())) {
+				if (usuario.getCorreo().isEmpty()||usuario.getCorreo().length()<=4) {
+					model.addAttribute("noEncontrado", true);
+					model.addAttribute("correoVacio", "Ingrese un correo Válido");
+					return "login";
+				} else if (usuario.getContrasena().equals(u.getContrasena())) {
 					if (u.getRol().equals("Cliente")) {
 						model.addAttribute("usuario", u);
 						model.addAttribute("listaSubcategorias", this.repoSubcategoria.findAll());
