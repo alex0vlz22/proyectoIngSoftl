@@ -30,14 +30,19 @@ public class Producto {
 
 	@Size(min = 3, max = 50, message = "Ingrese entre 3 y 50 caracteres. ")
 	private String nombre;
+	
 	@Size(min = 5, max = 50, message = "Ingrese entre 5 y 50 caracteres. ")
 	private String descripcion;
 
-	@Min(value = 1, message = "La cantidad debe ser de al menos 1. ")
+	@Min(value = 0, message = "La cantidad debe ser de al menos 0. ")
 	private int cantidad;
 
 	@Min(value = 1, message = "El precio debe ser de al menos 1. ")
 	private double precio;
+	
+	private double precioConIVA;
+	
+	private boolean IVA = false;
 
 	@Column(length = 255)
 	@NotBlank(message = "Debe subir una foto desde su PC. ")

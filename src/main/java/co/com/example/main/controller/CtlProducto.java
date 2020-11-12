@@ -150,6 +150,7 @@ public class CtlProducto {
 				e.printStackTrace();
 			}
 			b.setEspacioDisponible(b.getEspacioDisponible() - producto.getCantidad());
+			producto.setPrecioConIVA(producto.getPrecio() * 1.21);
 			this.repoBodega.save(b);
 			producto.setProveedor(p);
 			producto.setSubcategoria(c);
@@ -248,7 +249,7 @@ public class CtlProducto {
 
 			b.setEspacioDisponible(b.getEspacioDisponible() - producto.getCantidad());
 			this.repoBodega.save(b);
-
+			producto.setPrecioConIVA(producto.getPrecio() * 1.21);
 			repoProducto.save(producto);
 			model.addAttribute("bodegaConEspacio", bodegaConEspacio);
 			model.addAttribute("productoForm", new Producto());
@@ -524,7 +525,11 @@ public class CtlProducto {
 			return 0;
 		} else {
 			for (Carrito carrito : lista) {
-				valorTotal += carrito.getProducto().getPrecio() * carrito.getCantidad();
+				if(carrito.getProducto().isIVA()) {
+					valorTotal += carrito.getProducto().getPrecioConIVA() * carrito.getCantidad();
+				}else {
+					valorTotal += carrito.getProducto().getPrecio() * carrito.getCantidad();
+				}
 			}
 		}
 		return valorTotal;
@@ -572,7 +577,7 @@ public class CtlProducto {
 				model.addAttribute("listaProductos", this.repoCarrito.findByUsuario(PageRequest.of(0, 12), user));
 				model.addAttribute("listaProductosNoPage", this.repoCarrito.findByUsuario(user));
 				model.addAttribute("usuario", user);
-				model.addAttribute("producto", new Producto());
+				//model.addAttribute("producto", new Producto());
 			} else {
 				Pedido pedido = new Pedido();
 				pedido = construirPedido(listaProductos, idComprador, pedido);
@@ -611,7 +616,12 @@ public class CtlProducto {
 		double valorTotal = 0;
 		for (Carrito c : listaProductos) {
 			cantidadArticulos += c.getCantidad();
-			valorTotal += c.getProducto().getPrecio() * c.getCantidad();
+			if(c.getProducto().isIVA()) {
+				valorTotal += c.getProducto().getPrecioConIVA() * c.getCantidad();
+			}else {
+				valorTotal += c.getProducto().getPrecio() * c.getCantidad();
+			}
+			
 
 			// modifico la cantidad del producto comprado en la base de datos, es decir, le
 			// resto
@@ -637,7 +647,11 @@ public class CtlProducto {
 	private Facturaa construirFactura(List<Carrito> listaProductos, int idComprador, Pedido pedido, Facturaa factura) {
 		double valorTotal = 0;
 		for (Carrito c : listaProductos) {
-			valorTotal += c.getProducto().getPrecio() * c.getCantidad();
+			if(c.getProducto().isIVA()) {
+				valorTotal += c.getProducto().getPrecioConIVA() * c.getCantidad();
+			}else {
+				valorTotal += c.getProducto().getPrecio() * c.getCantidad();
+			}
 		}
 		Date fecha = new Date(System.currentTimeMillis());
 		factura.setPedido(pedido);
@@ -658,7 +672,11 @@ public class CtlProducto {
 			detalleFactura.setCantidad(c.getCantidad());
 			Date fecha = new Date(System.currentTimeMillis());
 			detalleFactura.setFecha(fecha);
-			detalleFactura.setValor(c.getProducto().getPrecio() * c.getCantidad());
+			if(c.getProducto().isIVA()) {
+				detalleFactura.setValor(c.getProducto().getPrecioConIVA() * c.getCantidad());
+			}else {
+				detalleFactura.setValor(c.getProducto().getPrecio() * c.getCantidad());
+			}
 			this.repoDetalleFactura.save(detalleFactura);
 			this.repoCarrito.delete(c);
 		}

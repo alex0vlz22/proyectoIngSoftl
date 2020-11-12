@@ -1,5 +1,7 @@
 package co.com.example.main.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
@@ -7,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import co.com.example.main.domain.DetalleFactura;
 import co.com.example.main.domain.Facturaa;
 import co.com.example.main.domain.Producto;
 import co.com.example.main.domain.Usuario;
@@ -26,6 +29,16 @@ public class CtlFacturaa {
 	@Autowired
 	private RepoDetalleFactura repoDetalleFactura;
 
+	@GetMapping("/facturaArchivoPlano/{idUsuario}/{idFactura}")
+	public String archivoPlano(Model model, @PathVariable("idUsuario") int idUsuario, @PathVariable("idFactura") int idFactura) {
+		Facturaa f = this.repoFactura.findById(idFactura);
+		List<DetalleFactura> lf = this.repoDetalleFactura.findByFactura(f);
+		model.addAttribute("factura", f);
+		model.addAttribute("listaDetalles", lf);
+		model.addAttribute("comprador", f.getComprador());
+		return "FacturaArchivoPlano";
+	}
+	
 	@GetMapping("/visualizarFacturas/{idUsuario}")
 	public String visualizarFacturas(Model model, @PathVariable("idUsuario") int idUsuario) {
 		Usuario user = this.repoUsuario.findById(idUsuario);
