@@ -276,6 +276,9 @@ public class CtlProducto {
 	@GetMapping("/eliminarProducto/{id}")
 	public String eliminarProducto(Model model, @PathVariable int id) {
 		int idVendedor = repoProducto.findById(id).getVendedor().getId();
+		Bodega b = this.repoProducto.findById(id).getBodega();
+		b.setEspacioDisponible(b.getEspacioDisponible() + this.repoProducto.findById(id).getCantidad());
+		this.repoBodega.save(b);
 		repoProducto.deleteById(id);
 		model.addAttribute("bodegaSinEspacio", false);
 		model.addAttribute("producto", new Producto());
