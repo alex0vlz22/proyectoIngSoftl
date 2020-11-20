@@ -88,13 +88,13 @@ public class RepoBodegaTest {
 	public void testListarTodosUsuario() {
 		Usuario user = new Usuario();
 		user.setDNI("1");
-		user.setNombre("j");
-		user.setApellido("j");
-		user.setTelefono("5754567");
+		user.setNombre("junior Alexis");
+		user.setApellido("llanten Velez");
+		user.setTelefono("575456732");
 		user.setCorreo("j@gmail.com");
 		user.setRol("Cliente");
 		user.setUrlFoto("www");
-		user.setDireccion("dffd");
+		user.setDireccion("Direccion test 123");
 		repoUsuario.save(user);
 		
 		Bodega b1= getBodega("primera");

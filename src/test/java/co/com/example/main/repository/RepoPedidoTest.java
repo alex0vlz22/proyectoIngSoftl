@@ -26,8 +26,8 @@ public class RepoPedidoTest {
 	
 	private Pedido getPedido() {
 		Pedido pedido = new Pedido();
-		pedido.setCantidadArticulos(2);
-		pedido.setValorTotal(3445);
+		pedido.setCantidadArticulos(3);
+		pedido.setValorTotal(20000);
 		return pedido;
 	}
 	

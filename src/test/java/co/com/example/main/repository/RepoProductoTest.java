@@ -35,9 +35,9 @@ public class RepoProductoTest {
 	private Producto getProducto(String nombre) {
 		Producto producto = new Producto();
 		producto.setNombre(nombre);
-		producto.setDescripcion("fdsdsf");
-		producto.setCantidad(2);
-		producto.setPrecio(454);
+		producto.setDescripcion("Esto es una descripcion");
+		producto.setCantidad(4);
+		producto.setPrecio(200000);
 		producto.setUrlFoto("www");
 		return producto;
 	}
@@ -118,7 +118,7 @@ public class RepoProductoTest {
 	@Test
 	public void testListarTodosSubcategoria() {
 		Subcategoria subcategoria = new Subcategoria();
-		subcategoria.setNombre("t");
+		subcategoria.setNombre("subcategoria ensayo");
 		repoSubcategoria.save(subcategoria);
 		
 		Producto p1 = getProducto("azucar");

@@ -27,7 +27,7 @@ public class RepoProveedorTest {
 	private Proveedor getProveedor(String nombre) {
 		Proveedor proveedor = new Proveedor();
 		proveedor.setNombre(nombre);
-		proveedor.setDescripcion("fgfg");
+		proveedor.setDescripcion("Nombre proveedor");
 		return proveedor;
 	}
 	

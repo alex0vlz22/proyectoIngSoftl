@@ -30,13 +30,13 @@ public class RepoUsuarioTest {
 	private Usuario getUsuario(String dni) {
 		Usuario user = new Usuario();
 		user.setDNI(dni);
-		user.setNombre("j"+dni);
-		user.setApellido("j"+dni);
-		user.setTelefono("5754567");
+		user.setNombre("junior alexis"+dni);
+		user.setApellido("llanten velez"+dni);
+		user.setTelefono("575456732");
 		user.setCorreo("j"+dni+"@gmail.com");
 		user.setRol("Cliente");
 		user.setUrlFoto("www");
-		user.setDireccion("dffd");
+		user.setDireccion("Direccion de prueba 7");
 		return user;
 	}
 	
