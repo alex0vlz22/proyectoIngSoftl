@@ -13,9 +13,22 @@
 	<div>
 		<img src="/images/fondos/login.jpg">
 
-		<div th:if="${noEncontrado == true}" style="margin-left:540px;">
-			<div class="alert alert-danger animate__animated animate__slideInDown" role="alert"
-				style="position: absolute;"><i class="fas fa-exclamation-triangle"></i> No se ha encontrado el usuario.</div>
+		<div th:if="${noEncontrado == true}" style="margin-left: 540px;">
+			<div
+				class="alert alert-danger animate__animated animate__slideInDown"
+				role="alert" style="position: absolute;">
+				<i class="fas fa-exclamation-triangle"></i> No se ha encontrado el
+				usuario.
+			</div>
+		</div>
+
+		<div th:if="${errorContrasena == true}" style="margin-left: 540px;">
+			<div
+				class="alert alert-danger animate__animated animate__slideInDown"
+				role="alert" style="position: absolute;">
+				<i class="fas fa-exclamation-triangle"></i> Contrase&ntilde;a
+				incorrecta.
+			</div>
 		</div>
 
 		<div id="divisionPrincipal">
@@ -40,8 +53,16 @@
 							</td>
 						</tr>
 						<tr>
-							<td><input type="number" placeholder="Ingresar DNI" id="dni"
-								required="true" th:field="*{DNI}"></td>
+							<td><input type="email" placeholder="Ingresar correo"
+								id="dni" required="true" th:field="*{correo}"><span
+								th:text=${correoVacio} class="text-danger" style="background-color: white; font-size: 19	px"></span></td>
+
+						</tr>
+						<tr>
+							<td><input type="password"
+								placeholder="Ingresar contrase&ntilde;a" id="dni"
+								required="true" th:field="*{contrasena}"><span
+								th:text=${contrasenaVacia} class="text-danger" style="background-color: white; font-size: 19px; "></span></td>
 						</tr>
 						<tr>
 							<td>

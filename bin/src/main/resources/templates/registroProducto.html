@@ -10,8 +10,9 @@
 
 	<div class="form-group" th:replace="fragment/vendedor/navBar :: nav"></div>
 
-	<div th:if="${bodegaSinEspacio == true}" id="divErrorBodega">
-		<span class="alert alert-danger">&iexcl;No queda espacio suficiente en la bodega para tal cantidad!</span>
+	<div th:if="${bodegaConEspacio == false}" id="divErrorBodega">
+		<span class="alert alert-danger">&iexcl;No queda espacio
+			suficiente en la bodega para tal cantidad!</span>
 	</div>
 
 	<div>
@@ -20,7 +21,7 @@
 				<td>
 					<div id="divisionPrincipal" class="card"
 						style="padding: 20px; margin-top: 100px; margin-left: 130px;">
-						<form action="#" th:object="${productoForm}"
+						<form action="#" th:object="${producto}"
 							th:action="@{/guardarProducto/{idVendedor}(idVendedor = ${idVendedor})}"
 							method="post" enctype="multipart/form-data">
 							<input type="hidden" id="agregarUrl" th:field="*{urlFoto}">
@@ -31,32 +32,36 @@
 									<tr>
 										<th colspan="2" id="tituloCategoria"><h1>Gesti&oacute;n
 												de productos</h1>
-											<hr style="background-color: white;">
-											<br></th>
+											<hr style="background-color: white;"> <br></th>
 									</tr>
 								</thead>
 								<tbody>
 									<tr>
 										<td><span class="etiqueta">Nombre:</span></td>
 										<td><input class="form-control" autofocus type="text"
-											placeholder="Nombre" required="true" th:field="*{nombre}"/></td>
+											placeholder="Nombre" required="true" th:field="*{nombre}" />
+											<span th:if="${#fields.hasErrors('nombre')}"
+											th:errors="*{nombre}" class="text-danger"></span></td>
 									</tr>
 									<tr>
 										<td><br> <span class="etiqueta">Descripci&oacute;n:</span></td>
 										<td><br> <input class="form-control" autofocus
 											type="text" placeholder="Descripci&oacute;n" required="true"
-											th:field="*{descripcion}" /></td>
+											th:field="*{descripcion}" /> <span
+											th:if="${#fields.hasErrors('descripcion')}"
+											th:errors="*{descripcion}" class="text-danger"></span></td>
 									</tr>
 									<tr>
 										<td><br> <span class="etiqueta">Cantidad:</span></td>
 										<td><br> <input class="form-control" type="number"
-											placeholder="Cantidad" required="true" th:field="*{cantidad}" /></td>
+											placeholder="Cantidad" required="true" th:field="*{cantidad}" /><span
+											th:if="${#fields.hasErrors('cantidad')}"
+											th:errors="*{cantidad}" class="text-danger"></span></td>
 									</tr>
 									<tr>
 										<td><br> <span class="etiqueta">Subcategor&iacute;a:</span></td>
 										<td><br> <select class="form-control"
 											th:field="*{idSubcategoria}">
-												<option value="0">Seleccionar</option>
 												<option th:each="subcategoria : ${listaSubcategorias}"
 													th:value="${subcategoria.id}"
 													th:text="${subcategoria.nombre}"></option>
@@ -66,7 +71,6 @@
 										<td><br> <span class="etiqueta">Bodega:</span></td>
 										<td><br> <select class="form-control"
 											th:field="*{idBodega}">
-												<option value="0">Seleccionar</option>
 												<option th:each="bodega : ${listaBodegas}"
 													th:value="${bodega.id}" th:text="${bodega.nombre}"></option>
 										</select></td>
@@ -75,7 +79,6 @@
 										<td><br> <span class="etiqueta">Proveedor:</span></td>
 										<td><br> <select class="form-control"
 											th:field="*{idProveedor}">
-												<option value="0">Seleccionar</option>
 												<option th:each="proveedor : ${listaProveedores}"
 													th:value="${proveedor.id}" th:text="${proveedor.nombre}"></option>
 										</select></td>
@@ -83,7 +86,17 @@
 									<tr>
 										<td><br> <span class="etiqueta">Precio:</span></td>
 										<td><br> <input class="form-control" type="number"
-											placeholder="Precio" required="true" th:field="*{precio}"></td>
+											placeholder="Precio" required="true" th:field="*{precio}"><span
+											th:if="${#fields.hasErrors('precio')}" th:errors="*{precio}"
+											class="text-danger"></span></td>
+									</tr>
+									<tr>
+										<td><br> <span class="etiqueta">IVA:</span></td>
+										<td><br> <select th:field="*{IVA}"
+											class="form-control">
+												<option value="false">No</option>
+												<option value="true">S&iacute;</option>
+										</select></td>
 									</tr>
 									<tr>
 										<td><br> <label for="file-upload"
@@ -100,7 +113,9 @@
 														class="img-fluid rounded mt-2"
 														style='width: 14rem; heigth: auto;'>
 												</div>
-											</div></td>
+
+											</div> <span th:if="${#fields.hasErrors('urlFoto')}"
+											th:errors="*{urlFoto}" class="text-danger"></span></td>
 									</tr>
 									<tr>
 										<td colspan="2" style="text-align: center;">
@@ -172,8 +187,8 @@
 							<a
 								th:each="i : ${#numbers.sequence(0,listaProductos.totalPages-1)}"
 								class="page-link btn btn-primary"
-								th:href="@{'/registroProducto/' + ${usuario.id} + '/pag/' + ${i}}" th:text="${i}"
-								id="pagElement" align="center"></a>
+								th:href="@{'/registroProducto/' + ${usuario.id} + '/pag/' + ${i}}"
+								th:text="${i}" id="pagElement" align="center"></a>
 						</div>
 					</div>
 				</td>

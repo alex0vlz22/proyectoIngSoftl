@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Archivo plano | factura</title>
+<div th:replace="fragment/linksHeader :: links"></div>
+<link rel="stylesheet" th:href="@{/css/FacturaArchivoPlano.css}" />
+</head>
+<body>
+<div style="padding: 10px; width: 100%;">
+	<table align="center">
+		<thead>
+			<td colspan="2">
+				<span id="titulo" class="campoNegrilla" th:text="'Factura # ' + ${factura.id}"></span>
+			</td>
+		</thead>
+		<tbody>
+			<tr>
+				<td colspan="2">
+					<span class="campoNegrilla">Comprador: </span>
+					<span class="campoCargado" th:text=" ${comprador.nombre} + ' ' + ${comprador.apellido}"></span>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<span class="campoNegrilla">Fecha:</span>
+				</td>
+				<td>
+					<span class="campoCargado" th:text="${factura.fecha}"></span>
+				</td>
+			</tr>
+			<tr th:each="detalle : ${listaDetalles}">
+				<td>
+					<span  class="campoNegrilla">Producto:</span><br>
+					<span  class="campoNegrilla">Cantidad:</span><br>
+					<span  class="campoNegrilla">Precio de compra:</span><br>
+					<span  class="campoNegrilla">Precio con IVA:</span><br>
+					<span  class="campoNegrilla">Precio sin IVA:</span>
+				</td>
+				<td>
+					<span class="campoCargado" th:text="${detalle.producto.nombre}"></span><br>
+					<span class="campoCargado" th:text="${detalle.cantidad}"></span><br>
+					<span class="campoCargado" th:text="${detalle.valor} + ' COP'"></span><br>
+					<span class="campoCargado" th:text="${detalle.producto.precioConIVA} + ' COP'"></span><br>
+					<span class="campoCargado" th:text="${detalle.producto.precio} + ' COP'"></span>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<span class="campoNegrilla">Total:</span>
+				</td>
+				<td>
+					<span class="campoCargado" th:text="${factura.valorTotal} + ' COP'"></span>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<span id="finalMsg">Empresa de facturaci&oacute;n &copy; 2020 Todos los derechos reservados.</span>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	</div>
+</body>
+</html>

@@ -14,12 +14,13 @@
 		<div id="divisionPrincipal">
 			<form action="#"
 				th:action=@{/modificarSubcategoria/{id}(id=${idSubcategoria})}
-				th:object="${subcategoria}" method="post" class="card" style="width: 400px; padding: 20px; margin-left: 500px; margin-top: 100px; position: absolute;">
+				th:object="${subcategoria}" method="post" class="card"
+				style="width: 400px; padding: 20px; margin-left: 500px; margin-top: 100px; position: absolute;">
 				<table>
 					<thead>
 						<tr>
-							<th colspan="2" id="colTitulo" style="text-align: center;"><h2>Edici&oacute;n de
-								subcategor&iacute;a</h2>
+							<th colspan="2" id="colTitulo" style="text-align: center;"><h2>Edici&oacute;n
+									de subcategor&iacute;a</h2>
 								<hr style="background-color: white;"></th>
 						</tr>
 					</thead>
@@ -29,15 +30,21 @@
 						</tr>
 						<tr>
 							<td><span id="nombre">Nuevo nombre :</span></td>
-							<td><input autofocus type="text" th:field="*{nombre}" required="true"
-								placeholder="Nuevo nombre" class="form-control"/></td>
+							<td><input autofocus type="text" th:field="*{nombre}"
+								required="true" placeholder="Nuevo nombre" class="form-control" /><span
+								th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"
+								class="text-danger"></span> <span th:text="${error}"
+								class="text-danger"></span></td>
 						</tr>
 						<tr>
 							<td><div id="divisionInvisible1"></div></td>
 						</tr>
 						<tr>
-							<td><br><span id="categoria">Nueva categor&iacute;a:</span></td>
-							<td><br><select id="comboCategorias" th:field="*{idCategoria}" class="form-control">
+							<td><br>
+							<span id="categoria">Nueva categor&iacute;a:</span></td>
+							<td><br>
+							<select id="comboCategorias" th:field="*{idCategoria}"
+								class="form-control">
 									<option th:each="categoria : ${listaCategorias}"
 										th:value="${categoria.id}" th:text="${categoria.nombre}"></option>
 							</select>
@@ -45,7 +52,8 @@
 						<tr>
 							<td colspan="2" style="text-align: center;">
 								<hr style="background-color: white;">
-								<button id="boton" type="submit" class="btn btn-success">Guardar cambios</button>
+								<button id="boton" type="submit" class="btn btn-success">Guardar
+									cambios</button>
 							</td>
 						</tr>
 					</tbody>

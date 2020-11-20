@@ -34,7 +34,10 @@
 										<td id="columnaDatosIzquierda"><span id="nombre">Nombre:</span></td>
 										<td id="columnaDatosDerecha"><input autofocus
 											required="true" type="text" placeholder="Nombre"
-											th:field="*{nombre}" id="campoNombre" class="form-control" /></td>
+											th:field="*{nombre}" id="campoNombre" class="form-control" />
+											<span th:if="${#fields.hasErrors('nombre')}"
+											th:errors="*{nombre}" class="text-danger"></span> <span
+											th:text="${error}" class="text-danger"></span></td>
 									</tr>
 									<tr id="filaCategoria">
 										<td id="columnaDatosIzquierda"><br> <span
@@ -44,7 +47,7 @@
 											<div id="siHayCategorias">
 												<br> <select th:field="*{idCategoria}"
 													class="form-control">
-													<option value="0">Seleccionar</option>
+
 													<option th:each="categoria : ${listaCategorias}"
 														th:text="${categoria.nombre}" th:value="${categoria.id}"></option>
 												</select>

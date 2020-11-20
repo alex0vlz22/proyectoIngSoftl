@@ -26,22 +26,31 @@
 											<hr style="background-color: white;"></td>
 									</tr>
 									<tr>
-										<td colspan="2"><span id="nombre">Nombre</span> <input
+										<td colspan="2"><span id="nombre">Nombre </span> <input
 											autofocus placeholder="Nombre" th:field="*{nombre}"
-											required="true" type="text" class="form-control" /></td>
+											required="true" type="text" class="form-control" /> 
+											<span
+											th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"
+											class="text-danger"></span>
+											<span
+											th:if="@{existeBodega(nombre)}" th:text="${error}"
+											class="text-danger"></span>
+											
+											</td>
 									</tr>
 									<tr>
 										<td colspan="2"><span id="direccion">Direcci&oacute;n</span>
 											<input placeholder="Direcci&oacute;n" th:field="*{direccion}"
-											required="true" type="text" class="form-control" /></td>
+											required="true" type="text" class="form-control" /> <span
+											th:if="${#fields.hasErrors('direccion')}"
+											th:errors="*{direccion}" class="text-danger"></span></td>
 									</tr>
 									<tr>
 										<td colspan="2"><span id="capacidad">Capacidad</span> <input
-											placeholder="capacidad" th:field="*{capacidad}"
+											th:field="*{capacidad}" placeholder="capacidad"
 											required="true" type="number" class="form-control" /> <span
 											th:if="${#fields.hasErrors('capacidad')}"
-											th:errors="*{capacidad}" class="text-danger"></span> <span th:text="${error}"
-											class="text-danger"></span></td>
+											th:errors="*{capacidad}" class="text-danger"></span></td>
 									</tr>
 									<tr>
 										<td colspan="2" style="text-align: center;"><button

@@ -24,6 +24,7 @@ import co.com.example.main.repository.RepoProducto;
 import co.com.example.main.repository.RepoProveedor;
 import co.com.example.main.repository.RepoSubcategoria;
 import co.com.example.main.repository.RepoUsuario;
+import co.com.example.main.security.util.Passgenerator;
 
 @Controller
 public class CtlUsuario {
@@ -42,6 +43,9 @@ public class CtlUsuario {
 
 	@Autowired
 	private CloudinaryConfig cloudc;
+	
+	@Autowired
+    private Passgenerator passgenerator;
 
 	@GetMapping("")
 	public String index(Model model) {
@@ -50,8 +54,8 @@ public class CtlUsuario {
 	}
 
 	@GetMapping("/inicio/{idUsuario}")
-	public String inicio(Model model, @PathVariable("idUsuario") int idUsuario,
-			@RequestParam(defaultValue = "0") int page) {
+	public String inicio(Model model, @PathVariable("idUsuario") int idUsuario, @RequestParam(defaultValue = "0") int page) {
+		
 		Usuario u = repoUsuario.findById(idUsuario);
 		model.addAttribute("usuario", u);
 		model.addAttribute("listaSubcategorias", this.repoSubcategoria.findAll());
@@ -124,17 +128,20 @@ public class CtlUsuario {
 		}
 	}
 
+	//public
 	@GetMapping("/registroClienteVendedor")
 	public String registroClienteVendedor(Model model) {
 		return "registroClienteVendedor";
 	}
 
+	//public
 	@GetMapping("/soporte")
 	public String soporte(Model model) {
 		return "soporte";
 	}
 
-	@GetMapping("/login")
+	//public
+	@GetMapping("/signup")
 	public String login(Model model) {
 		model.addAttribute("noEncontrado", false);
 		model.addAttribute("errorContrasena", false);
@@ -142,11 +149,13 @@ public class CtlUsuario {
 		return "login";
 	}
 
+	//public
 	@GetMapping("/QuedateEnCasa")
 	public String video(Model model) {
 		return "video";
 	}
 
+	//public
 	@GetMapping("/registroCliente")
 	public String registroCliente(Model model) {
 		Usuario usuario = new Usuario();
@@ -155,6 +164,7 @@ public class CtlUsuario {
 		return "registroUsuario";
 	}
 
+	//public
 	@GetMapping("/registroVendedor")
 	public String registroVendedor(Model model) {
 		Usuario usuario = new Usuario();
@@ -164,11 +174,9 @@ public class CtlUsuario {
 	}
 
 	@PostMapping("/guardarUsuario")
-	public String guardarUsaurio(@Valid Usuario usuario, BindingResult result, Model model,
-			@RequestParam("file") MultipartFile file) {
+	public String guardarUsaurio(@Valid Usuario usuario, BindingResult result, Model model, @RequestParam("file") MultipartFile file) {
 		try {
 			Map uploadResult = cloudc.upload(file.getBytes(), ObjectUtils.asMap("resourcetype", "auto"));
-			System.out.println(uploadResult.get("url").toString());
 			usuario.setUrlFoto(uploadResult.get("url").toString());
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -186,12 +194,14 @@ public class CtlUsuario {
 				return "registroUsuario";
 			}
 			usuario.setRol("Cliente");
+			usuario.setContrasena(passgenerator.enciptarPassword(usuario.getContrasena()));
 			repoUsuario.save(usuario);
 			model.addAttribute("usuarioRegistrado", true);
 			return "redirect:/";
 		} else {
 			if (usuario.getCodigoEmpresa().equalsIgnoreCase("A7B8C9")) {
 				usuario.setRol("Vendedor");
+				usuario.setContrasena(passgenerator.enciptarPassword(usuario.getContrasena()));
 				repoUsuario.save(usuario);
 				model.addAttribute("usuarioRegistrado", true);
 				return "redirect:/";
@@ -233,19 +243,18 @@ public class CtlUsuario {
 		if (cambioUrl) {
 			try {
 				Map uploadResult = cloudc.upload(file.getBytes(), ObjectUtils.asMap("resourcetype", "auto"));
-				System.out.println(uploadResult.get("url").toString());
 				usuario.setUrlFoto(uploadResult.get("url").toString());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
-
 		if (result.hasErrors()) {
 			usuario.setRol("Cliente");
 			model.addAttribute("usuario", usuario);
 			model.addAttribute("producto", new Producto());
 			return "editarUsuario";
 		}
+		usuario.setContrasena(passgenerator.enciptarPassword(usuario.getContrasena()));
 		this.repoUsuario.save(usuario);
 		model.addAttribute("usuario", usuario);
 		model.addAttribute("listaProveedores", this.repoProveedor.findAll());
