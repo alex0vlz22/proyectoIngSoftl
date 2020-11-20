@@ -16,3 +16,20 @@ span {
 	font-size: 25px;
 	font-weight: lighter;
 }
+
+span{
+	font-family: inherit;
+}
+
+.campoNegrilla{
+	font-weight: bold;
+}
+
+.campoCargado{
+	font-weight: normal;
+}
+
+#finalMsg{
+	font-size: 19px;
+	font-weight: normal;
+}

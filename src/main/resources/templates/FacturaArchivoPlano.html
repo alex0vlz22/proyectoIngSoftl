@@ -11,45 +11,51 @@
 	<table align="center">
 		<thead>
 			<td colspan="2">
-				<span id="titulo" th:text="'Factura # ' + ${factura.id}"></span>
+				<span id="titulo" class="campoNegrilla" th:text="'Factura # ' + ${factura.id}"></span>
 			</td>
 		</thead>
 		<tbody>
 			<tr>
 				<td colspan="2">
-					<span th:text="'Comprador: ' + ${comprador.nombre} + ' ' + ${comprador.apellido}"></span>
+					<span class="campoNegrilla">Comprador: </span>
+					<span class="campoCargado" th:text=" ${comprador.nombre} + ' ' + ${comprador.apellido}"></span>
 				</td>
 			</tr>
 			<tr>
 				<td>
-					<span>Fecha:</span>
+					<span class="campoNegrilla">Fecha:</span>
 				</td>
 				<td>
-					<span th:text="${factura.fecha}"></span>
+					<span class="campoCargado" th:text="${factura.fecha}"></span>
 				</td>
 			</tr>
 			<tr th:each="detalle : ${listaDetalles}">
 				<td>
-					<span>Producto:</span><br>
-					<span>Cantidad:</span><br>
-					<span>Precio de compra:</span><br>
-					<span>Precio con IVA:</span><br>
-					<span>Precio sin IVA:</span>
+					<span  class="campoNegrilla">Producto:</span><br>
+					<span  class="campoNegrilla">Cantidad:</span><br>
+					<span  class="campoNegrilla">Precio de compra:</span><br>
+					<span  class="campoNegrilla">Precio con IVA:</span><br>
+					<span  class="campoNegrilla">Precio sin IVA:</span>
 				</td>
 				<td>
-					<span th:text="${detalle.producto.nombre}"></span><br>
-					<span th:text="${detalle.cantidad}"></span><br>
-					<span th:text="${detalle.valor} + ' COP'"></span><br>
-					<span th:text="${detalle.producto.precioConIVA} + ' COP'"></span><br>
-					<span th:text="${detalle.producto.precio} + ' COP'"></span>
+					<span class="campoCargado" th:text="${detalle.producto.nombre}"></span><br>
+					<span class="campoCargado" th:text="${detalle.cantidad}"></span><br>
+					<span class="campoCargado" th:text="${detalle.valor} + ' COP'"></span><br>
+					<span class="campoCargado" th:text="${detalle.producto.precioConIVA} + ' COP'"></span><br>
+					<span class="campoCargado" th:text="${detalle.producto.precio} + ' COP'"></span>
 				</td>
 			</tr>
 			<tr>
 				<td>
-					<span>Total:</span>
+					<span class="campoNegrilla">Total:</span>
 				</td>
 				<td>
-					<span th:text="${factura.valorTotal} + ' COP'"></span>
+					<span class="campoCargado" th:text="${factura.valorTotal} + ' COP'"></span>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<span id="finalMsg">Empresa de facturaci&oacute;n &copy; 2020 Todos los derechos reservados.</span>
 				</td>
 			</tr>
 		</tbody>

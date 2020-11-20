@@ -47,7 +47,7 @@ public class Usuario {
 
 	private String rol;
 
-	@NotBlank(message = "Debe Elegir una foto")
+	//@NotBlank(message = "Debe Elegir una foto")
 	private String urlFoto;
 
 	@OneToMany(mappedBy = "usuario", cascade = CascadeType.REMOVE)

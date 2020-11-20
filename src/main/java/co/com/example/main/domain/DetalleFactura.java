@@ -21,6 +21,7 @@ public class DetalleFactura {
 	@ManyToOne
 	private Facturaa factura;
 	
+	
 	@ManyToOne
 	private Producto producto;
 	
