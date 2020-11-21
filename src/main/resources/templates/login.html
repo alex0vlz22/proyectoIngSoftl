@@ -38,7 +38,13 @@
 						<th>
 							<h1 id="login">LOGIN</h1>
 						</th>
-					</tr>
+	<tr>		 <th>				<div th:if="${param.error}" class="alert alert-danger" role="alert">
+		            	Invalid username and password.
+	</th>			</tr>	        	</div>
+<tr>		 <th>       	<div  id="dni" th:if="${param.logout}" class="alert alert-success" role="alert">
+		           		You have been logged out.
+		        	</div>
+	</th>			</tr>
 				</thead>
 				<tbody>
 					<form th:action="@{/login}" method="post">
@@ -60,12 +66,7 @@
 							</td>
 						</tr>
 					</form>
-					<div th:if="${param.error}" class="alert alert-danger" role="alert">
-		            	Invalid username and password.
-		        	</div>
-		        	<div th:if="${param.logout}" class="alert alert-success" role="alert">
-		           		You have been logged out.
-		        	</div>
+					
 				</tbody>
 			</table>
 		</div>
