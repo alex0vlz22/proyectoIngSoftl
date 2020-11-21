@@ -44,16 +44,6 @@
 					<form th:action="@{/login}" method="post">
 						<tr>
 							<td>
-								<div class="btn-group">
-									<select name="cars" id="cars" required="true">
-										<option value="Cliente">Cliente</option>
-										<option value="Vendedor">Vendedor</option>
-									</select>
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td>
 								<input type="email" placeholder="Ingresar correo" id="dni" required="true"  name="correo">
 								<span th:text=${correoVacio} class="text-danger" style="background-color: white; font-size: 19	px"></span>
 							</td>

@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,6 +26,7 @@ import co.com.example.main.repository.RepoProveedor;
 import co.com.example.main.repository.RepoSubcategoria;
 import co.com.example.main.repository.RepoUsuario;
 import co.com.example.main.security.util.Passgenerator;
+import co.com.example.main.security.util.UserAutenticado;
 
 @Controller
 public class CtlUsuario {
@@ -46,16 +48,31 @@ public class CtlUsuario {
 	
 	@Autowired
     private Passgenerator passgenerator;
+	
+	@Autowired
+	private UserAutenticado userAutenticado;
 
 	@GetMapping("")
 	public String index(Model model) {
 		model.addAttribute("usuarioRegistrado", true);
 		return "index";
 	}
+	
+	@GetMapping("/inicio")
+	public String inicio(Model model, @RequestParam(defaultValue = "0") int page) {
+		UserDetails user = userAutenticado.getAuth();
+		Usuario u = repoUsuario.findByCorreo(user.getUsername());
+		model.addAttribute("usuario", u);
+		model.addAttribute("listaSubcategorias", this.repoSubcategoria.findAll());
+		model.addAttribute("listaProveedores", this.repoProveedor.findAll());
+		model.addAttribute("listaProductos", this.repoProducto.findAll(PageRequest.of(page, 6)));
+		model.addAttribute("producto", new Producto());
+		return "ingresoUsuario";
+	}
 
+	
 	@GetMapping("/inicio/{idUsuario}")
 	public String inicio(Model model, @PathVariable("idUsuario") int idUsuario, @RequestParam(defaultValue = "0") int page) {
-		
 		Usuario u = repoUsuario.findById(idUsuario);
 		model.addAttribute("usuario", u);
 		model.addAttribute("listaSubcategorias", this.repoSubcategoria.findAll());
@@ -148,6 +165,25 @@ public class CtlUsuario {
 		model.addAttribute("usuario", new Usuario());
 		return "login";
 	}
+	
+	//public
+		@GetMapping("/login")
+		public String l(Model model) {
+			model.addAttribute("noEncontrado", false);
+			model.addAttribute("errorContrasena", false);
+			model.addAttribute("usuario", new Usuario());
+			return "login";
+		}
+	
+	//public
+		@GetMapping("/logout")
+		public String logout(Model model) {
+			model.addAttribute("noEncontrado", false);
+			model.addAttribute("errorContrasena", false);
+			model.addAttribute("usuario", new Usuario());
+			return "login";
+		}
+
 
 	//public
 	@GetMapping("/QuedateEnCasa")

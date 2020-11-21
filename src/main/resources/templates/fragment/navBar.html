@@ -35,8 +35,10 @@
 						<div class="dropdown-menu">
 							<a class="dropdown-item"
 								th:href="@{/editarPerfil/{idUsuario}(idUsuario = ${usuario.id})}">Editar
-								perfil</a> <a class="dropdown-item" href="#"></a> <a
-								class="dropdown-item" href="#">Cerrar sesi&oacute;n</a>
+								perfil</a> <a class="dropdown-item" href="#"></a> 
+								<form th:action='@{/logout?logout=true}' method="post">
+          							<button type="submit" class="dropdown-item">Cerrar sesi&oacute;n</button>
+          						</form>
 							<div class="dropdown-divider"></div>
 							<a class="dropdown-item"
 								th:href="@{/eliminarCuenta/{idUsuario}(idUsuario = ${usuario.id})}"

@@ -21,9 +21,9 @@ public class MainSecurity  extends WebSecurityConfigurerAdapter{
 		http.authorizeRequests().antMatchers(resources).permitAll().antMatchers("/","/signup","/login","/registroClienteVendedor", "/registroVendedor", "/registroCliente","/soporte","/QuedateEnCasa", "/guardarUsuario").permitAll()
 				.anyRequest().authenticated().and().formLogin()
 				.loginPage("/login").permitAll()
-				.defaultSuccessUrl("/inicio*").failureUrl("/signup?error=true")
+				.defaultSuccessUrl("/inicio").failureUrl("/signup?error=true")
 				.usernameParameter("correo").passwordParameter("contrasena").and().logout().permitAll()
-				.logoutSuccessUrl("/signup?logout=true");
+				.logoutSuccessUrl("/logout?logout=true");
 	}
 
 	BCryptPasswordEncoder bCryptPasswordEncoder;
