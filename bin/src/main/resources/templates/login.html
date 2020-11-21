@@ -38,31 +38,27 @@
 						<th>
 							<h1 id="login">LOGIN</h1>
 						</th>
-					</tr>
+	<tr>		 <th>				<div th:if="${param.error}" class="alert alert-danger" role="alert">
+		            	Correo y contrasena invalidos.
+	</th>			</tr>	        	</div>
+<tr>		 <th>       	<div  id="dni" th:if="${param.logout}" class="alert alert-success" role="alert">
+		           		Se ha cerrado la sesion.
+		        	</div>
+	</th>			</tr>
 				</thead>
 				<tbody>
-					<form th:action="@{/ingreso}" th:object="${usuario}">
+					<form th:action="@{/login}" method="post">
 						<tr>
 							<td>
-								<div class="btn-group">
-									<select name="cars" id="cars" th:field="*{rol}" required="true">
-										<option value="Cliente">Cliente</option>
-										<option value="Vendedor">Vendedor</option>
-									</select>
-								</div>
+								<input type="email" placeholder="Ingresar correo" id="dni" required="true"  name="correo">
+								<span th:text=${correoVacio} class="text-danger" style="background-color: white; font-size: 19	px"></span>
 							</td>
 						</tr>
 						<tr>
-							<td><input type="email" placeholder="Ingresar correo"
-								id="dni" required="true" th:field="*{correo}"><span
-								th:text=${correoVacio} class="text-danger" style="background-color: white; font-size: 19	px"></span></td>
-
-						</tr>
-						<tr>
-							<td><input type="password"
-								placeholder="Ingresar contrase&ntilde;a" id="dni"
-								required="true" th:field="*{contrasena}"><span
-								th:text=${contrasenaVacia} class="text-danger" style="background-color: white; font-size: 19px; "></span></td>
+							<td>
+								<input type="password" placeholder="Ingresar contrase&ntilde;a" id="dni" required="true" name="contrasena">
+								<span th:text=${contrasenaVacia} class="text-danger" style="background-color: white; font-size: 19px; " ></span>
+							</td>
 						</tr>
 						<tr>
 							<td>
@@ -70,6 +66,7 @@
 							</td>
 						</tr>
 					</form>
+					
 				</tbody>
 			</table>
 		</div>

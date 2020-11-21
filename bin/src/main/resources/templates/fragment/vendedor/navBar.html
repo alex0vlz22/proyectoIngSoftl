@@ -41,8 +41,11 @@
 						<div class="dropdown-menu">
 							<a class="dropdown-item" th:href="@{/editarPerfil/{idUsuario}(idUsuario = ${usuario.id})}">Editar perfil</a>
 							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="#">Cerrar sesi&oacute;n</a>
-						</div></li>
+							<form th:action='@{/logout?logout=true}' method="post">
+          						<button type="submit" class="dropdown-item">Cerrar sesi&oacute;n</button>
+          					</form>
+						</div>
+					</li>
 				</ul>
 				<form class="form-inline my-2 my-lg-0" th:action="@{/busquedaPorPalabras/{idUsuario}(idUsuario = ${usuario.id})}" th:object="${producto}">
 					<input class="form-control mr-sm-2" type="text" 
