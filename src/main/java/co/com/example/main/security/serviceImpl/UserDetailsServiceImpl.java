@@ -1,6 +1,7 @@
 package co.com.example.main.security.serviceImpl;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,19 +27,27 @@ public class UserDetailsServiceImpl implements UserDetailsService {
      public UserDetails loadUserByUsername(String correo) throws UsernameNotFoundException {
     	UserDetails user=null;
     	System.out.println("inicio logiar");
-    	List grantList = new ArrayList();
     	Usuario usuario = usuarioRepo.findByCorreo(correo);
     	if(usuario != null) {
-		        GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(usuario.getRol());
-		        grantList.add(grantedAuthority);
 			System.out.println("user");
-			user = (UserDetails) new User(usuario.getCorreo(), usuario.getContrasena(), grantList);
+			user = (UserDetails) new User(usuario.getCorreo(), usuario.getContrasena(), getGrantedAuthorities(usuario));
 		}
+    	
     	if (user != null) {
 			return user;
 		}else {
 			System.out.println("error al logiar");
 			throw new UsernameNotFoundException("No existe usuario");
 		}
+    }
+    
+    public Collection<GrantedAuthority> getGrantedAuthorities(Usuario user) {
+    	Collection<GrantedAuthority> grantedAuthorities = new ArrayList();
+    	System.out.println("rol:" +user.getRol());
+    	if (user.getRol().equals("Vendedor")) {
+			grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+		}
+    	grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+    	return grantedAuthorities;
     }
 }

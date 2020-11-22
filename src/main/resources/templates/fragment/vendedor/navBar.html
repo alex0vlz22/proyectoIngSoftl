@@ -20,15 +20,13 @@
 				<ul class="navbar-nav mr-auto">
 					<li class="nav-item active"><a class="nav-link" th:href="@{/inicio/{idUsuario}(idUsuario = ${usuario.id})}">Inicio
 							<span class="sr-only">(current)</span>
-					</a></li>
-					<li class="nav-item"><a class="nav-link" href="#">Pedidos</a>
-					</li>
+					</a>
 					<li class="nav-item"><a class="nav-link" th:href="@{/registroProducto/{idVendedor}(idVendedor = ${usuario.id})}">Productos</a>
 					</li>
 					<li class="nav-item"><a class="nav-link" th:href="@{/registroProveedor/{idVendedor}(idVendedor = ${usuario.id})}">Proveedores</a></li>
 					<li class="nav-item"><a class="nav-link" th:href="@{/registroBodega/{idVendedor}(idVendedor = ${usuario.id})}">Bodegas</a></li>
-					<li class="nav-item dropdown"><a
-						class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
+					<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"
 						role="button" aria-haspopup="true" aria-expanded="false">Categor&iacute;as</a>
 						<div class="dropdown-menu">
 							<a class="dropdown-item" th:href="@{/registroCategoria/{idVendedor}(idVendedor = ${usuario.id})}">Gestion de categor&iacute;as</a>

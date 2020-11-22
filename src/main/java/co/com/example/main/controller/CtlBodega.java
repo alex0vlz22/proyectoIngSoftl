@@ -6,18 +6,21 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import co.com.example.main.domain.Bodega;
 import co.com.example.main.domain.Producto;
 import co.com.example.main.domain.Usuario;
 import co.com.example.main.repository.RepoBodega;
 import co.com.example.main.repository.RepoUsuario;
+
 
 @Controller
 public class CtlBodega {
@@ -34,7 +37,7 @@ public class CtlBodega {
 		}
 		return false;
 	}
-
+	
 	@GetMapping("registroBodega/{idVendedor}/pag/{page}")
 	public String registroBodegaPag(Model model, @PathVariable("idVendedor") int idVendedor,
 			@PathVariable("page") int page) {
@@ -47,6 +50,7 @@ public class CtlBodega {
 		return "registroBodega";
 	}
 
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/registroBodega/{idVendedor}")
 	public String registroBodega(Model model, @PathVariable int idVendedor) {
 		Usuario user = this.repoUsuario.findById(idVendedor);
