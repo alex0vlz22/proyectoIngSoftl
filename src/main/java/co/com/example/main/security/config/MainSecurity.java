@@ -26,7 +26,7 @@ public class MainSecurity  extends WebSecurityConfigurerAdapter{
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().antMatchers(resources).permitAll().antMatchers("/","/signup","/login","/registroClienteVendedor", "/registroVendedor", "/registroCliente","/soporte","/QuedateEnCasa", "/guardarUsuario").permitAll()
+		http.authorizeRequests().antMatchers(resources).permitAll().antMatchers("/","/pag/**","/detalleProducto/**","/busquedaPorPalabras","/home","/signup","/login","/registroClienteVendedor", "/registroVendedor", "/registroCliente","/soporte","/QuedateEnCasa", "/guardarUsuario").permitAll()
 			.anyRequest().authenticated()
 			.and().formLogin()
 			.loginPage("/login").permitAll()

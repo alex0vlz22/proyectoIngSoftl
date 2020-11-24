@@ -75,6 +75,7 @@ public class CtlProducto {
 
 	@Autowired
 	private RepoDetalleFactura repoDetalleFactura;
+
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	@GetMapping("/pag/{idUsuario}/{page}")
 	public String pag(Model model, @PathVariable("idUsuario") int idUsuario, @PathVariable("page") int page) {
@@ -86,6 +87,17 @@ public class CtlProducto {
 		model.addAttribute("producto", new Producto());
 		return "ingresoUsuario";
 	}
+
+	@GetMapping("/pag/{page}")
+	public String pagSinLog(Model model, @PathVariable("page") int page) {
+		model.addAttribute("usuario", new Usuario());
+		model.addAttribute("listaSubcategorias", this.repoSubcategoria.findAll());
+		model.addAttribute("listaProveedores", this.repoProveedor.findAll());
+		model.addAttribute("listaProductos", this.repoProducto.findAll(PageRequest.of(page, 6)));
+		model.addAttribute("producto", new Producto());
+		return "home";
+	}
+
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/registroProducto/{idVendedor}")
 	public String registroProducto(Model model, @PathVariable int idVendedor,
@@ -101,6 +113,7 @@ public class CtlProducto {
 		model.addAttribute("idVendedor", idVendedor);
 		return "registroProducto";
 	}
+
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/registroProducto/{idVendedor}/pag/{page}")
 	public String pagRegistroProducto(Model model, @PathVariable int idVendedor, @PathVariable("page") int page) {
@@ -115,6 +128,7 @@ public class CtlProducto {
 		model.addAttribute("idVendedor", idVendedor);
 		return "registroProducto";
 	}
+
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/guardarProducto/{idVendedor}")
 	public String guardarProducto(@Valid Producto producto, BindingResult result, Model model,
@@ -182,6 +196,7 @@ public class CtlProducto {
 			return "registroProducto";
 		}
 	}
+
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/editarProducto/{id}")
 	public String editarProducto(Model model, @PathVariable int id) {
@@ -201,6 +216,7 @@ public class CtlProducto {
 		}
 		return "redirect:/registroProducto/" + idVendedor;
 	}
+
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/modificarProducto/{id}")
 	public String modificarProducto(@Valid Producto producto, BindingResult result, Model model, @PathVariable int id,
@@ -273,6 +289,7 @@ public class CtlProducto {
 			return "editarProducto";
 		}
 	}
+
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/eliminarProducto/{id}")
 	public String eliminarProducto(Model model, @PathVariable int id) {
@@ -290,6 +307,7 @@ public class CtlProducto {
 		model.addAttribute("producto", new Producto());
 		return "redirect:/registroProducto/" + idVendedor;
 	}
+
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	@PostMapping("/user/subirImagen")
 	public @ResponseBody String subirImagen(@RequestParam("file") MultipartFile file) {
@@ -322,6 +340,24 @@ public class CtlProducto {
 		model.addAttribute("listaProductos", new PageImpl<>(listaProductos));
 		return "ingresoUsuario";
 	}
+
+	@GetMapping("/busquedaPorPalabras")
+	public String buscarPorPalabrasSinLog(Model model, Producto producto) {
+		String palabras = producto.getDescripcion();
+		List<Producto> listaProductos = (List<Producto>) repoProducto.findAllByNombreContainingIgnoreCase(palabras);
+
+		if (listaProductos.size() == 0) {
+			listaProductos = (List<Producto>) repoProducto.findAllByDescripcionContainingIgnoreCase(palabras);
+
+		}
+		model.addAttribute("usuario", new Usuario());
+		model.addAttribute("producto", new Producto());
+		model.addAttribute("listaSubcategorias", this.repoSubcategoria.findAll());
+		model.addAttribute("listaProveedores", this.repoProveedor.findAll());
+		model.addAttribute("listaProductos", new PageImpl<>(listaProductos));
+		return "home";
+	}
+
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	@GetMapping("/busquedaPorFiltros/{idUsuario}")
 	public String buscarPorFiltros(Model model, @PathVariable int idUsuario, Producto producto) {
@@ -431,6 +467,7 @@ public class CtlProducto {
 		}
 		return false;
 	}
+
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	@GetMapping("/detalleProducto/{idUsuario}/{idProducto}")
 	public String detalleProducto(Model model, @PathVariable("idUsuario") int idUsuario,
@@ -448,6 +485,22 @@ public class CtlProducto {
 		model.addAttribute("prodAgregar", new Producto());
 		return "detalleProducto";
 	}
+
+	@GetMapping("/detalleProducto/{idProducto}")
+	public String detalleProductoSinLog(Model model, @PathVariable("idProducto") int idProducto) {
+		Producto producto = repoProducto.findById(idProducto);
+		model.addAttribute("agregado", false);
+		model.addAttribute("agotado", false);
+		model.addAttribute("yaEnCarrito", false);
+		model.addAttribute("usuario", new Usuario());
+		model.addAttribute("productoVisualizado", producto);
+		model.addAttribute("proveedor", producto.getProveedor());
+		model.addAttribute("subcategoria", producto.getSubcategoria());
+		model.addAttribute("producto", new Producto());
+		model.addAttribute("prodAgregar", new Producto());
+		return "detalleProd";
+	}
+
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	@GetMapping("/producto/{idProducto}/carrito/{idUsuario}")
 	public String agregarCarrito(Model model, @PathVariable("idProducto") int idProducto,
@@ -503,6 +556,7 @@ public class CtlProducto {
 		}
 		return false;
 	}
+
 	@PreAuthorize("hasRole('ROLE_USER')")
 	@GetMapping("/carrito/{idUsuario}")
 	public String miCarrito(Model model, @PathVariable("idUsuario") int idUsuario) {
@@ -529,15 +583,16 @@ public class CtlProducto {
 			return 0;
 		} else {
 			for (Carrito carrito : lista) {
-				if(carrito.getProducto().isIVA()) {
+				if (carrito.getProducto().isIVA()) {
 					valorTotal += carrito.getProducto().getPrecioConIVA() * carrito.getCantidad();
-				}else {
+				} else {
 					valorTotal += carrito.getProducto().getPrecio() * carrito.getCantidad();
 				}
 			}
 		}
 		return valorTotal;
 	}
+
 	@PreAuthorize("hasRole('ROLE_USER')")
 	@GetMapping("/eliminar/prod/{idCarrito}/carrito/{idUsuario}")
 	public String eliminarDelCarrito(Model model, @PathVariable("idCarrito") int idCarrito,
@@ -545,6 +600,7 @@ public class CtlProducto {
 		this.repoCarrito.deleteById(idCarrito);
 		return "redirect:/carrito/" + idUsuario;
 	}
+
 	@PreAuthorize("hasRole('ROLE_USER')")
 	@GetMapping("/realizarCompra/{idUsuario}/productos")
 	public String comprar(Model model, @PathVariable("idUsuario") int idComprador) {
@@ -581,7 +637,7 @@ public class CtlProducto {
 				model.addAttribute("listaProductos", this.repoCarrito.findByUsuario(PageRequest.of(0, 12), user));
 				model.addAttribute("listaProductosNoPage", this.repoCarrito.findByUsuario(user));
 				model.addAttribute("usuario", user);
-				//model.addAttribute("producto", new Producto());
+				// model.addAttribute("producto", new Producto());
 			} else {
 				Pedido pedido = new Pedido();
 				pedido = construirPedido(listaProductos, idComprador, pedido);
@@ -620,12 +676,11 @@ public class CtlProducto {
 		double valorTotal = 0;
 		for (Carrito c : listaProductos) {
 			cantidadArticulos += c.getCantidad();
-			if(c.getProducto().isIVA()) {
+			if (c.getProducto().isIVA()) {
 				valorTotal += c.getProducto().getPrecioConIVA() * c.getCantidad();
-			}else {
+			} else {
 				valorTotal += c.getProducto().getPrecio() * c.getCantidad();
 			}
-			
 
 			// modifico la cantidad del producto comprado en la base de datos, es decir, le
 			// resto
@@ -651,9 +706,9 @@ public class CtlProducto {
 	private Facturaa construirFactura(List<Carrito> listaProductos, int idComprador, Pedido pedido, Facturaa factura) {
 		double valorTotal = 0;
 		for (Carrito c : listaProductos) {
-			if(c.getProducto().isIVA()) {
+			if (c.getProducto().isIVA()) {
 				valorTotal += c.getProducto().getPrecioConIVA() * c.getCantidad();
-			}else {
+			} else {
 				valorTotal += c.getProducto().getPrecio() * c.getCantidad();
 			}
 		}
@@ -676,9 +731,9 @@ public class CtlProducto {
 			detalleFactura.setCantidad(c.getCantidad());
 			Date fecha = new Date(System.currentTimeMillis());
 			detalleFactura.setFecha(fecha);
-			if(c.getProducto().isIVA()) {
+			if (c.getProducto().isIVA()) {
 				detalleFactura.setValor(c.getProducto().getPrecioConIVA() * c.getCantidad());
-			}else {
+			} else {
 				detalleFactura.setValor(c.getProducto().getPrecio() * c.getCantidad());
 			}
 			this.repoDetalleFactura.save(detalleFactura);

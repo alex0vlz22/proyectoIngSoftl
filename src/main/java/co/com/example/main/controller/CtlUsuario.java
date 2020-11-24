@@ -59,6 +59,17 @@ public class CtlUsuario {
 		return "index";
 	}
 	
+	@GetMapping("/home")
+	public String inicioSinLogin(Model model, @RequestParam(defaultValue = "0") int page) {
+		
+		model.addAttribute("usuario",new Usuario());
+		model.addAttribute("listaSubcategorias", this.repoSubcategoria.findAll());
+		model.addAttribute("listaProveedores", this.repoProveedor.findAll());
+		model.addAttribute("listaProductos", this.repoProducto.findAll(PageRequest.of(page, 6)));
+		model.addAttribute("producto", new Producto());
+		return "home";
+	}
+	
 	@GetMapping("/inicio")
 	public String inicio(Model model, @RequestParam(defaultValue = "0") int page) {
 		UserDetails user = userAutenticado.getAuth();
