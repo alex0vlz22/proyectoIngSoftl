@@ -4,6 +4,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,7 +26,7 @@ public class CtlProveedor {
 
 	@Autowired
 	private RepoUsuario repoUsuario;
-
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/registroProveedor/{idVendedor}")
 	public String registroProveedor(Model model, @PathVariable int idVendedor,
 			@RequestParam(defaultValue = "0") int page) {
@@ -36,7 +37,7 @@ public class CtlProveedor {
 		model.addAttribute("producto", new Producto());
 		return "registroProveedor";
 	}
-
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/registroProveedor/{idVendedor}/pag/{page}")
 	public String pagRegistroProveedor(Model model, @PathVariable int idVendedor, @PathVariable("page") int page) {
 		model.addAttribute("proveedor", new Proveedor());
@@ -46,7 +47,7 @@ public class CtlProveedor {
 		model.addAttribute("producto", new Producto());
 		return "registroProveedor";
 	}
-
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/guardarProveedor/{idVendedor}")
 	public String guardarProveedor(@Valid Proveedor proveedor, BindingResult result, Model model,
 			@PathVariable int idVendedor) {
@@ -75,7 +76,7 @@ public class CtlProveedor {
 		model.addAttribute("producto", new Producto());
 		return "redirect:/registroProveedor/" + idVendedor;
 	}
-
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/editarProveedor/{id}")
 	public String editarProveedor(@PathVariable int id, Model model) {
 		Proveedor p = repoProveedor.findById(id);
@@ -84,7 +85,7 @@ public class CtlProveedor {
 		model.addAttribute("producto", new Producto());
 		return "editarProveedor";
 	}
-
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/modificarProveedor/{id}")
 	public String modificarProveedor(@Valid Proveedor proveedor, BindingResult result, Model model,
 			@PathVariable int id) {
@@ -113,7 +114,7 @@ public class CtlProveedor {
 		model.addAttribute("producto", new Producto());
 		return "redirect:/registroProveedor/" + idVendedor;
 	}
-
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/eliminarProveedor/{id}")
 	public String eliminarProveedor(Model model, @PathVariable int id) {
 		int idVendedor = repoProveedor.findById(id).getUsuario().getId();

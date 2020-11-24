@@ -4,6 +4,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -30,7 +31,7 @@ public class CtlSubcategoria {
 
 	@Autowired
 	private RepoUsuario repoUsuario;
-
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/registroSubcategoria/{idVendedor}/pag/{page}")
 	public String registroSubcategoria(Model model, @PathVariable("idVendedor") int idVendedor,
 			@PathVariable("page") int page) {
@@ -43,7 +44,7 @@ public class CtlSubcategoria {
 		model.addAttribute("producto", new Producto());
 		return "registroSubcategoria";
 	}
-
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/registroSubcategoria/{idVendedor}")
 	public String registroSubcategoria(Model model, @PathVariable int idVendedor) {
 		Usuario user = this.repoUsuario.findById(idVendedor);
@@ -55,7 +56,7 @@ public class CtlSubcategoria {
 		model.addAttribute("producto", new Producto());
 		return "registroSubcategoria";
 	}
-
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/guardarSubcategoria/{idVendedor}")
 	public String guardarSubcategoria(@Valid Subcategoria s, BindingResult result, Model model,
 			@PathVariable int idVendedor) {
@@ -100,7 +101,7 @@ public class CtlSubcategoria {
 			return "redirect:/registroSubcategoria/" + idVendedor;
 		}
 	}
-
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/editarSubcategoria/{id}")
 	public String editarSubcategoria(Model model, @PathVariable int id) {
 		Subcategoria s = repoSubcategoria.findById(id);
@@ -111,7 +112,7 @@ public class CtlSubcategoria {
 		model.addAttribute("producto", new Producto());
 		return "editarSubcategoria";
 	}
-
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/modificarSubcategoria/{id}")
 	public String modificarSubcategoria(@Valid Subcategoria s, BindingResult result, Model model,
 			@PathVariable int id) {
@@ -147,7 +148,7 @@ public class CtlSubcategoria {
 		model.addAttribute("producto", new Producto());
 		return "redirect:/registroSubcategoria/" + idVendedor;
 	}
-
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/eliminarSubcategoria/{id}")
 	public String eliminarSubcategoria(Model model, @PathVariable int id) {
 		int idVendedor = repoSubcategoria.findById(id).getUsuario().getId();

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,7 +29,7 @@ public class CtlFacturaa {
 
 	@Autowired
 	private RepoDetalleFactura repoDetalleFactura;
-
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	@GetMapping("/facturaArchivoPlano/{idUsuario}/{idFactura}")
 	public String archivoPlano(Model model, @PathVariable("idUsuario") int idUsuario, @PathVariable("idFactura") int idFactura) {
 		Facturaa f = this.repoFactura.findById(idFactura);
@@ -38,7 +39,7 @@ public class CtlFacturaa {
 		model.addAttribute("comprador", f.getComprador());
 		return "FacturaArchivoPlano";
 	}
-	
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	@GetMapping("/visualizarFacturas/{idUsuario}")
 	public String visualizarFacturas(Model model, @PathVariable("idUsuario") int idUsuario) {
 		Usuario user = this.repoUsuario.findById(idUsuario);
@@ -47,7 +48,7 @@ public class CtlFacturaa {
 		model.addAttribute("usuario", user);
 		return "visualizarFacturas";
 	}
-	
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	@GetMapping("/visualizarFacturas/{idUsuario}/page/{page}")
 	public String visualizarFacturas(Model model, @PathVariable("idUsuario") int idUsuario, @PathVariable("page") int page) {
 		Usuario user = this.repoUsuario.findById(idUsuario);
@@ -56,7 +57,7 @@ public class CtlFacturaa {
 		model.addAttribute("usuario", user);
 		return "visualizarFacturas";
 	}
-
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	@GetMapping("/visualizarDetalle/{idFactura}/{idUsuario}")
 	public String visualizarDetalleFactura(Model model, @PathVariable("idUsuario") int idUsuario,
 			@PathVariable("idFactura") int idFactura) {
@@ -67,7 +68,7 @@ public class CtlFacturaa {
 		model.addAttribute("factura", f);
 		return "detalleFactura";
 	}
-
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	@GetMapping("/visualizarDetalle/{idFactura}/{idUsuario}/{page}")
 	public String pagVisualizarDetalleFactura(Model model, @PathVariable("idUsuario") int idUsuario,
 			@PathVariable("idFactura") int idFactura, @PathVariable("page") int page) {

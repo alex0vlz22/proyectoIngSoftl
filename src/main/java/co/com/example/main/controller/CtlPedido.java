@@ -2,6 +2,7 @@ package co.com.example.main.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +21,7 @@ public class CtlPedido {
 
 	@Autowired
 	private RepoUsuario repoUsuario;
-
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	@GetMapping("/visualizarPedidos/{idUsuario}")
 	public String visualizarPedidos(Model model, @PathVariable("idUsuario") int idUsuario) {
 		Usuario user = this.repoUsuario.findById(idUsuario);
@@ -29,7 +30,7 @@ public class CtlPedido {
 		model.addAttribute("producto", new Producto());
 		return "visualizarPedidos";
 	}
-
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	@GetMapping("/visualizarPedidos/{idUsuario}/page/{page}")
 	public String visualizarPagPedidos(Model model, @PathVariable("idUsuario") int idUsuario,
 			@PathVariable("page") int page) {

@@ -37,7 +37,7 @@ public class CtlBodega {
 		}
 		return false;
 	}
-	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("registroBodega/{idVendedor}/pag/{page}")
 	public String registroBodegaPag(Model model, @PathVariable("idVendedor") int idVendedor,
 			@PathVariable("page") int page) {
@@ -62,6 +62,7 @@ public class CtlBodega {
 		return "registroBodega";
 	}
 
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/guardarBodega/{idVendedor}")
 	public String guardarBodega(@Valid Bodega b, BindingResult result, Model model, @PathVariable int idVendedor) {
 		b.setUsuario(repoUsuario.findById(idVendedor));
@@ -82,7 +83,7 @@ public class CtlBodega {
 			return "redirect:/registroBodega/" + idVendedor;
 		}
 	}
-
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/editarBodega/{id}")
 	public String editarBodega(Model model, @PathVariable int id) {
 		Bodega b = repoBodega.findById(id);
@@ -91,7 +92,7 @@ public class CtlBodega {
 		model.addAttribute("producto", new Producto());
 		return "editarBodega";
 	}
-
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/modificarBodega/{id}")
 	public String modificarBodega(@Valid Bodega b, BindingResult result, @PathVariable int id, Model model) {
 		Bodega bodAux = repoBodega.findById(id);
@@ -133,7 +134,7 @@ public class CtlBodega {
 			return "redirect:/registroBodega/" + idVendedor;
 		}
 	}
-
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/eliminarBodega/{id}")
 	public String eliminarBodega(Model model, @PathVariable int id) {
 		int idVendedor = repoBodega.findById(id).getUsuario().getId();

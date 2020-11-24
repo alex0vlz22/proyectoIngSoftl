@@ -10,6 +10,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -74,7 +75,7 @@ public class CtlProducto {
 
 	@Autowired
 	private RepoDetalleFactura repoDetalleFactura;
-
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	@GetMapping("/pag/{idUsuario}/{page}")
 	public String pag(Model model, @PathVariable("idUsuario") int idUsuario, @PathVariable("page") int page) {
 		Usuario u = repoUsuario.findById(idUsuario);
@@ -85,7 +86,7 @@ public class CtlProducto {
 		model.addAttribute("producto", new Producto());
 		return "ingresoUsuario";
 	}
-
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/registroProducto/{idVendedor}")
 	public String registroProducto(Model model, @PathVariable int idVendedor,
 			@RequestParam(defaultValue = "0") int page) {
@@ -100,7 +101,7 @@ public class CtlProducto {
 		model.addAttribute("idVendedor", idVendedor);
 		return "registroProducto";
 	}
-
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/registroProducto/{idVendedor}/pag/{page}")
 	public String pagRegistroProducto(Model model, @PathVariable int idVendedor, @PathVariable("page") int page) {
 		Usuario user = this.repoUsuario.findById(idVendedor);
@@ -114,7 +115,7 @@ public class CtlProducto {
 		model.addAttribute("idVendedor", idVendedor);
 		return "registroProducto";
 	}
-
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/guardarProducto/{idVendedor}")
 	public String guardarProducto(@Valid Producto producto, BindingResult result, Model model,
 			@RequestParam("file") MultipartFile file, @PathVariable int idVendedor) {
@@ -181,7 +182,7 @@ public class CtlProducto {
 			return "registroProducto";
 		}
 	}
-
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/editarProducto/{id}")
 	public String editarProducto(Model model, @PathVariable int id) {
 		int idVendedor = repoProducto.findById(id).getVendedor().getId();
@@ -200,7 +201,7 @@ public class CtlProducto {
 		}
 		return "redirect:/registroProducto/" + idVendedor;
 	}
-
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/modificarProducto/{id}")
 	public String modificarProducto(@Valid Producto producto, BindingResult result, Model model, @PathVariable int id,
 			@RequestParam("file") MultipartFile file, @RequestParam("cambioUrl") boolean cambioUrl) {
@@ -272,7 +273,7 @@ public class CtlProducto {
 			return "editarProducto";
 		}
 	}
-
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/eliminarProducto/{id}")
 	public String eliminarProducto(Model model, @PathVariable int id) {
 		int idVendedor = repoProducto.findById(id).getVendedor().getId();
@@ -289,7 +290,7 @@ public class CtlProducto {
 		model.addAttribute("producto", new Producto());
 		return "redirect:/registroProducto/" + idVendedor;
 	}
-
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	@PostMapping("/user/subirImagen")
 	public @ResponseBody String subirImagen(@RequestParam("file") MultipartFile file) {
 		try {
@@ -304,7 +305,7 @@ public class CtlProducto {
 	}
 
 	// Consultas
-
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	@GetMapping("/busquedaPorPalabras/{idUsuario}")
 	public String buscarPorPalabras(Model model, @PathVariable int idUsuario, Producto producto) {
 		String palabras = producto.getDescripcion();
@@ -321,7 +322,7 @@ public class CtlProducto {
 		model.addAttribute("listaProductos", new PageImpl<>(listaProductos));
 		return "ingresoUsuario";
 	}
-
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	@GetMapping("/busquedaPorFiltros/{idUsuario}")
 	public String buscarPorFiltros(Model model, @PathVariable int idUsuario, Producto producto) {
 		// ¡¡¡¡¡¡¡¡ IMPORTANTE !!!!!!!!!
@@ -430,7 +431,7 @@ public class CtlProducto {
 		}
 		return false;
 	}
-
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	@GetMapping("/detalleProducto/{idUsuario}/{idProducto}")
 	public String detalleProducto(Model model, @PathVariable("idUsuario") int idUsuario,
 			@PathVariable("idProducto") int idProducto) {
@@ -447,7 +448,7 @@ public class CtlProducto {
 		model.addAttribute("prodAgregar", new Producto());
 		return "detalleProducto";
 	}
-
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	@GetMapping("/producto/{idProducto}/carrito/{idUsuario}")
 	public String agregarCarrito(Model model, @PathVariable("idProducto") int idProducto,
 			@PathVariable("idUsuario") int idUsuario) {
@@ -502,7 +503,7 @@ public class CtlProducto {
 		}
 		return false;
 	}
-
+	@PreAuthorize("hasRole('ROLE_USER')")
 	@GetMapping("/carrito/{idUsuario}")
 	public String miCarrito(Model model, @PathVariable("idUsuario") int idUsuario) {
 		Usuario user = this.repoUsuario.findById(idUsuario);
@@ -537,14 +538,14 @@ public class CtlProducto {
 		}
 		return valorTotal;
 	}
-
+	@PreAuthorize("hasRole('ROLE_USER')")
 	@GetMapping("/eliminar/prod/{idCarrito}/carrito/{idUsuario}")
 	public String eliminarDelCarrito(Model model, @PathVariable("idCarrito") int idCarrito,
 			@PathVariable("idUsuario") int idUsuario) {
 		this.repoCarrito.deleteById(idCarrito);
 		return "redirect:/carrito/" + idUsuario;
 	}
-
+	@PreAuthorize("hasRole('ROLE_USER')")
 	@GetMapping("/realizarCompra/{idUsuario}/productos")
 	public String comprar(Model model, @PathVariable("idUsuario") int idComprador) {
 

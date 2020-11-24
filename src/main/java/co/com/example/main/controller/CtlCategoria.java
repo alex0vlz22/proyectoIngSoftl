@@ -4,6 +4,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,7 +26,7 @@ public class CtlCategoria {
 
 	@Autowired
 	private RepoUsuario repoUsuario;
-
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("registroCategoria/{idUsuario}/pag/{page}")
 	public String registroCategoriaPag(Model model, @PathVariable("idUsuario") int idVendedor,
 			@PathVariable("page") int page) {
@@ -37,7 +38,7 @@ public class CtlCategoria {
 		model.addAttribute("producto", new Producto());
 		return "registroCategoria";
 	}
-
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/registroCategoria/{idVendedor}")
 	public String registroCategoria(Model model, @PathVariable int idVendedor) {
 		Usuario user = this.repoUsuario.findById(idVendedor);
@@ -48,7 +49,7 @@ public class CtlCategoria {
 		model.addAttribute("producto", new Producto());
 		return "registroCategoria";
 	}
-
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/guardarCategoria/{idVendedor}")
 	public String guardarCategoria(@Valid Categoria categoria, BindingResult result, Model model,
 			@PathVariable int idVendedor) {
@@ -89,7 +90,7 @@ public class CtlCategoria {
 		}
 		return false;
 	}
-
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/editarCategoria/{id}")
 	public String editarCategoria(@PathVariable int id, Model model) {
 		Categoria c = repoCategoria.findById(id);
@@ -98,7 +99,7 @@ public class CtlCategoria {
 		model.addAttribute("producto", new Producto());
 		return "editarCategoria";
 	}
-
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("/modificarCategoria/{id}")
 	public String editarCategoria(@Valid Categoria categoria, BindingResult result, @PathVariable int id, Model model) {
 		categoria.setUsuario(repoCategoria.findById(id).getUsuario());
@@ -136,7 +137,7 @@ public class CtlCategoria {
 		}
 		return false;
 	}
-
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/eliminarCategoria/{id}")
 	public String eliminarCategoria(@PathVariable int id, Model model) {
 		int idVendedor = repoCategoria.findById(id).getUsuario().getId();

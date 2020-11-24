@@ -36,7 +36,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     	if (user != null) {
 			return user;
 		}else {
-			System.out.println("error al logiar");
 			throw new UsernameNotFoundException("No existe usuario");
 		}
     }

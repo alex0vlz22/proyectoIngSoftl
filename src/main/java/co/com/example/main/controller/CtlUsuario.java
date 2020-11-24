@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -263,14 +264,14 @@ public class CtlUsuario {
 		}
 		return false;
 	}
-
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	@GetMapping("/editarPerfil/{idUsuario}")
 	public String editarUsuario(Model model, @PathVariable int idUsuario) {
 		model.addAttribute("usuario", this.repoUsuario.findById(idUsuario));
 		model.addAttribute("producto", new Producto());
 		return "editarUsuario";
 	}
-
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	@PostMapping("/modificarUsuario/{idUsuario}")
 	public String modificarUsuario(@Valid Usuario usuario, BindingResult result, Model model,
 			@PathVariable("idUsuario") int idUsuario, @RequestParam("file") MultipartFile file,
@@ -299,7 +300,7 @@ public class CtlUsuario {
 		model.addAttribute("producto", new Producto());
 		return "redirect:/inicio/" + idUsuario;
 	}
-
+	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	@GetMapping("/eliminarCuenta/{idUsuario}")
 	public String eliminarCuenta(Model model, @PathVariable("idUsuario") int id) {
 		this.repoUsuario.delete(this.repoUsuario.findById(id));
