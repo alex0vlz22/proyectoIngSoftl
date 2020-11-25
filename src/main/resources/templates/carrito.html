@@ -54,11 +54,11 @@
 					<hr style="background-color: white;">
 					<div class="row mb-2">
 						<div class="col">
-							<span>Precio:</span>
+							<span class="newText">Precio:</span>
 						</div>
 						<div class="col">
-							<span th:if="${carrito.producto.IVA}" th:text="'$ '+${carrito.producto.precioConIVA}"></span>
-							<span th:if="${!carrito.producto.IVA}" th:text="'$ '+${carrito.producto.precio}"></span>
+							<span class="newText" th:if="${carrito.producto.IVA}" th:text="'$ '+${carrito.producto.precioConIVA}"></span>
+							<span class="newText" th:if="${!carrito.producto.IVA}" th:text="'$ '+${carrito.producto.precio}"></span>
 						</div>
 					</div>
 					<a class="btn btn-danger mt-2"

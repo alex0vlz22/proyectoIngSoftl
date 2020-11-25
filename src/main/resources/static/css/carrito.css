@@ -42,6 +42,7 @@ body{
 	margin: 5px;
 	width: 250px;
 	transition: 200ms;
+	height: 400px;
 }
 
 #producto:hover{
@@ -100,6 +101,11 @@ body{
 	position: absolute;
 	width: 100%;
 }
+
+.newText{
+	font-size: 14px;
+}
+
 
 @keyframes bajar{
 	0%{
