@@ -58,3 +58,13 @@ img{
 body{
 	background-color: black;
 }
+
+#colEnlace{
+	text-align: center;
+	background-color: black;
+}
+
+a{
+	margin-top: 20px;
+	color: yellow;
+}
