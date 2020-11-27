@@ -42,7 +42,10 @@ private UserAutenticado userAutenticado;
 		UserDetails user1 = userAutenticado.getAuth();
 
 		Usuario user = repoUsuario.findByCorreo(user1.getUsername());
-		idVendedor=user.getId();
+	
+		if (user.getId()!=idVendedor) {
+			return "denegado";
+		}
 		model.addAttribute("idVendedor", idVendedor);
 		model.addAttribute("bodega", new Bodega());
 		model.addAttribute("listaBodegas", this.repoBodega.findAll(PageRequest.of(page, 3)));
@@ -57,7 +60,11 @@ private UserAutenticado userAutenticado;
 		UserDetails user1 = userAutenticado.getAuth();
 
 		Usuario user = repoUsuario.findByCorreo(user1.getUsername());
-		idVendedor=user.getId();		
+	
+		if (user.getId()!=idVendedor) {
+			return "denegado";
+					
+		}
 		model.addAttribute("idVendedor", idVendedor);
 		model.addAttribute("bodega", new Bodega());
 		model.addAttribute("listaBodegas", this.repoBodega.findAll(PageRequest.of(0, 3)));
@@ -72,7 +79,11 @@ private UserAutenticado userAutenticado;
 		UserDetails user1 = userAutenticado.getAuth();
 
 		Usuario user = repoUsuario.findByCorreo(user1.getUsername());
-		idVendedor=user.getId();
+	
+		if (user.getId()!=idVendedor) {
+			return "denegado";			
+		}
+		
 		b.setUsuario(repoUsuario.findById(idVendedor));
 		b.setEspacioDisponible(b.getCapacidad());
 		model.addAttribute("idVendedor", idVendedor);

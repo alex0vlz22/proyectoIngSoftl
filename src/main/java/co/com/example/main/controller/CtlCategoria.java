@@ -38,7 +38,10 @@ public class CtlCategoria {
 		UserDetails user1 = userAutenticado.getAuth();
 
 		Usuario user = repoUsuario.findByCorreo(user1.getUsername());
-		idVendedor=user.getId();
+	
+		if (user.getId()!=idVendedor) {
+			return "denegado";			
+		}
 		model.addAttribute("categoria", new Categoria());
 		model.addAttribute("idVendedor", idVendedor);
 		model.addAttribute("listaCategorias", this.repoCategoria.findAll(PageRequest.of(page, 2)));
@@ -52,7 +55,10 @@ public class CtlCategoria {
 		UserDetails user1 = userAutenticado.getAuth();
 
 		Usuario user = repoUsuario.findByCorreo(user1.getUsername());
-		idVendedor=user.getId();
+	
+		if (user.getId()!=idVendedor) {
+			return "denegado";			
+		}
 		model.addAttribute("categoria", new Categoria());
 		model.addAttribute("idVendedor", idVendedor);
 		model.addAttribute("listaCategorias", this.repoCategoria.findAll(PageRequest.of(0, 2)));
@@ -67,8 +73,12 @@ public class CtlCategoria {
 		UserDetails user1 = userAutenticado.getAuth();
 
 		Usuario user = repoUsuario.findByCorreo(user1.getUsername());
-		idVendedor=user.getId();
-		categoria.setUsuario(repoUsuario.findById(idVendedor));
+	
+		if (user.getId()!=idVendedor) {
+			return "denegado";
+					
+		}
+		 categoria.setUsuario(repoUsuario.findById(idVendedor));
 		if (result.hasErrors()) {
 			model.addAttribute("categoria", categoria);
 			model.addAttribute("idVendedor", idVendedor);
@@ -106,6 +116,7 @@ public class CtlCategoria {
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/editarCategoria/{id}")
 	public String editarCategoria(@PathVariable int id, Model model) {
+		
 		Categoria c = repoCategoria.findById(id);
 		model.addAttribute("categoria", c);
 		model.addAttribute("usuario", c.getUsuario());

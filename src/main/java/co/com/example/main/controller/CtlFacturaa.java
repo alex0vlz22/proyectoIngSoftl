@@ -39,10 +39,10 @@ public class CtlFacturaa {
 	@GetMapping("/facturaArchivoPlano/{idUsuario}/{idFactura}")
 	public String archivoPlano(Model model, @PathVariable("idUsuario") int idUsuario, @PathVariable("idFactura") int idFactura) {
 		UserDetails user1 = userAutenticado.getAuth();
-
 		Usuario user = repoUsuario.findByCorreo(user1.getUsername());
-		idUsuario=user.getId();
-
+		if (user.getId()!=idUsuario) {
+			return "denegado";
+		}
 		Facturaa f = this.repoFactura.findById(idFactura);
 		List<DetalleFactura> lf = this.repoDetalleFactura.findByFactura(f);
 		model.addAttribute("factura", f);
@@ -54,9 +54,10 @@ public class CtlFacturaa {
 	@GetMapping("/visualizarFacturas/{idUsuario}")
 	public String visualizarFacturas(Model model, @PathVariable("idUsuario") int idUsuario) {
 		UserDetails user1 = userAutenticado.getAuth();
-
 		Usuario user = repoUsuario.findByCorreo(user1.getUsername());
-		idUsuario=user.getId();
+		if (user.getId()!=idUsuario) {
+			return "denegado";
+		}
 		model.addAttribute("producto", new Producto());
 		model.addAttribute("listaFacturas", this.repoFactura.findByComprador(PageRequest.of(0, 5), user));
 		model.addAttribute("usuario", user);
@@ -66,9 +67,11 @@ public class CtlFacturaa {
 	@GetMapping("/visualizarFacturas/{idUsuario}/page/{page}")
 	public String visualizarFacturas(Model model, @PathVariable("idUsuario") int idUsuario, @PathVariable("page") int page) {
 		UserDetails user1 = userAutenticado.getAuth();
-
 		Usuario user = repoUsuario.findByCorreo(user1.getUsername());
-		idUsuario=user.getId();		model.addAttribute("producto", new Producto());
+		if (user.getId()!=idUsuario) {
+			return "denegado";
+		}
+		model.addAttribute("producto", new Producto());
 		model.addAttribute("listaFacturas", this.repoFactura.findByComprador(PageRequest.of(page, 5), user));
 		model.addAttribute("usuario", user);
 		return "visualizarFacturas";
@@ -78,9 +81,10 @@ public class CtlFacturaa {
 	public String visualizarDetalleFactura(Model model, @PathVariable("idUsuario") int idUsuario,
 			@PathVariable("idFactura") int idFactura) {
 		UserDetails user1 = userAutenticado.getAuth();
-
 		Usuario user = repoUsuario.findByCorreo(user1.getUsername());
-		idUsuario=user.getId();
+		if (user.getId()!=idUsuario) {
+			return "denegado";
+		}
 		Facturaa f = this.repoFactura.findById(idFactura);
 		model.addAttribute("producto", new Producto());
 		model.addAttribute("listaDetalles", this.repoDetalleFactura.findByFactura(PageRequest.of(0, 6), f));
@@ -93,9 +97,10 @@ public class CtlFacturaa {
 	public String pagVisualizarDetalleFactura(Model model, @PathVariable("idUsuario") int idUsuario,
 			@PathVariable("idFactura") int idFactura, @PathVariable("page") int page) {
 		UserDetails user1 = userAutenticado.getAuth();
-
 		Usuario user = repoUsuario.findByCorreo(user1.getUsername());
-		idUsuario=user.getId();
+		if (user.getId()!=idUsuario) {
+			return "denegado";
+		}
 		Facturaa f = this.repoFactura.findById(idFactura);
 		model.addAttribute("producto", new Producto());
 		model.addAttribute("listaDetalles", this.repoDetalleFactura.findByFactura(PageRequest.of(page, 6), f));

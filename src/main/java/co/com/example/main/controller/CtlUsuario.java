@@ -85,8 +85,12 @@ public class CtlUsuario {
 	
 	@GetMapping("/inicio/{idUsuario}")
 	public String inicio(Model model, @PathVariable("idUsuario") int idUsuario, @RequestParam(defaultValue = "0") int page) {
-		Usuario u = repoUsuario.findById(idUsuario);
-		model.addAttribute("usuario", u);
+		UserDetails user1 = userAutenticado.getAuth();
+		Usuario user = repoUsuario.findByCorreo(user1.getUsername());
+		if (user.getId()!=idUsuario) {
+			return "denegado";
+		}
+		model.addAttribute("usuario", user);
 		model.addAttribute("listaSubcategorias", this.repoSubcategoria.findAll());
 		model.addAttribute("listaProveedores", this.repoProveedor.findAll());
 		model.addAttribute("listaProductos", this.repoProducto.findAll(PageRequest.of(page, 6)));
@@ -278,11 +282,12 @@ public class CtlUsuario {
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	@GetMapping("/editarPerfil/{idUsuario}")
 	public String editarUsuario(Model model, @PathVariable int idUsuario) {
-		UserDetails user = userAutenticado.getAuth();
-
-		Usuario u = repoUsuario.findByCorreo(user.getUsername());
-		idUsuario=u.getId();
-		model.addAttribute("usuario", this.repoUsuario.findById(u.getId()));
+		UserDetails user1 = userAutenticado.getAuth();
+		Usuario user = repoUsuario.findByCorreo(user1.getUsername());
+		if (user.getId()!=idUsuario) {
+			return "denegado";
+		}
+		model.addAttribute("usuario", this.repoUsuario.findById(user.getId()));
 		model.addAttribute("producto", new Producto());
 		return "editarUsuario";
 
@@ -292,11 +297,11 @@ public class CtlUsuario {
 	public String modificarUsuario(@Valid Usuario usuario, BindingResult result, Model model,
 			@PathVariable("idUsuario") int idUsuario, @RequestParam("file") MultipartFile file,
 			@RequestParam("cambioUrl") boolean cambioUrl, @RequestParam(defaultValue = "0") int page) {
-		UserDetails user = userAutenticado.getAuth();
-
-		Usuario u = repoUsuario.findByCorreo(user.getUsername());
-		idUsuario=u.getId();
-		usuario.setId(idUsuario);
+		UserDetails user1 = userAutenticado.getAuth();
+		Usuario user = repoUsuario.findByCorreo(user1.getUsername());
+		if (user.getId()!=idUsuario) {
+			return "denegado";
+		}		usuario.setId(idUsuario);
 		if (cambioUrl) {
 			try {
 				Map uploadResult = cloudc.upload(file.getBytes(), ObjectUtils.asMap("resourcetype", "auto"));
@@ -323,9 +328,12 @@ public class CtlUsuario {
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	@GetMapping("/eliminarCuenta/{idUsuario}")
 	public String eliminarCuenta(Model model, @PathVariable("idUsuario") int id) {
-		UserDetails user = userAutenticado.getAuth();
-		Usuario u = repoUsuario.findByCorreo(user.getUsername());
-		id=u.getId();
+		UserDetails user1 = userAutenticado.getAuth();
+		Usuario user = repoUsuario.findByCorreo(user1.getUsername());
+		if (user.getId()!=id) {
+			return "denegado";
+		}
+		id=user.getId();
 		this.repoUsuario.delete(this.repoUsuario.findById(id));
 		return "redirect:/";
 	}

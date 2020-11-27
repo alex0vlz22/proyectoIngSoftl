@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -42,6 +43,7 @@ import co.com.example.main.repository.RepoProducto;
 import co.com.example.main.repository.RepoProveedor;
 import co.com.example.main.repository.RepoSubcategoria;
 import co.com.example.main.repository.RepoUsuario;
+import co.com.example.main.security.util.UserAutenticado;
 
 @Controller
 public class CtlProducto {
@@ -58,6 +60,9 @@ public class CtlProducto {
 	@Autowired
 	private RepoUsuario repoUsuario;
 
+	@Autowired
+	private UserAutenticado userAutenticado;
+	
 	@Autowired
 	private CloudinaryConfig cloudc;
 
@@ -79,8 +84,12 @@ public class CtlProducto {
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	@GetMapping("/pag/{idUsuario}/{page}")
 	public String pag(Model model, @PathVariable("idUsuario") int idUsuario, @PathVariable("page") int page) {
-		Usuario u = repoUsuario.findById(idUsuario);
-		model.addAttribute("usuario", u);
+		UserDetails user1 = userAutenticado.getAuth();
+		Usuario user = repoUsuario.findByCorreo(user1.getUsername());
+		if (user.getId()!=idUsuario) {
+			return "denegado";
+		}
+		model.addAttribute("usuario", user);
 		model.addAttribute("listaSubcategorias", this.repoSubcategoria.findAll());
 		model.addAttribute("listaProveedores", this.repoProveedor.findAll());
 		model.addAttribute("listaProductos", this.repoProducto.findAll(PageRequest.of(page, 6)));
@@ -102,7 +111,11 @@ public class CtlProducto {
 	@GetMapping("/registroProducto/{idVendedor}")
 	public String registroProducto(Model model, @PathVariable int idVendedor,
 			@RequestParam(defaultValue = "0") int page) {
-		Usuario user = this.repoUsuario.findById(idVendedor);
+		UserDetails user1 = userAutenticado.getAuth();
+		Usuario user = repoUsuario.findByCorreo(user1.getUsername());
+		if (user.getId()!=idVendedor) {
+			return "denegado";
+		}
 		model.addAttribute("bodegaSinEspacio", false);
 		model.addAttribute("producto", new Producto());
 		model.addAttribute("usuario", user);
@@ -117,7 +130,11 @@ public class CtlProducto {
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/registroProducto/{idVendedor}/pag/{page}")
 	public String pagRegistroProducto(Model model, @PathVariable int idVendedor, @PathVariable("page") int page) {
-		Usuario user = this.repoUsuario.findById(idVendedor);
+		UserDetails user1 = userAutenticado.getAuth();
+		Usuario user = repoUsuario.findByCorreo(user1.getUsername());
+		if (user.getId()!=idVendedor) {
+			return "denegado";
+		}
 		model.addAttribute("bodegaSinEspacio", false);
 		model.addAttribute("producto", new Producto());
 		model.addAttribute("usuario", user);
@@ -133,6 +150,11 @@ public class CtlProducto {
 	@PostMapping("/guardarProducto/{idVendedor}")
 	public String guardarProducto(@Valid Producto producto, BindingResult result, Model model,
 			@RequestParam("file") MultipartFile file, @PathVariable int idVendedor) {
+		UserDetails user1 = userAutenticado.getAuth();
+		Usuario user = repoUsuario.findByCorreo(user1.getUsername());
+		if (user.getId()!=idVendedor) {
+			return "denegado";
+		}
 		Proveedor p = repoProveedor.findById(producto.getIdProveedor());
 		Subcategoria c = repoSubcategoria.findById(producto.getIdSubcategoria());
 		Bodega b = repoBodega.findById(producto.getIdBodega());
@@ -326,6 +348,11 @@ public class CtlProducto {
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	@GetMapping("/busquedaPorPalabras/{idUsuario}")
 	public String buscarPorPalabras(Model model, @PathVariable int idUsuario, Producto producto) {
+		UserDetails user1 = userAutenticado.getAuth();
+		Usuario user = repoUsuario.findByCorreo(user1.getUsername());
+		if (user.getId()!=idUsuario) {
+			return "denegado";
+		}
 		String palabras = producto.getDescripcion();
 		List<Producto> listaProductos = (List<Producto>) repoProducto.findAllByNombreContainingIgnoreCase(palabras);
 
@@ -366,6 +393,11 @@ public class CtlProducto {
 		// borre todo el texto
 		// de lo contrario se enviaría un null en un datos double, generaría una
 		// excepción importante.
+		UserDetails user1 = userAutenticado.getAuth();
+		Usuario user = repoUsuario.findByCorreo(user1.getUsername());
+		if (user.getId()!=idUsuario) {
+			return "denegado";
+		}
 		List<Producto> listaProductos = new ArrayList<Producto>();
 		if (producto.getIdProveedor() != 0) {
 			if (producto.getIdSubcategoria() != 0) {
@@ -472,6 +504,11 @@ public class CtlProducto {
 	@GetMapping("/detalleProducto/{idUsuario}/{idProducto}")
 	public String detalleProducto(Model model, @PathVariable("idUsuario") int idUsuario,
 			@PathVariable("idProducto") int idProducto) {
+		UserDetails user1 = userAutenticado.getAuth();
+		Usuario user = repoUsuario.findByCorreo(user1.getUsername());
+		if (user.getId()!=idUsuario) {
+			return "denegado";
+		}
 		Usuario usuario = repoUsuario.findById(idUsuario);
 		Producto producto = repoProducto.findById(idProducto);
 		model.addAttribute("agregado", false);
@@ -505,14 +542,18 @@ public class CtlProducto {
 	@GetMapping("/producto/{idProducto}/carrito/{idUsuario}")
 	public String agregarCarrito(Model model, @PathVariable("idProducto") int idProducto,
 			@PathVariable("idUsuario") int idUsuario) {
-		Usuario usuario = repoUsuario.findById(idUsuario);
+		UserDetails user1 = userAutenticado.getAuth();
+		Usuario user = repoUsuario.findByCorreo(user1.getUsername());
+		if (user.getId()!=idUsuario) {
+			return "denegado";
+		}
 		Producto producto = repoProducto.findById(idProducto);
 
 		if (producto.getCantidad() == 0) {
 			model.addAttribute("agregado", false);
 			model.addAttribute("agotado", true);
 			model.addAttribute("yaEnCarrito", false);
-			model.addAttribute("usuario", usuario);
+			model.addAttribute("usuario", user);
 			model.addAttribute("productoVisualizado", producto);
 			model.addAttribute("proveedor", producto.getProveedor());
 			model.addAttribute("subcategoria", producto.getSubcategoria());
@@ -523,7 +564,7 @@ public class CtlProducto {
 				model.addAttribute("agregado", false);
 				model.addAttribute("agotado", false);
 				model.addAttribute("yaEnCarrito", true);
-				model.addAttribute("usuario", usuario);
+				model.addAttribute("usuario", user);
 				model.addAttribute("productoVisualizado", producto);
 				model.addAttribute("proveedor", producto.getProveedor());
 				model.addAttribute("subcategoria", producto.getSubcategoria());
@@ -532,12 +573,12 @@ public class CtlProducto {
 			} else {
 				Carrito productoCarrito = new Carrito();
 				productoCarrito.setProducto(producto);
-				productoCarrito.setUsuario(usuario);
+				productoCarrito.setUsuario(user);
 				this.repoCarrito.save(productoCarrito);
 				model.addAttribute("agregado", true);
 				model.addAttribute("agotado", false);
 				model.addAttribute("yaEnCarrito", false);
-				model.addAttribute("usuario", usuario);
+				model.addAttribute("usuario", user);
 				model.addAttribute("productoVisualizado", producto);
 				model.addAttribute("proveedor", producto.getProveedor());
 				model.addAttribute("subcategoria", producto.getSubcategoria());
@@ -560,7 +601,11 @@ public class CtlProducto {
 	@PreAuthorize("hasRole('ROLE_USER')")
 	@GetMapping("/carrito/{idUsuario}")
 	public String miCarrito(Model model, @PathVariable("idUsuario") int idUsuario) {
-		Usuario user = this.repoUsuario.findById(idUsuario);
+		UserDetails user1 = userAutenticado.getAuth();
+		Usuario user = repoUsuario.findByCorreo(user1.getUsername());
+		if (user.getId()!=idUsuario) {
+			return "denegado";
+		}
 		double valorTotal = 0;
 		valorTotal = calcularPrecio(idUsuario, valorTotal, user);
 		// validaciones
@@ -597,6 +642,11 @@ public class CtlProducto {
 	@GetMapping("/eliminar/prod/{idCarrito}/carrito/{idUsuario}")
 	public String eliminarDelCarrito(Model model, @PathVariable("idCarrito") int idCarrito,
 			@PathVariable("idUsuario") int idUsuario) {
+		UserDetails user1 = userAutenticado.getAuth();
+		Usuario user = repoUsuario.findByCorreo(user1.getUsername());
+		if (user.getId()!=idUsuario) {
+			return "denegado";
+		}
 		this.repoCarrito.deleteById(idCarrito);
 		return "redirect:/carrito/" + idUsuario;
 	}
@@ -604,8 +654,11 @@ public class CtlProducto {
 	@PreAuthorize("hasRole('ROLE_USER')")
 	@GetMapping("/realizarCompra/{idUsuario}/productos")
 	public String comprar(Model model, @PathVariable("idUsuario") int idComprador) {
-
-		Usuario user = this.repoUsuario.findById(idComprador);
+		UserDetails user1 = userAutenticado.getAuth();
+		Usuario user = repoUsuario.findByCorreo(user1.getUsername());
+		if (user.getId()!=idComprador) {
+			return "denegado";
+		}
 		List<Carrito> listaProductos = this.repoCarrito.findByUsuario(user);
 
 		if (listaProductos.isEmpty()) {
