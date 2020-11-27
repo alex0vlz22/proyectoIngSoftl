@@ -278,15 +278,24 @@ public class CtlUsuario {
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	@GetMapping("/editarPerfil/{idUsuario}")
 	public String editarUsuario(Model model, @PathVariable int idUsuario) {
-		model.addAttribute("usuario", this.repoUsuario.findById(idUsuario));
+		UserDetails user = userAutenticado.getAuth();
+
+		Usuario u = repoUsuario.findByCorreo(user.getUsername());
+		idUsuario=u.getId();
+		model.addAttribute("usuario", this.repoUsuario.findById(u.getId()));
 		model.addAttribute("producto", new Producto());
 		return "editarUsuario";
+
 	}
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	@PostMapping("/modificarUsuario/{idUsuario}")
 	public String modificarUsuario(@Valid Usuario usuario, BindingResult result, Model model,
 			@PathVariable("idUsuario") int idUsuario, @RequestParam("file") MultipartFile file,
 			@RequestParam("cambioUrl") boolean cambioUrl, @RequestParam(defaultValue = "0") int page) {
+		UserDetails user = userAutenticado.getAuth();
+
+		Usuario u = repoUsuario.findByCorreo(user.getUsername());
+		idUsuario=u.getId();
 		usuario.setId(idUsuario);
 		if (cambioUrl) {
 			try {
@@ -314,6 +323,9 @@ public class CtlUsuario {
 	@PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
 	@GetMapping("/eliminarCuenta/{idUsuario}")
 	public String eliminarCuenta(Model model, @PathVariable("idUsuario") int id) {
+		UserDetails user = userAutenticado.getAuth();
+		Usuario u = repoUsuario.findByCorreo(user.getUsername());
+		id=u.getId();
 		this.repoUsuario.delete(this.repoUsuario.findById(id));
 		return "redirect:/";
 	}

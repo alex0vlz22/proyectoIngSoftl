@@ -5,6 +5,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,10 +18,14 @@ import co.com.example.main.domain.Producto;
 import co.com.example.main.domain.Usuario;
 import co.com.example.main.repository.RepoCategoria;
 import co.com.example.main.repository.RepoUsuario;
+import co.com.example.main.security.util.UserAutenticado;
 
 @Controller
 public class CtlCategoria {
-
+	
+	@Autowired
+	UserAutenticado userAutenticado;
+	
 	@Autowired
 	private RepoCategoria repoCategoria;
 
@@ -30,7 +35,10 @@ public class CtlCategoria {
 	@GetMapping("registroCategoria/{idUsuario}/pag/{page}")
 	public String registroCategoriaPag(Model model, @PathVariable("idUsuario") int idVendedor,
 			@PathVariable("page") int page) {
-		Usuario user = this.repoUsuario.findById(idVendedor);
+		UserDetails user1 = userAutenticado.getAuth();
+
+		Usuario user = repoUsuario.findByCorreo(user1.getUsername());
+		idVendedor=user.getId();
 		model.addAttribute("categoria", new Categoria());
 		model.addAttribute("idVendedor", idVendedor);
 		model.addAttribute("listaCategorias", this.repoCategoria.findAll(PageRequest.of(page, 2)));
@@ -41,7 +49,10 @@ public class CtlCategoria {
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("/registroCategoria/{idVendedor}")
 	public String registroCategoria(Model model, @PathVariable int idVendedor) {
-		Usuario user = this.repoUsuario.findById(idVendedor);
+		UserDetails user1 = userAutenticado.getAuth();
+
+		Usuario user = repoUsuario.findByCorreo(user1.getUsername());
+		idVendedor=user.getId();
 		model.addAttribute("categoria", new Categoria());
 		model.addAttribute("idVendedor", idVendedor);
 		model.addAttribute("listaCategorias", this.repoCategoria.findAll(PageRequest.of(0, 2)));
@@ -53,9 +64,12 @@ public class CtlCategoria {
 	@PostMapping("/guardarCategoria/{idVendedor}")
 	public String guardarCategoria(@Valid Categoria categoria, BindingResult result, Model model,
 			@PathVariable int idVendedor) {
+		UserDetails user1 = userAutenticado.getAuth();
+
+		Usuario user = repoUsuario.findByCorreo(user1.getUsername());
+		idVendedor=user.getId();
 		categoria.setUsuario(repoUsuario.findById(idVendedor));
 		if (result.hasErrors()) {
-			Usuario user = this.repoUsuario.findById(idVendedor);
 			model.addAttribute("categoria", categoria);
 			model.addAttribute("idVendedor", idVendedor);
 			model.addAttribute("listaCategorias", this.repoCategoria.findAll(PageRequest.of(0, 2)));
@@ -65,7 +79,6 @@ public class CtlCategoria {
 		}
 		if (existeCategoria(categoria.getNombre())) {
 
-			Usuario user = this.repoUsuario.findById(idVendedor);
 			model.addAttribute("categoria", categoria);
 			model.addAttribute("idVendedor", idVendedor);
 			model.addAttribute("listaCategorias", this.repoCategoria.findAll(PageRequest.of(0, 2)));
