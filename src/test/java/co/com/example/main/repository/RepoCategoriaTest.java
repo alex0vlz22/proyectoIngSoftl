@@ -88,7 +88,6 @@ public class RepoCategoriaTest {
 	@Test
 	public void testListarTodos() {
 		entityManager.persist(getCategoria("primera", "1"));
-		
 		Iterable<Categoria> lista = repoCategoria.findAll();
 		assertThat(lista).isNotEmpty();
 	}

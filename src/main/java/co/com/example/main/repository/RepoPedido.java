@@ -10,5 +10,5 @@ import co.com.example.main.domain.Usuario;
 public interface RepoPedido extends JpaRepository<Pedido, Integer>{
 
 	Page<Pedido> findByUsuario(Pageable page, Usuario user);
-	
+	Pedido findById(int id);
 }

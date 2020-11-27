@@ -15,4 +15,5 @@ public interface RepoDetalleFactura extends JpaRepository<DetalleFactura, Intege
 	
 	List<DetalleFactura> findByFactura(Facturaa f);
 	
+	DetalleFactura findById(int id);
 }

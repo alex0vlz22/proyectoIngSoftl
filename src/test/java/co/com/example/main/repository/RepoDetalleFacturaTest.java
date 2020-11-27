@@ -51,7 +51,7 @@ public class RepoDetalleFacturaTest {
 	@Test
 	public void testBuscarId() {
 		DetalleFactura detalleFactura = entityManager.persist(getDetalleFactura());
-		DetalleFactura b = repoDetalleFactura.findById(detalleFactura.getId()).get();
+		DetalleFactura b = repoDetalleFactura.findById(detalleFactura.getId());
 		assertThat(detalleFactura).isEqualTo(b);
 	}
 	
@@ -67,15 +67,13 @@ public class RepoDetalleFacturaTest {
 	public void testEliminar() {
 		DetalleFactura detalleFactura = entityManager.persist(getDetalleFactura());
 		repoDetalleFactura.delete(detalleFactura);
-		DetalleFactura b = repoDetalleFactura.findById(detalleFactura.getId()).get();
-		assertNull(b);
+		assertNull(repoDetalleFactura.findById(detalleFactura.getId()));
 	}
 	
 	@Test
 	public void testListarTodos() {
 		entityManager.persist(getDetalleFactura());
 		entityManager.persist(getDetalleFactura());
-		
 		Iterable<DetalleFactura> lista = repoDetalleFactura.findAll();
 		assertThat(lista).isNotEmpty();
 	}

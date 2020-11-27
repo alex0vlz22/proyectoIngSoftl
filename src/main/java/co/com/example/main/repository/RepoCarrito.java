@@ -14,5 +14,5 @@ public interface RepoCarrito extends JpaRepository<Carrito, Integer>{
 	List<Carrito> findByUsuario(Usuario user);
 	
 	Page<Carrito> findByUsuario(Pageable page, Usuario user);
-	
+	Carrito findById(int id);
 }

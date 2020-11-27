@@ -51,8 +51,16 @@
 				</div>
 				<div class="card-body" id="cuerpoCard">
 					<h4 th:text="${carrito.producto.nombre}"></h4>
-					<h5 th:if="${carrito.producto.IVA}" th:text="'$ '+${carrito.producto.precioConIVA}"></h5>
-					<h5 th:if="${!carrito.producto.IVA}" th:text="'$ '+${carrito.producto.precio}"></h5>
+					<hr style="background-color: white;">
+					<div class="row mb-2">
+						<div class="col">
+							<span class="newText">Precio:</span>
+						</div>
+						<div class="col">
+							<span class="newText" th:if="${carrito.producto.IVA}" th:text="'$ '+${carrito.producto.precioConIVA}"></span>
+							<span class="newText" th:if="${!carrito.producto.IVA}" th:text="'$ '+${carrito.producto.precio}"></span>
+						</div>
+					</div>
 					<a class="btn btn-danger mt-2"
 						th:href="@{'/eliminar/prod/' + ${carrito.id} + '/carrito/' + ${usuario.id}}">
 						<i class="fas fa-trash"></i>

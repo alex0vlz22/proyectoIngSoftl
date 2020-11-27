@@ -48,7 +48,7 @@ public class RepoPedidoTest {
 	@Test
 	public void testBuscarId() {
 		Pedido pedido = entityManager.persist(getPedido());
-		Pedido b = repoPedido.findById(pedido.getId()).get();
+		Pedido b = repoPedido.findById(pedido.getId());
 		assertThat(pedido).isEqualTo(b);
 	}
 	
@@ -64,8 +64,7 @@ public class RepoPedidoTest {
 	public void testEliminar() {
 		Pedido pedido = entityManager.persist(getPedido());
 		repoPedido.delete(pedido);
-		Pedido b = repoPedido.findById(pedido.getId()).get();
-		assertNull(b);
+		assertNull(repoPedido.findById(pedido.getId()));
 	}
 	
 	@Test

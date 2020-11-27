@@ -46,7 +46,7 @@ public class RepoCarritoTest {
 	@Test
 	public void testBuscarId() {
 		Carrito carrito = entityManager.persist(getCarrito());
-		Carrito b = repoCarrito.findById(carrito.getId()).get();
+		Carrito b = repoCarrito.findById(carrito.getId());
 		assertThat(carrito).isEqualTo(b);
 	}
 	
@@ -62,8 +62,7 @@ public class RepoCarritoTest {
 	public void testEliminar() {
 		Carrito carrito = entityManager.persist(getCarrito());
 		repoCarrito.delete(carrito);
-		Carrito b = repoCarrito.findById(carrito.getId()).get();
-		assertNull(b);
+		assertNull(repoCarrito.findById(carrito.getId()));
 	}
 	
 	@Test
