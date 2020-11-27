@@ -33,14 +33,14 @@
 
 			<div class="collapse navbar-collapse" id="navbarColor01">
 				<ul class="navbar-nav mr-auto">
-					<li class="nav-item active"><a class="nav-link" th:href="@{/inicio/{idUsuario}(idUsuario = ${usuario.id})}">Inicio
+					<li class="nav-item active"><a class="nav-link" href="/login">Inicio
 							<span class="sr-only">(current)</span>
 					</a></li>
-					<li class="nav-item"><a class="nav-link" th:href="@{/visualizarPedidos/{idUsuario}(idUsuario = ${usuario.id})}">Mis
+					<li class="nav-item"><a class="nav-link" href="/login">Mis
 							pedidos</a></li>
-					<li class="nav-item"><a class="nav-link" th:href="@{/carrito/{idUsuario}(idUsuario = ${usuario.id})}"> <i class="fas fa-shopping-cart"></i> Carrito </a></li>
+					<li class="nav-item"><a class="nav-link" href="/login"> <i class="fas fa-shopping-cart"></i> Carrito </a></li>
 					<li class="nav-item"><a class="nav-link"
-						th:href="@{/visualizarFacturas/{idUsuario}(idUsuario = ${usuario.id})}">Mis
+						href="/login">Mis
 							Facturas</a></li>
 					
 					<li class="nav-item"><a class="nav-link" href="/soporte">Soporte</a></li>
