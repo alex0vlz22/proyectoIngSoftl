@@ -14,7 +14,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import co.com.example.main.domain.Producto;
 import co.com.example.main.domain.Proveedor;
 import co.com.example.main.domain.Subcategoria;
-import co.com.example.main.domain.Usuario;
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest

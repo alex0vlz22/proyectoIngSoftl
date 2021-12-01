@@ -1,9 +1,5 @@
 package co.com.example.main.repository;
 
-import org.springframework.data.repository.CrudRepository;
-
-import java.util.List;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,7 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 import co.com.example.main.domain.Producto;
 import co.com.example.main.domain.Proveedor;
 import co.com.example.main.domain.Subcategoria;
-import co.com.example.main.domain.Usuario;
 
 public interface RepoProducto extends JpaRepository<Producto, Integer> {
 

@@ -12,7 +12,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import co.com.example.main.domain.Carrito;
-import co.com.example.main.domain.Usuario;
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest

@@ -1,7 +1,6 @@
 package co.com.example.main.domain;
 
 import java.util.List;
-import java.util.Optional;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -14,13 +13,7 @@ import javax.persistence.OneToMany;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 
-import org.hibernate.validator.constraints.UniqueElements;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-
-import lombok.Data;
-
 @Entity
-@Data
 public class Bodega {
 
 	@Id
@@ -43,5 +36,63 @@ public class Bodega {
 
 	@ManyToOne
 	private Usuario usuario;
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public String getDireccion() {
+		return direccion;
+	}
+
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
+	}
+
+	public int getCapacidad() {
+		return capacidad;
+	}
+
+	public void setCapacidad(int capacidad) {
+		this.capacidad = capacidad;
+	}
+
+	public int getEspacioDisponible() {
+		return espacioDisponible;
+	}
+
+	public void setEspacioDisponible(int espacioDisponible) {
+		this.espacioDisponible = espacioDisponible;
+	}
+
+	public List<Producto> getProducto() {
+		return producto;
+	}
+
+	public void setProducto(List<Producto> producto) {
+		this.producto = producto;
+	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+	
+	
 
 }

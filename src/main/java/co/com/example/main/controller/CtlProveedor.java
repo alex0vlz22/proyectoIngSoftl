@@ -1,6 +1,5 @@
 package co.com.example.main.controller;
 
-import javax.persistence.IdClass;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;

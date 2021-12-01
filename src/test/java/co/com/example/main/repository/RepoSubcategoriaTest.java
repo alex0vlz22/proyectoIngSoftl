@@ -11,9 +11,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import co.com.example.main.domain.Categoria;
 import co.com.example.main.domain.Subcategoria;
-import co.com.example.main.domain.Usuario;
 
 @ExtendWith(SpringExtension.class)
 @DataJpaTest

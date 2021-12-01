@@ -10,9 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import lombok.Data;
-
-@Data
 @Entity
 public class Pedido {
 
@@ -29,5 +26,47 @@ public class Pedido {
 	private List<Facturaa> factura;
 	
 	private double valorTotal;
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public int getCantidadArticulos() {
+		return cantidadArticulos;
+	}
+
+	public void setCantidadArticulos(int cantidadArticulos) {
+		this.cantidadArticulos = cantidadArticulos;
+	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+
+	public List<Facturaa> getFactura() {
+		return factura;
+	}
+
+	public void setFactura(List<Facturaa> factura) {
+		this.factura = factura;
+	}
+
+	public double getValorTotal() {
+		return valorTotal;
+	}
+
+	public void setValorTotal(double valorTotal) {
+		this.valorTotal = valorTotal;
+	}
+	
+	
 	
 }

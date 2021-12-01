@@ -12,12 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Size;
 
-import org.hibernate.annotations.Check;
-
-import lombok.Data;
-
 @Entity
-@Data
 
 public class Categoria {
 
@@ -35,5 +30,39 @@ public class Categoria {
 
 	@ManyToOne
 	private Usuario usuario;
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public List<Subcategoria> getSubcategoria() {
+		return subcategoria;
+	}
+
+	public void setSubcategoria(List<Subcategoria> subcategoria) {
+		this.subcategoria = subcategoria;
+	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+	
+	
 
 }

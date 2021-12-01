@@ -1,14 +1,15 @@
 package co.com.example.main;
 
-import com.cloudinary.Cloudinary;
-import com.cloudinary.Singleton;
-import com.cloudinary.Transformation;
+import java.io.IOException;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-import java.util.Map;
+import com.cloudinary.Cloudinary;
+import com.cloudinary.Singleton;
+import com.cloudinary.Transformation;
 
 @Component
 public class CloudinaryConfig {

@@ -15,10 +15,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-import lombok.Data;
-
 @Entity
-@Data
 
 public class Producto {
 
@@ -80,5 +77,163 @@ public class Producto {
 
 	@Transient
 	private double precioMaximo;
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+
+	public int getCantidad() {
+		return cantidad;
+	}
+
+	public void setCantidad(int cantidad) {
+		this.cantidad = cantidad;
+	}
+
+	public double getPrecio() {
+		return precio;
+	}
+
+	public void setPrecio(double precio) {
+		this.precio = precio;
+	}
+
+	public double getPrecioConIVA() {
+		return precioConIVA;
+	}
+
+	public void setPrecioConIVA(double precioConIVA) {
+		this.precioConIVA = precioConIVA;
+	}
+
+	public boolean isIVA() {
+		return IVA;
+	}
+
+	public void setIVA(boolean iVA) {
+		IVA = iVA;
+	}
+
+	public String getUrlFoto() {
+		return urlFoto;
+	}
+
+	public void setUrlFoto(String urlFoto) {
+		this.urlFoto = urlFoto;
+	}
+
+	public List<Carrito> getCarrito() {
+		return carrito;
+	}
+
+	public void setCarrito(List<Carrito> carrito) {
+		this.carrito = carrito;
+	}
+
+	public List<DetalleFactura> getDetalleFactura() {
+		return detalleFactura;
+	}
+
+	public void setDetalleFactura(List<DetalleFactura> detalleFactura) {
+		this.detalleFactura = detalleFactura;
+	}
+
+	public Proveedor getProveedor() {
+		return proveedor;
+	}
+
+	public void setProveedor(Proveedor proveedor) {
+		this.proveedor = proveedor;
+	}
+
+	public Subcategoria getSubcategoria() {
+		return subcategoria;
+	}
+
+	public void setSubcategoria(Subcategoria subcategoria) {
+		this.subcategoria = subcategoria;
+	}
+
+	public Bodega getBodega() {
+		return bodega;
+	}
+
+	public void setBodega(Bodega bodega) {
+		this.bodega = bodega;
+	}
+
+	public Usuario getVendedor() {
+		return vendedor;
+	}
+
+	public void setVendedor(Usuario vendedor) {
+		this.vendedor = vendedor;
+	}
+
+	public int getIdSubcategoria() {
+		return idSubcategoria;
+	}
+
+	public void setIdSubcategoria(int idSubcategoria) {
+		this.idSubcategoria = idSubcategoria;
+	}
+
+	public int getIdProveedor() {
+		return idProveedor;
+	}
+
+	public void setIdProveedor(int idProveedor) {
+		this.idProveedor = idProveedor;
+	}
+
+	public int getIdBodega() {
+		return idBodega;
+	}
+
+	public void setIdBodega(int idBodega) {
+		this.idBodega = idBodega;
+	}
+
+	public double getPrecioMinimo() {
+		return precioMinimo;
+	}
+
+	public void setPrecioMinimo(double precioMinimo) {
+		this.precioMinimo = precioMinimo;
+	}
+
+	public double getPrecioMaximo() {
+		return precioMaximo;
+	}
+
+	public void setPrecioMaximo(double precioMaximo) {
+		this.precioMaximo = precioMaximo;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+	
+	
 
 }

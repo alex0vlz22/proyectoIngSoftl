@@ -11,15 +11,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-import org.hibernate.validator.constraints.Length;
-
-import lombok.Data;
-
 @Entity
-@Data
 public class Usuario {
 
 	@Id
@@ -84,4 +78,166 @@ public class Usuario {
 	@OneToMany(mappedBy = "usuario", cascade = CascadeType.REMOVE)
 	private List<Carrito> carrito;
 
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getDNI() {
+		return DNI;
+	}
+
+	public void setDNI(String dNI) {
+		DNI = dNI;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public String getApellido() {
+		return apellido;
+	}
+
+	public void setApellido(String apellido) {
+		this.apellido = apellido;
+	}
+
+	public String getTelefono() {
+		return telefono;
+	}
+
+	public void setTelefono(String telefono) {
+		this.telefono = telefono;
+	}
+
+	public String getDireccion() {
+		return direccion;
+	}
+
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
+	}
+
+	public String getCorreo() {
+		return correo;
+	}
+
+	public void setCorreo(String correo) {
+		this.correo = correo;
+	}
+
+	public String getContrasena() {
+		return contrasena;
+	}
+
+	public void setContrasena(String contrasena) {
+		this.contrasena = contrasena;
+	}
+
+	public String getRol() {
+		return rol;
+	}
+
+	public void setRol(String rol) {
+		this.rol = rol;
+	}
+
+	public String getUrlFoto() {
+		return urlFoto;
+	}
+
+	public void setUrlFoto(String urlFoto) {
+		this.urlFoto = urlFoto;
+	}
+
+	public List<Pedido> getPedido() {
+		return pedido;
+	}
+
+	public void setPedido(List<Pedido> pedido) {
+		this.pedido = pedido;
+	}
+
+	public List<Facturaa> getFacturaComprador() {
+		return facturaComprador;
+	}
+
+	public void setFacturaComprador(List<Facturaa> facturaComprador) {
+		this.facturaComprador = facturaComprador;
+	}
+
+	public List<DetalleFactura> getDetalleFacturaVendedor() {
+		return detalleFacturaVendedor;
+	}
+
+	public void setDetalleFacturaVendedor(List<DetalleFactura> detalleFacturaVendedor) {
+		this.detalleFacturaVendedor = detalleFacturaVendedor;
+	}
+
+	public String getCodigoEmpresa() {
+		return codigoEmpresa;
+	}
+
+	public void setCodigoEmpresa(String codigoEmpresa) {
+		this.codigoEmpresa = codigoEmpresa;
+	}
+
+	public List<Bodega> getBodega() {
+		return bodega;
+	}
+
+	public void setBodega(List<Bodega> bodega) {
+		this.bodega = bodega;
+	}
+
+	public List<Producto> getProducto() {
+		return producto;
+	}
+
+	public void setProducto(List<Producto> producto) {
+		this.producto = producto;
+	}
+
+	public List<Categoria> getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(List<Categoria> categoria) {
+		this.categoria = categoria;
+	}
+
+	public List<Proveedor> getProveedor() {
+		return proveedor;
+	}
+
+	public void setProveedor(List<Proveedor> proveedor) {
+		this.proveedor = proveedor;
+	}
+
+	public List<Subcategoria> getSubcategoria() {
+		return subcategoria;
+	}
+
+	public void setSubcategoria(List<Subcategoria> subcategoria) {
+		this.subcategoria = subcategoria;
+	}
+
+	public List<Carrito> getCarrito() {
+		return carrito;
+	}
+
+	public void setCarrito(List<Carrito> carrito) {
+		this.carrito = carrito;
+	}
+
+	
+	
 }

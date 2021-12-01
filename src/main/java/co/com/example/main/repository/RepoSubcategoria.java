@@ -5,7 +5,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import co.com.example.main.domain.Subcategoria;
-import co.com.example.main.domain.Usuario;
 
 public interface RepoSubcategoria extends JpaRepository<Subcategoria, Integer> {
 
